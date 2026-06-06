@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guion en tarjetas A5 · Defensa TFG · Nicolás Rey Alonso</title>
+<style>
+  @page { size: A5 landscape; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --verde: #006c5d;
+    --azul: #007db6;
+    --tinta: #1c2522;
+    --suave: #5a6763;
+    --crema: #faf9f5;
+    --caja: #f1efe8;
+    --linea: #d9d5c8;
+  }
+  html, body { background: #888; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--tinta);
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    position: relative;
+    width: 210mm;
+    height: 148mm;
+    background: var(--crema);
+    padding: 8mm 10mm 7mm 10mm;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden;
+    border-left: 4mm solid var(--verde);
+  }
+  .card:last-child { page-break-after: auto; }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 9.5pt;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--suave);
+    border-bottom: 1px solid var(--linea);
+    padding-bottom: 2.5mm;
+  }
+  .top .bloque { font-weight: 700; color: var(--verde); }
+  .top .num { font-weight: 700; color: var(--azul); }
+  .titulo {
+    font-size: 18pt;
+    line-height: 1.1;
+    font-weight: 800;
+    margin-top: 3mm;
+    color: var(--tinta);
+  }
+  .hook {
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--verde);
+    margin-top: 1.8mm;
+    font-weight: 600;
+    line-height: 1.28;
+  }
+  .body {
+    display: flex;
+    gap: 6mm;
+    flex: 1;
+    margin-top: 4mm;
+    min-height: 0;
+  }
+  .say { flex: 1.55; }
+  .keys { flex: 1; }
+  .label {
+    font-size: 8.5pt;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--suave);
+    margin-bottom: 1.8mm;
+  }
+  .say ul { list-style: none; }
+  .say li {
+    font-size: 10.5pt;
+    line-height: 1.3;
+    padding-left: 5mm;
+    position: relative;
+    margin-bottom: 2mm;
+  }
+  .say li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--azul);
+    font-size: 10pt;
+    top: .2mm;
+  }
+  .keys {
+    background: var(--caja);
+    border-radius: 2.5mm;
+    padding: 3.5mm 4mm;
+    border: 1px solid var(--linea);
+    overflow: hidden;
+  }
+  .keys ul { list-style: none; }
+  .keys li {
+    font-size: 9pt;
+    line-height: 1.32;
+    color: #36423d;
+    padding-left: 4mm;
+    position: relative;
+    margin-bottom: 1.4mm;
+  }
+  .keys li:last-child { margin-bottom: 0; }
+  .keys li::before {
+    content: "·";
+    position: absolute;
+    left: 1mm;
+    color: var(--suave);
+    font-weight: 700;
+  }
+  code {
+    font-family: "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: rgba(0,108,93,0.08);
+    color: #08443a;
+    padding: 0.3mm 1mm;
+    border-radius: 1mm;
+  }
+  .keys code { background: rgba(0,0,0,0.05); color: #2a3531; }
+  strong { font-weight: 700; color: #11302a; }
+  .bridge {
+    margin-top: 3mm;
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--azul);
+    border-top: 1px dashed var(--linea);
+    padding-top: 2mm;
+  }
+  @media screen {
+    body { display: flex; flex-direction: column; align-items: center; gap: 8mm; padding: 8mm 0; }
+    .card { box-shadow: 0 2px 14px rgba(0,0,0,0.28); }
+  }
+</style>
+</head>
+<body>
+
+  <article class="card">
+    <header class="top">
+      <span class="bloque">Apertura</span>
+      <span class="num">01 / 22</span>
+    </header>
+    <h1 class="titulo">Portada y presentación</h1>
+    <p class="hook">Saludo, título del trabajo y tribunal.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Buenas tardes. Soy <strong>Nicolás Rey Alonso</strong>.</li>
+<li>Presento mi TFG: «<strong>Framework backend–frontend para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución</strong>».</li>
+<li>Aplicación a los proyectos con el <strong>Jardín Botánico Viera y Clavijo (JBVC)</strong>.</li>
+<li>Tutor de empresa: <strong>Rafael Juan Nebot Medina</strong>. Tutora académica: <strong>María Dolores Afonso Suárez</strong>.</li>
+<li>Desarrollado en colaboración con el <strong>Instituto Tecnológico de Canarias (ITC)</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Framework = dos artefactos: <code>uniback</code> + <code>ngt-gui</code>.</li>
+<li>Stack visible en portada: FastAPI · SQLAlchemy 2 · Continuum · JSON Schema · Angular · Formly · PostgreSQL · Docker.</li>
+<li>Hablar despacio aquí: marca el tono de toda la defensa.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Empiezo por el contexto y el problema.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">Índice</span>
+      <span class="num">02 / 22</span>
+    </header>
+    <h1 class="titulo">Estructura de la presentación</h1>
+    <p class="hook">La presentación recorre cinco bloques.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>I — Problema y objetivos</strong> (ITC · JBVC · 5 OE).</li>
+<li><strong>II — Estado del arte</strong> (stack y comparativa).</li>
+<li><strong>III — Arquitectura</strong> (polimorfismo, plugins, capas).</li>
+<li><strong>IV — Cuatro incrementos</strong> (API · contrato · Formly · bundle).</li>
+<li><strong>V — Resultados y conclusiones</strong> (pruebas · antes/después).</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Hilo conductor: «del problema al framework consolidado y validado».</li>
+<li>Recordar los dos nombres: <code>uniback</code> (backend) y <code>ngt-gui</code> (frontend).</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Bloque I: ¿de dónde nace todo esto?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">I · Contexto</span>
+      <span class="num">03 / 22</span>
+    </header>
+    <h1 class="titulo">Origen del proyecto</h1>
+    <p class="hook">Del trabajo de prácticas a un caso de uso real.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>El trabajo nace de mi <strong>estancia de prácticas en el ITC</strong>.</li>
+<li>Allí desarrollé <strong>NextGenDem-GUI-LIB</strong>, un catálogo de componentes Angular, pero <strong>acoplado a un backend específico</strong> → poco reutilizable.</li>
+<li>En paralelo, el ITC arranca el proyecto con el <strong>JBVC</strong>: catalogación, anotaciones y jerarquías taxonómicas → <strong>modelo de datos en evolución constante</strong>.</li>
+<li>Ese contexto convierte la <strong>reutilización en una necesidad operativa</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Estado al iniciar el TFG:</li>
+<li>• Frontend: librería propia (NGT) pero atada a NextGenDem por un servicio con <strong>+270 métodos hardcoded</strong>.</li>
+<li>• Backend: base del ITC con modelos ORM completos pero <strong>sin capa de API homogénea</strong> (ni envoltorio, ni fábricas, ni esquema).</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ ¿Por qué es un problema que el modelo cambie?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">I · Contexto</span>
+      <span class="num">04 / 22</span>
+    </header>
+    <h1 class="titulo">El problema</h1>
+    <p class="hook">Cuando el modelo evoluciona, el coste se propaga en cascada.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Cada cambio en el modelo obliga a tocar <strong>cinco capas</strong>: ORM, validación/esquemas, endpoints, cliente HTTP y formularios.</li>
+<li>Buena parte de ese código se <strong>escribe a mano</strong> y se <strong>acopla al dominio</strong>.</li>
+<li><strong>Hipótesis del trabajo</strong>: ese coste puede reducirse al mínimo si el modelo es la <strong>única fuente de verdad</strong> y el resto se <strong>deriva automáticamente</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Cita (§1.2): «Reducir al mínimo el código que hay que escribir y mantener para exponer, validar, comunicar y editar una entidad cuando el modelo está en evolución constante.»</li>
+<li>Enfoque propuesto: ORM → JSON Schema (<code>x-*</code>) → CRUD derivado → <code>EntityClient</code> → <code>&lt;ngt-dynamic-form&gt;</code> (un cambio se propaga solo).</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ La solución concreta.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">I · Solución</span>
+      <span class="num">05 / 22</span>
+    </header>
+    <h1 class="titulo">Hipótesis y propuesta</h1>
+    <p class="hook">Un framework full-stack con dos artefactos.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>uniback</strong> (Python): núcleo de modelos reutilizables, envoltorio normalizado, fábricas CRUD y <strong>derivación automática de JSON Schema enriquecido desde el ORM</strong>.</li>
+<li><strong>ngt-gui</strong> (Angular, librería publicable): consume el contrato con un <strong>cliente genérico</strong> y genera <strong>formularios Formly sin HTML por entidad</strong>.</li>
+<li>Idea central: <strong>el ORM es la única fuente de verdad</strong>; un cambio se propaga al esquema, al contrato y a la interfaz <strong>automáticamente</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>uniback: FastAPI · SQLAlchemy 2.x · Continuum · Alembic · Pydantic · PostgreSQL · Redis+Celery.</li>
+<li>Entrada única: <code>initialize(config) → (orm_base, sessions, app)</code>.</li>
+<li>ngt-gui: Angular · Formly · ng-zorro · <code>EntityClient</code> · <code>SchemaService</code> · ng-packagr.</li>
+<li>Uso: <code>&lt;ngt-dynamic-form entityPath=&quot;/roles&quot;&gt;</code>.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ ¿En qué objetivos se concreta?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">I · Objetivos</span>
+      <span class="num">06 / 22</span>
+    </header>
+    <h1 class="titulo">Cinco objetivos específicos</h1>
+    <p class="hook">Cinco objetivos específicos, todos completados.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>OE1 — API modular</strong>: envoltorio uniforme, catálogo de errores y fábricas CRUD.</li>
+<li><strong>OE2 — Modelado de datos</strong>: consolidar el núcleo ORM con versionado e histórico.</li>
+<li><strong>OE3 — Comunicación estandarizada</strong>: descubrimiento de entidades y cliente genérico tipado.</li>
+<li><strong>OE4 — Generador de formularios</strong>: sobre Formly y Grid, guiado por el esquema.</li>
+<li><strong>OE5 — Generación de esquemas</strong>: derivados automáticamente desde el ORM.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Los cinco quedan <strong>COMPLETADOS</strong> al cierre del trabajo y <strong>respaldados por pruebas automatizadas</strong>. (§2.4)</li>
+<li>Si preguntan: cada OE se mapea con un incremento del bloque IV.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ ¿Para quién se construye? Stakeholders.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">I · Stakeholders</span>
+      <span class="num">07 / 22</span>
+    </header>
+    <h1 class="titulo">Quién espera qué</h1>
+    <p class="hook">Cuatro stakeholders, una sola pieza conectora.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Propietario — ITC</strong>: base reutilizable que reduzca el coste de arrancar y mantener nuevos proyectos.</li>
+<li><strong>Constructor — equipo de desarrollo</strong>: necesita una API predecible, tipada y bien documentada.</li>
+<li><strong>Cliente / caso real — JBVC</strong>: aporta el caso de uso que <strong>valida la genericidad</strong>.</li>
+<li><strong>Beneficiario — usuario final</strong>: no toca el framework, pero recibe formularios y vistas correctas y validadas.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Matiz clave (§2.1.2): el framework <strong>no es la solución final</strong> para el Jardín, sino <strong>la herramienta con la que esa solución se construye</strong>.</li>
+<li>Útil para responder «¿y la aplicación del Jardín?»: es el primer consumidor, no el objeto del TFG.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Bloque II: ¿qué hay ya hecho fuera?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">II · Estado del arte</span>
+      <span class="num">08 / 22</span>
+    </header>
+    <h1 class="titulo">Comparativa</h1>
+    <p class="hook">El hueco: cerrar la cadena desde el ORM hasta el formulario.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>react-jsonschema-form</strong> y <strong>JSON Forms</strong>: lado cliente, asumen un esquema ya dado.</li>
+<li><strong>OpenAPI / Swagger</strong>: describe operaciones, no presentación.</li>
+<li><strong>Admin autogenerados</strong> (p. ej. Django Admin): acoplan la interfaz al servidor, difíciles de reutilizar.</li>
+<li><strong>Aportación diferencial</strong>: derivar el esquema del ORM, enriquecerlo con pistas, transportarlo por un <strong>contrato versionado con ETag</strong> y consumirlo con un <strong>cliente genérico</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Tabla, columnas: Desde ORM · Hints UI · Contrato · Versionado.</li>
+<li>Solo <code>uniback+ngt-gui</code> cubre las cuatro (x-*, contrato uniforme, ETag).</li>
+<li>Frase fuerte: la aportación <strong>no es el renderizador</strong>, es <strong>cerrar la cadena</strong> manteniendo back y front desacoplados por un contrato versionado.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ ¿Con qué tecnologías?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">II · Tecnología</span>
+      <span class="num">09 / 22</span>
+    </header>
+    <h1 class="titulo">Stack</h1>
+    <p class="hook">Elegido para que cada capa hable el mismo idioma.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Backend</strong>: FastAPI + Pydantic <strong>emiten JSON Schema de forma natural</strong>; SQLAlchemy 2 (API <code>Mapped[...]</code>) da introspección rica del modelo.</li>
+<li><strong>Continuum + Alembic</strong>: versionado automático + migraciones reproducibles.</li>
+<li><strong>Postgres + Docker</strong>: JSONB, full-text search, despliegue multiplataforma. <strong>Redis + Celery</strong>: asíncrono opcional.</li>
+<li><strong>Frontend</strong>: Angular + Formly (config declarativa) + ng-zorro (base de ~20 tipos Formly propios), empaquetado con ng-packagr.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li><strong>Idioma común entre capas: JSON Schema · OpenAPI 3.x · extensiones <code>x-*</code>.</strong> (§4.1–§4.2)</li>
+<li>Es el argumento de coherencia: no son piezas sueltas, comparten formato.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Bloque III: cómo encaja todo (arquitectura).</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">III · Arquitectura</span>
+      <span class="num">10 / 22</span>
+    </header>
+    <h1 class="titulo">Flujo extremo a extremo</h1>
+    <p class="hook">Del ORM al formulario, en una sola línea de flujo.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>El <strong>modelo SQLAlchemy</strong> es la única fuente de verdad.</li>
+<li><code>sqlalchemy_to_pydantic</code> genera el modelo Pydantic; <code>get_enriched_json_schema</code> produce el esquema con <strong><code>x-*</code> por columna</strong>.</li>
+<li>Se publica en <strong>tres endpoints</strong>: <code>schema.json</code> por entidad, el <strong>bundle</strong> agregado y el <strong>descubrimiento</strong> de entidades.</li>
+<li>Todo viaja en un <strong>envoltorio uniforme</strong>; el front lo <strong>cachea con ETag</strong>, <code>schemaToFormly</code> lo traduce y <code>&lt;ngt-dynamic-form&gt;</code> lo renderiza.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Pistas: <code>x-ui-widget</code> · <code>x-options-endpoint</code> · <code>x-hide-when</code>.</li>
+<li>Envoltorio: <code>{ content, count, issues }</code>.</li>
+<li>Endpoints: <code>GET /&lt;e&gt;/schema.json</code> · <code>GET /api/sys/schemas</code> [ETag] · <code>GET /api/sys/entities</code>.</li>
+<li>Esta es la diapositiva-resumen: si me pierdo, vuelvo a este flujo.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ El corazón del modelo de datos.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">III · Arquitectura</span>
+      <span class="num">11 / 22</span>
+    </header>
+    <h1 class="titulo">Núcleo del modelo</h1>
+    <p class="hook">FunctionalObject: tratar lo heterogéneo de manera homogénea.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Cada entidad de dominio <strong>hereda de <code>FunctionalObject</code></strong> y se asocia a un <strong><code>ObjectType</code></strong> con código numérico.</li>
+<li>Eso habilita el <strong>tratamiento polimórfico</strong>: anotaciones, ACLs y colecciones se refieren a «cualquier objeto funcional» <strong>sin conocer su clase concreta</strong>.</li>
+<li>La <strong>autorización</strong> también usa herencia polimórfica: <code>Identity</code> y <code>Role</code> heredan de <code>Authorizable</code>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Permisos por tipo o por instancia: <code>ACL</code> + <code>ACLExpression</code> + <code>ACLDetail</code> (a nivel de <code>ObjectType</code> o de <code>FunctionalObject</code> concreto).</li>
+<li>Cuando una clase es <strong>raíz de jerarquía</strong>, el esquema emite un <strong><code>oneOf</code></strong> con sus subclases y un <strong><code>x-discriminator</code></strong> deducido de <code>object_type_id</code>. (§6.5–§6.6)</li>
+<li>Esto conecta con el bundle (Incremento 4).</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Cómo entra el dominio sin tocar el núcleo.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">III · Arquitectura</span>
+      <span class="num">12 / 22</span>
+    </header>
+    <h1 class="titulo">Extensibilidad · plugins</h1>
+    <p class="hook">El dominio entra desde fuera: el núcleo no lo conoce.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Un <strong>plugin</strong> es un módulo Python autónomo que hereda de <strong><code>UnibackPlugin</code></strong> y sobreescribe <strong>solo los hooks que necesita</strong> (modelos, routers, semilla).</li>
+<li>Más <strong>cinco contratos de extensión inyectables</strong>: adaptadores de origen, importadores/exportadores, widgets de UI y resolvers de FK.</li>
+<li>El <strong><code>PluginManager</code></strong> los <strong>descubre solos al arrancar</strong> (escanea <code>src/plugins</code>, sin registro manual); política «el último registrado gana».</li>
+<li><strong>Ejemplo — plugin de plantas</strong>: declara <code>Plant</code> (subclase de <code>FunctionalObject</code>) y su CRUD; el contrato, el esquema y el formulario se derivan solos. <strong>A mano, solo el mapa.</strong></li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Materializa el requisito de <strong>reutilización (RNF-01)</strong>: el núcleo no acopla lógica de dominio.</li>
+<li>Hooks: <code>on_init</code>, <code>get_model_modules</code>, <code>get_routers</code>, <code>on_seed</code>.</li>
+<li>Extensiones: <code>get_field_widgets</code>, <code>get_importers/exporters</code>, <code>get_fk_resolvers</code>. (§6.3)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Bloque IV: los cuatro incrementos.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 1</span>
+      <span class="num">13 / 22</span>
+    </header>
+    <h1 class="titulo">API backend y modelado</h1>
+    <p class="hook">Despliegue reproducible y núcleo de modelos consolidado.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Entorno reproducible</strong> con <code>docker compose</code> (Postgres · Redis · worker Celery · web), probado en <strong>Windows, macOS y Linux</strong> con CPUs distintas.</li>
+<li>Modelos ORM organizados en <strong>8 módulos de dominio</strong>.</li>
+<li><strong>SQLAlchemy-Continuum</strong> para versionado nativo (histórico automático).</li>
+<li><strong>Punto de entrada único <code>initialize(config)</code></strong>: permite usar <code>uniback</code> <strong>como librería</strong> en proyectos consumidores.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>8 módulos: core · sysadmin · annotations · hierarchies · species · files · geographics · screens.</li>
+<li>Restricción crítica: <code>make_versioned()</code> <strong>antes</strong> de definir los modelos.</li>
+<li>Prefijo de tablas configurable (<code>ub_</code> por defecto) → convive con tablas del consumidor sin colisión. (§7.3.1)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ La frontera back–front: el contrato.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 2</span>
+      <span class="num">14 / 22</span>
+    </header>
+    <h1 class="titulo">Contrato de comunicación</h1>
+    <p class="hook">ResponseEnvelope: una sola forma, éxito o error.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Toda respuesta</strong> (éxito o error) adopta la misma forma: <strong><code>content</code>, <code>count</code>, <code>issues</code></strong>.</li>
+<li>Catálogo de <strong>códigos estándar</strong> (BAD_REQUEST, UNAUTHORIZED, VALIDATION_ERROR…) y <strong>manejadores globales</strong> que traducen cualquier excepción al envoltorio.</li>
+<li>Las fábricas <strong><code>make_simple_rest_crud</code></strong> y <strong><code>make_crudie_rest_crud</code></strong> generan <strong>todos los endpoints</strong> de una entidad.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Convención: <code>GET /&lt;e&gt;/</code> (lista) · <code>GET /&lt;e&gt;/{id}</code> · <code>POST</code> · <code>PUT</code> · <code>DELETE</code> · <code>GET /&lt;e&gt;/schema.json</code> (ETag).</li>
+<li>Códigos→HTTP: 400 / 401 / 403 / 404 / 409 / 422 / 500.</li>
+<li><code>VALIDATION_ERROR</code> lleva <code>location</code> (viene de Pydantic). (§7.3.2)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Cómo el front descubre las entidades.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 2</span>
+      <span class="num">15 / 22</span>
+    </header>
+    <h1 class="titulo">Descubrimiento + cliente genérico</h1>
+    <p class="hook">El frontend pregunta qué entidades hay, no las codifica.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong><code>/api/sys/entities</code></strong> lista las entidades CRUD con sus capacidades; <strong><code>/api/sys/discovery</code></strong>, servicios externos (Traefik); <strong><code>/api/sys/schemas</code></strong>, el bundle.</li>
+<li>En el front, <strong><code>EntityClient</code></strong> da un cliente <strong>tipado por path</strong>: <code>api.for&lt;Role&gt;(&#x27;/roles&#x27;)</code> → <code>list</code>, <code>get</code>, <code>create</code>, <code>update</code>, <code>schema</code>.</li>
+<li><strong><code>SchemaService</code></strong> cachea los esquemas; un interceptor opt-in convierte fallos HTTP en envoltorios.</li>
+<li>Convive con el <strong><code>BackendService</code> heredado (~272 métodos)</strong> sin romperlo: <strong>migración progresiva</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Capacidades por entidad: list · get · create · update · delete · schema.</li>
+<li>Capa <strong>aditiva</strong> → no rompe código en producción. (§7.3.2.3–.4)</li>
+<li>Esto es lo que hace el sistema <strong>autodescriptivo</strong>.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ El núcleo de la aportación: enriquecer el esquema.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 3</span>
+      <span class="num">16 / 22</span>
+    </header>
+    <h1 class="titulo">Backend · enriquecimiento del esquema</h1>
+    <p class="hook">Heurísticas x-* por columna.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><code>sqlalchemy_to_pydantic</code> se amplió para <strong>inyectar pistas de presentación por columna</strong> en <code>json_schema_extra</code>.</li>
+<li><strong>Boolean → checkbox</strong> · <strong>DateTime → datepicker (con hora)</strong> · <strong>String largo → textarea</strong> · <strong>ForeignKey → select-lazy-loading</strong> con su <code>x-options-endpoint</code>.</li>
+<li>Es <strong>heurística</strong>: los <strong>overrides manuales</strong> en <code>column.info[&quot;ui&quot;]</code> <strong>siempre ganan</strong>.</li>
+<li>Las pistas viajan <strong>dentro del propio esquema</strong> → sobreviven a cualquier serialización o cacheo.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Extensiones reconocidas: <code>x-formly-type</code>, <code>x-ui-widget</code>, <code>x-options-endpoint</code>, <code>x-placeholder</code>, <code>x-formly-props</code>, <code>x-hide-when</code>, <code>x-required-when</code>, <code>x-disabled-when</code>, <code>x-discriminator</code>, <code>x-relationships</code>, <code>x-foreign-key</code>. (§7.3.3.1)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Y en el frontend: el conversor y el componente.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 3</span>
+      <span class="num">17 / 22</span>
+    </header>
+    <h1 class="titulo">Frontend · conversor y componente</h1>
+    <p class="hook">Una etiqueta, un formulario.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong><code>schemaToFormly</code></strong> es un <strong>conversor puro</strong>: JSON Schema → configuración Formly.</li>
+<li>Resuelve <strong><code>$ref</code> recursivamente</strong>, mapea <strong>object→fieldGroup</strong> y <strong>array→repeat</strong>, e interpreta <code>x-formly-type</code>, <code>x-ui-widget</code>, <code>x-hide-when</code>, <code>x-required-when</code>.</li>
+<li><strong><code>&lt;ngt-dynamic-form&gt;</code></strong> es la cara visible: con solo <strong><code>entityPath</code></strong> descubre la entidad, pide el esquema, lo convierte, monta el formulario, valida y envía vía <code>EntityClient</code>.</li>
+<li><strong>Tres modos</strong>: create, edit, view.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Validadores derivados de <code>minLength</code>, <code>maxLength</code>, <code>pattern</code>, <code>format</code>.</li>
+<li>El conversor <strong>no depende de la UI</strong>.</li>
+<li>Composición interna: <code>DiscoveryService → SchemaService → schemaToFormly → EntityClient</code>. (§7.3.3.3–.4)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Formalizar la extracción: el bundle.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">IV · Incremento 4</span>
+      <span class="num">18 / 22</span>
+    </header>
+    <h1 class="titulo">Generación automática de esquemas</h1>
+    <p class="hook">Bundle versionado, polimorfismo y relaciones.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Cada fábrica CRUD <strong>registra la entidad en un registry global</strong>; <strong><code>build_schema_bundle</code></strong> construye un documento agregado con todas las entidades.</li>
+<li><strong><code>compute_etag</code></strong> calcula un <strong>hash SHA-256 truncado</strong>; el bundle y cada <code>schema.json</code> responden <strong>304</strong> ante <code>If-None-Match</code> coincidente (caché agresiva).</li>
+<li><strong>Dos piezas de cierre</strong>: el polimorfismo de <code>FunctionalObject</code> se refleja como <strong><code>oneOf</code> + <code>x-discriminator</code></strong> sobre <code>object_type_id</code>; los <code>relationship()</code> del ORM, como <strong><code>x-relationships</code></strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Decisión: <strong>incrustar las variantes</strong> (no <code>$ref</code>) → bundle <strong>autocontenido y determinista</strong> (ETag estable entre llamadas idénticas).</li>
+<li>Habilita <strong>codegen externo</strong>: tipos TypeScript, validadores, documentación, espejos de microservicios. (§7.3.4)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Bloque V: ¿cómo se ha validado?</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">V · Evaluación</span>
+      <span class="num">19 / 22</span>
+    </header>
+    <h1 class="titulo">Pruebas automatizadas</h1>
+    <p class="hook">Cobertura por incremento, backend y frontend.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Backend (pytest)</strong>: envoltorio, autenticación, heurística de pistas de UI por columna, y el <strong>bundle con sus invariantes</strong>.</li>
+<li><strong>Frontend (Jasmine)</strong>: cobertura del <strong>conversor a Formly</strong> (tipos, overrides <code>x-*</code>, <code>$ref</code>, expresiones reactivas, modo view, raíz polimórfica).</li>
+<li>Estrategia: <strong>unit tests</strong> de las piezas puras (heurística, conversor) + <strong>integración</strong> de la API sobre PostgreSQL — cubre los puntos donde un cambio del modelo podría romper la cadena.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Invariantes del bundle: versión estable · round-trip de ETag (304) · sensibilidad del hash · oneOf+x-discriminator · x-relationships.</li>
+<li>Suites: <code>test_envelope.py</code>, <code>test_auth.py</code>, <code>test_form_schema.py</code>, <code>test_schema_bundle.py</code>, <code>schema-to-formly.spec.ts</code>. (§7.4)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ El resultado en términos prácticos.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">V · Resultados</span>
+      <span class="num">20 / 22</span>
+    </header>
+    <h1 class="titulo">Antes / después</h1>
+    <p class="hook">El resultado más significativo es cualitativo.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li>Exponer y editar una entidad nueva pasa de: <strong>router a mano + esquemas Pydantic + métodos de servicio + HTML campo a campo</strong>…</li>
+<li>…a: <strong>declarar el modelo ORM</strong> y dejar que el framework <strong>derive el resto</strong>.</li>
+<li><strong>El esfuerzo deja de crecer</strong> con el número de entidades y con la frecuencia de cambios del modelo.</li>
+<li>Los cinco objetivos específicos están <strong>completados y respaldados por pruebas</strong>.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Tabla antes→después: CRUD (router a mano → <code>make_simple_rest_crud</code>) · validación (Pydantic a mano → derivada del ORM) · contrato (ad hoc → <code>ResponseEnvelope</code>) · cliente (método en <code>BackendService</code> → <code>EntityClient.for(path)</code>) · formulario (HTML por campo → <code>&lt;ngt-dynamic-form&gt;</code>). (§8.2.1)</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Lo enseño en vivo.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">V · Resultados</span>
+      <span class="num">21 / 22</span>
+    </header>
+    <h1 class="titulo">Demo en vivo</h1>
+    <p class="hook">Una entidad nueva: del modelo ORM al formulario renderizado.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>1)</strong> Declaro el modelo: <code>class MiEntidad(orm_base): …</code></li>
+<li><strong>2)</strong> CRUD + contrato + esquema: <code>make_simple_rest_crud(MiEntidad, &quot;/mi-entidad&quot;)</code>.</li>
+<li><strong>3)</strong> Formulario generado: <code>&lt;ngt-dynamic-form entityPath=&quot;/mi-entidad&quot;&gt;</code>.</li>
+<li><strong>Resultado: cero líneas de pegamento entre capas.</strong></li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>⚠ Antes de empezar: servidor levantado, base de datos lista, navegador en la vista correcta.</li>
+<li>Plan B si algo falla: tener a mano una captura/figura del flujo y narrarlo. (§8.3)</li>
+<li>Avisar al tribunal de lo que van a ver antes de hacerlo.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">→ Cierre y líneas futuras.</footer>
+  </article>
+  <article class="card">
+    <header class="top">
+      <span class="bloque">Cierre</span>
+      <span class="num">22 / 22</span>
+    </header>
+    <h1 class="titulo">Conclusiones y líneas futuras</h1>
+    <p class="hook">El modelo ORM como única fuente de verdad: el resto se deriva.</p>
+    <div class="body">
+      <section class="say">
+        <div class="label">🗣 Qué decir</div>
+        <ul><li><strong>Cuatro líneas de continuación</strong>:</li>
+<li><strong>1)</strong> Codegen de tipos TypeScript y documentación automática desde el bundle.</li>
+<li><strong>2)</strong> Migrar progresivamente el <code>BackendService</code> heredado para que delegue en <code>EntityClient</code>.</li>
+<li><strong>3)</strong> Soportar <code>oneOf</code>/<code>anyOf</code> en el conversor a Formly + overrides por path.</li>
+<li><strong>4)</strong> Aplicar la misma filosofía guiada por esquema a las <strong>vistas de listado/tabla</strong>, no solo a los formularios.</li></ul>
+      </section>
+      <section class="keys">
+        <div class="label">🔑 Claves &amp; aclaraciones</div>
+        <ul><li>Agradecer a <strong>Rafael Juan Nebot Medina</strong> y a <strong>María Dolores Afonso Suárez</strong>.</li>
+<li>Frase de cierre: «<strong>Muchas gracias por su atención. Quedo a disposición del tribunal.</strong>»</li>
+<li>Lema: «El modelo ORM como única fuente de verdad: el resto se deriva.» — ULPGC · EII · Feb 2026 · ITC.</li></ul>
+      </section>
+    </div>
+    <footer class="bridge">Fin — turno de preguntas.</footer>
+  </article>
+</body>
+</html>
