@@ -1,0 +1,54 @@
+% Basic LaTeX layout for presentation of TFG defense
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	pdftitle={Defensa TFG},
+	pdfauthor={Autor}
+}
+
+\title{Guion de la Defensa del TFG}
+\author{Nombre del Estudiante}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Breve resumen del contenido de la defensa: objetivos, metodología y resultados.
+\end{abstract}
+
+\section{Introducción}
+Presentación del tema, motivación y planteamiento del problema.
+
+\section{Objetivos}
+\begin{itemize}
+	\item Objetivo general.
+	\item Objetivos específicos.
+\end{itemize}
+
+\section{Metodología}
+Descripción de métodos, herramientas y etapas del trabajo.
+
+\section{Resultados}
+Resumen de los principales resultados obtenidos.
+
+\section{Conclusiones}
+Conclusiones y trabajo futuro.
+
+\section*{Bibliografía}
+% Use \bibliographystyle and \bibliography if .bib is available
+\begin{thebibliography}{9}
+\bibitem{ref1} Autor. \textit{Título}. Editorial, Año.
+\end{thebibliography}
+
+\end{document}

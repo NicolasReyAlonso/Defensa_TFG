@@ -1,0 +1,1794 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Defensa TFG · Nicolás Rey Alonso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style id="tweaks-css">
+  html[data-mood="editorial"] {
+    --bg: #ffffff; --bg-card: #fafaf7; --bg-deep: #0a0a0a;
+    --ink: #0a0a0a; --ink-2: #262626; --ink-3: #737373;
+    --rule: #d4d4d4; --rule-strong: #525252;
+    --accent: #006c5d; --accent-2: #007db6;
+  }
+  html[data-mood="nocturne"] {
+    --bg: #0f1115; --bg-card: #1a1d23; --bg-deep: #050608;
+    --ink: #ede6d3; --ink-2: #b8b0a0; --ink-3: #7a7466;
+    --rule: #2a2e36; --rule-strong: #4a4e56;
+    --accent: #4eb7a3; --accent-2: #5fb8e0;
+  }
+  html[data-mood="nocturne"] deck-stage > section { background: var(--bg) !important; color: var(--ink); }
+
+  html[data-voice="editorial"] {
+    --serif: "Instrument Serif", "IBM Plex Serif", Georgia, serif;
+    --sans:  "Space Grotesk", "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  html[data-voice="editorial"] .title,
+  html[data-voice="editorial"] h1,
+  html[data-voice="editorial"] h2 {
+    font-weight: 400 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 0.98 !important;
+  }
+  html[data-voice="editorial"] .title em,
+  html[data-voice="editorial"] h1 em { font-style: italic !important; }
+
+  html[data-voice="technical"] {
+    --serif: "IBM Plex Mono", ui-monospace, monospace;
+    --sans:  "IBM Plex Mono", ui-monospace, monospace;
+  }
+  html[data-voice="technical"] body,
+  html[data-voice="technical"] deck-stage > section {
+    font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+  }
+  html[data-voice="technical"] .title,
+  html[data-voice="technical"] h1,
+  html[data-voice="technical"] h2,
+  html[data-voice="technical"] h3,
+  html[data-voice="technical"] h4 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.02em !important;
+    text-transform: none;
+  }
+  html[data-voice="technical"] .eyebrow { text-transform: uppercase !important; }
+
+  html[data-density="tight"] {
+    --pad-x: 72px; --pad-top: 56px; --pad-bottom: 52px;
+    --type-title: 48px; --type-subtitle: 30px; --type-body: 22px;
+    --gap-title: 28px;
+  }
+  html[data-density="tight"] .frame { padding: 56px 72px 52px !important; }
+  html[data-density="tight"] .topbar { margin-bottom: 36px !important; padding-bottom: 12px !important; }
+  html[data-density="tight"] .eyebrow { margin-bottom: 18px !important; }
+
+  html[data-density="generous"] {
+    --pad-x: 150px; --pad-top: 130px; --pad-bottom: 110px;
+    --type-title: 76px; --type-subtitle: 46px; --type-body: 32px;
+    --gap-title: 64px;
+  }
+  html[data-density="generous"] .frame { padding: 130px 150px 110px !important; }
+  html[data-density="generous"] .topbar { margin-bottom: 80px !important; padding-bottom: 22px !important; }
+  html[data-density="generous"] .eyebrow { margin-bottom: 40px !important; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --bg: #f6f3ec;
+    --bg-card: #ffffff;
+    --bg-deep: #11161d;
+    --ink: #15181c;
+    --ink-2: #3a4049;
+    --ink-3: #6a7280;
+    --rule: #d9d3c4;
+    --rule-strong: #9a9388;
+    --accent: #006c5d;
+    --accent-2: #007db6;
+    --ok: #2f6b3a;
+    --warn: #b45309;
+    --err: #9b2218;
+
+    --type-display: 84px;
+    --type-title: 60px;
+    --type-subtitle: 40px;
+    --type-body: 28px;
+    --type-small: 22px;
+    --type-micro: 18px;
+    --type-mono: 22px;
+
+    --pad-x: 110px;
+    --pad-top: 90px;
+    --pad-bottom: 80px;
+    --gap-title: 44px;
+    --gap-item: 24px;
+
+    --sans: "IBM Plex Sans", -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif: "IBM Plex Serif", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  html, body { margin:0; padding:0; background:#0a0c10; color:var(--ink); font-family:var(--sans); }
+
+  deck-stage > section {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    line-height: 1.4;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .frame {
+    position:absolute; inset:0;
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    display:flex; flex-direction:column;
+  }
+  .topbar {
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 18px;
+    margin-bottom: 56px;
+    white-space: nowrap;
+  }
+  .topbar .left { display:flex; gap:36px; align-items:baseline; white-space: nowrap; }
+  .topbar .chap { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  .footer {
+    position:absolute; left: var(--pad-x); right: var(--pad-x); bottom: 36px;
+    display:flex; justify-content:space-between;
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+  .footer .dot { color: var(--accent-2); }
+
+  h1, h2, h3, h4, p, ul, ol, li { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-2);
+    margin-bottom: 28px;
+  }
+  .title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: var(--type-title);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 1500px;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: var(--type-subtitle);
+    font-weight: 400;
+    color: var(--ink-2);
+    line-height: 1.2;
+    margin-top: 22px;
+    max-width: 1400px;
+    text-wrap: pretty;
+  }
+  .mono { font-family: var(--mono); }
+</style>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Buenas Tardes. Mi nombre es Nicolás Rey Alonso y voy a presentar mi Trabajo Fin de Grado titulado 'Framework Backend–Frontend para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución: aplicación a los proyectos con el Jardín Botánico Viera y Clavijo', tutorizado por Rafael Juan Nebot Medina como tutor de empresa y por María Dolores Afonso Suárez como tutora académica, y desarrollado en colaboración con el Instituto Tecnológico de Canarias.",
+  "La presentación recorre cinco bloques: el contexto y el problema que motiva el trabajo, los objetivos y el estado del arte, la arquitectura del framework, los cuatro incrementos en los que se ha desarrollado, y finalmente la evaluación y las conclusiones.",
+  "El trabajo nace de mi estancia de prácticas en el ITC, donde desarrollé la librería NextGenDem-GUI-LIB para el proyecto homónimo. Esa librería estaba acoplada a un backend específico, lo que limitaba mucho su reutilización. En paralelo, el ITC arrancaba un proyecto con el Jardín Botánico Viera y Clavijo, donde las necesidades de catalogación, anotaciones y jerarquías taxonómicas obligan a un modelo de datos en evolución constante. Ese contexto convierte la reutilización en una necesidad operativa.",
+  "El problema concreto es que, cada vez que el modelo de datos cambia, el coste se propaga en cascada: hay que tocar el ORM, los esquemas, los endpoints, el cliente HTTP y los formularios. Buena parte de ese código se escribe a mano y se acopla al dominio. La hipótesis del trabajo es que ese coste puede reducirse a cero si el modelo se convierte en la única fuente de verdad y el resto del sistema se deriva automáticamente de él.",
+  "La solución es un framework full-stack compuesto por dos artefactos. Uniback, en Python con FastAPI, SQLAlchemy 2 y PostgreSQL, expone modelos, contrato y esquemas. Ngt-gui, librería Angular con Formly, consume el esquema y genera los formularios. La frontera entre ambos es un contrato uniforme: el envoltorio de respuesta y los esquemas enriquecidos con extensiones x-*.",
+  "Los cinco objetivos específicos son: una API modular con envoltorio uniforme y fábricas CRUD; el modelado y consolidación de los esquemas de datos; un sistema de comunicación estandarizado con descubrimiento y cliente genérico tipado; el generador automático de formularios sobre Formly; y la generación automática de esquemas a partir del ORM. Los cinco quedan completados al cierre del trabajo.",
+  "El framework tiene cuatro stakeholders. El ITC, propietario y principal consumidor, busca acortar el arranque de futuros proyectos. El equipo de desarrollo que construirá sobre él necesita una API predecible y tipada. El Jardín Botánico Viera y Clavijo, cliente del primer proyecto real, aporta el caso de uso que valida la genericidad. Y el usuario final, que nunca toca el framework, requiere formularios y vistas correctas y validadas.",
+  "En el estado del arte se analizaron las alternativas habituales para generar interfaces desde un esquema. React-jsonschema-form y JSON Forms se centran en el lado cliente y asumen un esquema dado. OpenAPI describe operaciones, no presentación. Los admin autogenerados —tipo Django Admin— acoplan la interfaz al servidor y son difíciles de reutilizar. La aportación diferencial es cerrar la cadena completa: derivar el esquema desde el ORM, enriquecerlo con pistas de presentación, transportarlo por un contrato versionado con ETag y consumirlo con un cliente genérico.",
+  "El stack se eligió por su capacidad de hablar el mismo idioma entre capas. En backend, FastAPI y Pydantic emiten JSON Schema de forma natural; SQLAlchemy 2 con su API Mapped expone los metadatos necesarios; Continuum aporta versionado e histórico; Alembic gestiona las migraciones; Docker garantiza la reproducibilidad. En frontend, Angular con Formly y ng-zorro construye formularios reactivos a partir de configuración declarativa.",
+  "Esta es la visión global del flujo: el modelo SQLAlchemy es la única fuente de verdad. La función sqlalchemy_to_pydantic genera el modelo Pydantic; get_enriched_json_schema produce el esquema enriquecido con x-* por columna; ese esquema se publica en tres endpoints —schema.json por entidad, el bundle agregado y el descubrimiento de entidades—. Todo viaja en un envoltorio uniforme, el frontend lo cachea con ETag, el conversor schemaToFormly lo traduce a configuración Formly, y el componente \u003cngt-dynamic-form> lo renderiza.",
+  "El núcleo del modelo de datos es la jerarquía de FunctionalObject. Cada entidad de dominio hereda de ella y se asocia a un ObjectType con código numérico, lo que habilita el tratamiento polimórfico: anotaciones, ACL y colecciones pueden referirse a cualquier objeto funcional sin conocer su clase concreta. El subsistema de autorización emplea herencia polimórfica también: Identity y Role heredan de Authorizable, simplificando el modelo de permisos basado en ACLs.",
+  "Una pieza central de la arquitectura es el sistema de plugins, que materializa el requisito de reutilización: el núcleo no acopla ninguna lógica de dominio. Un plugin es un módulo Python autónomo que hereda de UnibackPlugin y solo sobreescribe los hooks que necesita —modelos, routers, semilla— más cinco contratos de extensión inyectables: adaptadores de origen, importadores y exportadores, widgets de UI y resolvers de claves foráneas. El PluginManager los descubre solos al arrancar escaneando el directorio de plugins, sin registro manual, y la política 'el último registrado gana' permite a un plugin sobreescribir un comportamiento por defecto del núcleo. El ejemplo es el plugin de plantas, un catálogo geolocalizado cercano al dominio del Jardín Botánico: sin tocar una línea del núcleo declara su modelo Plant, lo expone con una fábrica CRUD, y a partir de ahí el contrato, el esquema enriquecido y el formulario dinámico se derivan automáticamente. Lo único que se escribe a mano en la interfaz es el mapa.",
+  "El primer incremento consolidó el backend. Lo más relevante fue establecer un entorno de despliegue reproducible con docker compose —probado en Windows, macOS y Linux, con arquitecturas de CPU diferentes—; organizar los modelos ORM por dominio; integrar SQLAlchemy-Continuum para versionado nativo —con la restricción de inicializar make_versioned antes de definir los modelos—; y exponer un único punto de entrada, initialize(config), que permite usar uniback como librería en proyectos consumidores.",
+  "El segundo incremento es la frontera del framework. Toda respuesta de la API —de éxito o de error— adopta la misma forma: content, count e issues. Hay un catálogo de códigos estándar —BAD_REQUEST, UNAUTHORIZED, VALIDATION_ERROR, etcétera— y manejadores globales que capturan cualquier excepción y la traducen al envoltorio. Las fábricas make_simple_rest_crud y make_crudie_rest_crud generan todos los endpoints de una entidad. Convención: GET /entidad, POST, PUT, DELETE, y schema.json.",
+  "El contrato se completa con dos piezas que hacen el sistema autodescriptivo. Por un lado, los endpoints /api/sys/entities y /api/sys/discovery permiten al frontend preguntar qué entidades existen. Por otro, en el frontend, EntityClient ofrece un cliente tipado por path: roles = api.for\u003cRole>('/roles') y a partir de ahí list, get, create, update, schema. SchemaService cachea los esquemas; un interceptor de error opt-in convierte fallos HTTP en envoltorios. Toda esta capa convive con el BackendService heredado de más de 270 métodos hardcoded sin romperlo.",
+  "El tercer incremento es el núcleo de la aportación. En el backend, la conversión sqlalchemy_to_pydantic se amplió para inyectar pistas de presentación por columna en el json_schema_extra. Booleans se convierten en checkbox; DateTime en datepicker con hora; strings largos en textarea; foreign keys en select-lazy-loading con su x-options-endpoint. Es heurística: los overrides manuales en column.info siempre ganan. Las pistas viajan dentro del propio esquema, así sobreviven a cualquier serialización o cacheo.",
+  "En el frontend, schemaToFormly es un conversor puro que traduce JSON Schema a configuración Formly. Resuelve referencias $ref recursivamente, mapea objetos a fieldGroup y arrays a repeat, e interpreta las extensiones x-formly-type, x-ui-widget, x-hide-when, x-required-when. El componente \u003cngt-dynamic-form> es la cara visible del framework: con solo entityPath descubre la entidad, pide el esquema, lo convierte, monta el formulario, lo valida y envía a través de EntityClient. Tres modos: create, edit, view.",
+  "El cuarto incremento formaliza la extracción. Cada fábrica CRUD registra la entidad en un registry global. Build_schema_bundle construye un documento agregado con todas las entidades; compute_etag calcula un hash SHA-256 truncado. Tanto el bundle como cada schema.json responden HTTP 304 ante If-None-Match coincidente —caching agresivo en navegador y proxies—. Al cierre del incremento se añadieron dos piezas: el polimorfismo de FunctionalObject se refleja como oneOf con un x-discriminator sobre object_type_id, y los relationship() del ORM como x-relationships.",
+  "Cada incremento se acompañó de pruebas. En backend, pytest con suites para el envoltorio, la autenticación, la heurística de pistas de UI por columna y el bundle con sus invariantes —versión estable, round-trip de ETag, sensibilidad del hash, polimorfismo, relationships—. En frontend, Jasmine con cobertura del conversor a Formly: tipos primitivos, overrides x-*, referencias, expresiones reactivas, modo view, raíz polimórfica.",
+  "El resultado más significativo es cualitativo. Exponer y editar una entidad nueva pasa de requerir un router escrito a mano, esquemas Pydantic, métodos en el servicio y HTML campo a campo, a declarar el modelo ORM y dejar que el framework derive el resto. El esfuerzo deja de crecer con el número de entidades y con la frecuencia de cambios. Los cinco objetivos específicos están completados y respaldados por pruebas automatizadas.",
+  "Antes de cerrar, una breve demostración en vivo del flujo completo: voy a declarar una entidad nueva en el modelo ORM, levantar el servidor, y ver cómo aparecen automáticamente sus endpoints CRUD, su esquema enriquecido y un formulario funcional renderizado por ngt-dynamic-form, sin escribir ni una línea adicional de pegamento entre capas.",
+  "Las líneas de continuación son cuatro. Aprovechar el bundle versionado para generar interfaces TypeScript y documentación automáticamente. Migrar progresivamente el BackendService heredado para que delegue en EntityClient. Soportar oneOf y anyOf en el conversor a Formly y overrides por path. Y aplicar la misma filosofía guiada por esquema a las vistas de listado, no solo a los formularios. Muchas gracias por su atención. Quedo a disposición del tribunal."
+]
+</script>
+
+</head>
+
+<body>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="400" fill="#f6f3ec"/>
+    <rect x="120" y="120" width="160" height="160" rx="6" fill="#006c5d"/>
+    <text x="200" y="232" font-family="Georgia, serif" font-size="120" fill="#f6f3ec" text-anchor="middle">U<tspan fill="#007db6">/</tspan></text>
+  </svg>
+</template>
+<deck-stage width="1920" height="1080">
+
+  <!-- ================================================================ -->
+  <!-- 01 · PORTADA                                                      -->
+  <!-- ================================================================ -->
+  <section data-label="01 Portada">
+    <style>
+      .cover { position:absolute; inset:0; display:grid; grid-template-columns: 1.05fr 1fr; }
+      .cover .left { padding: 80px 80px 70px 100px; display:flex; flex-direction:column; justify-content:space-between; background: var(--bg); }
+      .cover .right { background: var(--bg-deep); color:#e9e6df; padding: 80px 100px 70px 80px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+      .cover .crest { display:flex; align-items:center; }
+      .cover .crest img { height: 100px; width: auto; display:block; }
+      .cover h1 { font-family: var(--serif); font-weight: 500; font-size: 56px; line-height: 1.02; letter-spacing: -0.012em; color: var(--ink); text-wrap: balance; margin: 0; }
+      .cover h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+      .cover .sub-jbvc { font-size: 24px; color: var(--ink-2); margin-top: 28px; line-height: 1.35; max-width: 680px; font-style: italic; font-family: var(--serif); }
+      .cover .meta { font-family: var(--mono); font-size: 19px; letter-spacing: 0.04em; color: var(--ink-3); line-height: 2.0; }
+      .cover .meta b { color: var(--ink); font-weight: 600; }
+
+      .cover .markmark { position:absolute; right:-200px; bottom:-200px; width:820px; height:820px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
+      .cover .markmark::before { content:""; position:absolute; inset: 90px; border-radius:50%; border: 1px solid rgba(255,255,255,0.06); }
+      .cover .markmark::after { content:""; position:absolute; inset: 180px; border-radius:50%; border: 1px solid rgba(255,255,255,0.04); }
+      .cover .glyph { position: relative; z-index: 1; font-family: var(--serif); font-size: 200px; line-height: 1; color: #e9e6df; font-weight: 300; letter-spacing: -0.025em; }
+      .cover .glyph .slash { color: #007db6; }
+      .cover .tags { display:flex; gap:10px; flex-wrap:wrap; }
+      .cover .tag { font-family: var(--mono); font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6; }
+      .cover .rday { font-family: var(--mono); font-size: 18px; color: #9a9388; letter-spacing: 0.16em; text-transform: uppercase; }
+    </style>
+    <div class="cover">
+      <div class="left">
+        <div class="crest"><img src="assets/ulpgc-eii.png" alt="Universidad de Las Palmas de Gran Canaria · Escuela de Ingeniería Informática"></div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 19px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 32px; font-weight: 500;">Trabajo Fin de Grado</div>
+          <h1>Framework <em>backend</em>–<em>frontend</em> para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución</h1>
+          <div class="sub-jbvc">Aplicación a los proyectos con el Jardín Botánico Viera y Clavijo.</div>
+        </div>
+        <div class="meta">
+          <div><b>Autor</b>&nbsp;&nbsp;Nicolás Rey Alonso</div>
+          <div><b>Tutor de empresa</b>&nbsp;&nbsp;Rafael Juan Nebot Medina</div>
+          <div><b>Tutora académica</b>&nbsp;&nbsp;María Dolores Afonso Suárez</div>
+          <div><b>Empresa colaboradora</b>&nbsp;&nbsp;Instituto Tecnológico de Canarias</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="rday">Febrero de 2026</div>
+        <div style="display:flex; align-items:center; justify-content:center; flex:1;">
+          <div class="markmark"></div>
+          <div class="glyph">uni<span class="slash">/</span>back</div>
+        </div>
+        <div class="tags">
+          <span class="tag">FastAPI</span>
+          <span class="tag">SQLAlchemy 2</span>
+          <span class="tag">Continuum</span>
+          <span class="tag">JSON Schema</span>
+          <span class="tag">Angular</span>
+          <span class="tag">Formly</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 02 · ÍNDICE                                                       -->
+  <!-- ================================================================ -->
+  <section data-label="02 Indice">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>Defensa TFG</span><span class="chap">Índice</span></div>
+        <div>Nicolás Rey Alonso · ULPGC · 2026</div>
+      </div>
+      <div class="eyebrow">02 · Estructura de la presentación</div>
+      <h2 class="title">Cinco bloques.</h2>
+      <div class="subtitle">Del problema al framework consolidado y validado.</div>
+
+      <div style="margin-top: 64px; display:grid; grid-template-columns: repeat(5, 1fr); gap: 36px;">
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">I</div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Problema<br>y objetivos</div>
+          <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">ITC · JBVC · 5 OE</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">II</div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Estado<br>del arte</div>
+          <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">Stack y comparativa</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">III</div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Arquitectura</div>
+          <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">Polimorfismo, plugins, capas</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent-2); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase;">IV</div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Cuatro<br>incrementos</div>
+          <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">API · contrato · Formly · bundle</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">V</div>
+          <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Resultados<br>y conclusiones</div>
+          <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">Pruebas · antes/después</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>uniback · ngt-gui</div>
+        <div><span class="dot">●</span> &nbsp;02 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 03 · CONTEXTO                                                     -->
+  <!-- ================================================================ -->
+  <section data-label="03 Contexto">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Contexto</span><span class="chap">Origen del proyecto</span></div>
+        <div>03</div>
+      </div>
+      <div class="eyebrow">§1.1 — §2.1 · Antecedentes</div>
+      <h2 class="title">Del trabajo de prácticas a un caso de uso real con el JBVC.</h2>
+
+      <div style="margin-top: 64px; display:grid; grid-template-columns: 1fr 1fr; gap: 80px; flex:1; align-items:start;">
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Línea temporal</div>
+          <div style="position:relative; padding-left: 40px;">
+            <div style="position:absolute; left:9px; top:14px; bottom:14px; width:1px; background: var(--rule-strong);"></div>
+
+            <div style="position:relative; margin-bottom: 36px;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--ink-3); text-transform:uppercase;">Prácticas ITC — NextGenDem</div>
+              <div style="font-size: 24px; font-weight:500; margin-top: 6px;">Librería <span class="mono" style="color:var(--accent); font-size: 20px;">NextGenDem-GUI-LIB</span></div>
+              <div style="font-size: 21px; color: var(--ink-2); margin-top: 6px; line-height:1.4;">Catálogo de componentes Angular para un backend específico de datos bioinformáticos.</div>
+            </div>
+
+            <div style="position:relative; margin-bottom: 36px;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--ink-3); text-transform:uppercase;">Nuevo proyecto: JBVC</div>
+              <div style="font-size: 24px; font-weight:500; margin-top: 6px;">Modelo de datos en evolución</div>
+              <div style="font-size: 21px; color: var(--ink-2); margin-top: 6px; line-height:1.4;">Catalogación de especies, anotaciones y jerarquías taxonómicas: el esquema crece con la investigación.</div>
+            </div>
+
+            <div style="position:relative;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--accent-2); border:2px solid var(--accent-2);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--accent-2); text-transform:uppercase;">TFG · 2026</div>
+              <div style="font-size: 24px; font-weight:500; margin-top: 6px;">Framework completo <span class="mono" style="font-size: 20px;">uniback + ngt-gui</span></div>
+              <div style="font-size: 21px; color: var(--ink-2); margin-top: 6px; line-height:1.4;">Consolidar, desacoplar del dominio y derivar todo de la única fuente de verdad: el ORM.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 40px 44px;">
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Estado del desarrollo al iniciar el TFG</div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0;">
+            <div style="border-right:1px solid var(--rule); padding-right: 28px;">
+              <div style="font-family:var(--serif); font-size:28px; font-weight:500; margin-bottom: 12px;">Frontend</div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.08em; color:var(--accent); text-transform:uppercase; margin-bottom: 14px;">LIBRERÍA PROPIA BASADA EN NGT</div>
+              <div style="font-size: 20px; line-height: 1.4; color: var(--ink-2);">Catálogo amplio de componentes, pero <strong style="color:var(--ink);">acoplado al backend de NextGenDem</strong> a través de un servicio con más de <span class="mono" style="font-size:18px;">270</span> métodos hardcoded.</div>
+            </div>
+            <div style="padding-left: 28px;">
+              <div style="font-family:var(--serif); font-size:28px; font-weight:500; margin-bottom: 12px;">Backend</div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.08em; color:var(--accent); text-transform:uppercase; margin-bottom: 14px;">Base ITC</div>
+              <div style="font-size: 20px; line-height: 1.4; color: var(--ink-2);">Modelos ORM razonablemente completos, pero <strong style="color:var(--ink);">sin capa de API homogénea</strong>: ni envoltorio, ni fábricas, ni esquema publicado.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>I · Problema y objetivos</div>
+        <div><span class="dot">●</span> &nbsp;03 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 04 · PROBLEMA                                                     -->
+  <!-- ================================================================ -->
+  <section data-label="04 Problema">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Contexto</span><span class="chap">Problema</span></div>
+        <div>04</div>
+      </div>
+      <div class="eyebrow">§1.2 · Descripción del problema</div>
+      <h2 class="title">Cuando el modelo evoluciona, el coste se propaga en cascada.</h2>
+
+      <div style="margin-top: 60px; display:grid; grid-template-columns: 1fr auto 1fr; gap: 48px; align-items:center; flex:1;">
+
+        <!-- Convencional -->
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--err); text-transform:uppercase; margin-bottom: 22px;">Enfoque convencional</div>
+          <div style="background: var(--bg-card); border: 1px solid var(--rule); padding: 32px;">
+            <div style="display:flex; flex-direction:column; gap: 12px;">
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:13px; width:120px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Modelo ORM</div>
+                <div style="flex:1; height:32px; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(155, 34, 24, 0.10) 6px 12px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:13px; width:120px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Validación</div>
+                <div style="flex:1; height:32px; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(155, 34, 24, 0.10) 6px 12px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:13px; width:120px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Endpoints</div>
+                <div style="flex:1; height:32px; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(155, 34, 24, 0.10) 6px 12px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:13px; width:120px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Cliente HTTP</div>
+                <div style="flex:1; height:32px; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(155, 34, 24, 0.10) 6px 12px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:13px; width:120px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Formulario</div>
+                <div style="flex:1; height:32px; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(155, 34, 24, 0.10) 6px 12px); border:1px solid #d8c8c5;"></div>
+              </div>
+            </div>
+            <div style="margin-top: 24px; font-size:22px; color:var(--ink-2); line-height:1.4;">Cada cambio se propaga manualmente a las cinco capas.</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--serif); font-size: 84px; font-weight:300; color: var(--accent-2); line-height:1;">→</div>
+
+        <!-- Propuesta -->
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ok); text-transform:uppercase; margin-bottom: 22px;">Enfoque propuesto</div>
+          <div style="background: var(--bg-card); border: 1px solid var(--accent); padding: 32px;">
+            <div style="display:flex; gap:24px; align-items:stretch;">
+              <div style="width:130px; display:flex; flex-direction:column; justify-content:center; gap:4px;">
+                <div class="mono" style="font-size:13px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;">Modelo ORM</div>
+                <div style="font-family:var(--serif); font-size:22px; color:var(--accent); font-style: italic;">Una única fuente</div>
+              </div>
+              <div style="flex:1; position:relative; border-left: 2px solid var(--accent);">
+                <div style="display:flex; flex-direction:column; gap:8px; padding-left: 20px; padding-top: 2px;">
+                  <div style="height:30px; background: rgba(30,58,138,0.10); border:1px solid var(--accent); display:flex; align-items:center; padding: 0 12px; font-size:15px;" class="mono">JSON Schema enriquecido · x-*</div>
+                  <div style="height:30px; background: rgba(30,58,138,0.05); border:1px solid var(--rule-strong); display:flex; align-items:center; padding: 0 12px; font-size:15px;" class="mono">CRUD derivado</div>
+                  <div style="height:30px; background: rgba(30,58,138,0.05); border:1px solid var(--rule-strong); display:flex; align-items:center; padding: 0 12px; font-size:15px;" class="mono">EntityClient genérico</div>
+                  <div style="height:30px; background: rgba(30,58,138,0.05); border:1px solid var(--rule-strong); display:flex; align-items:center; padding: 0 12px; font-size:15px;" class="mono">&lt;ngt-dynamic-form&gt;</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 24px; font-size:22px; color:var(--ink-2); line-height:1.4;">Un cambio en el ORM se propaga solo.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--rule); font-family:var(--serif); font-size: 26px; color: var(--ink-2); font-style: italic; max-width: 1500px;">
+        «Reducir al mínimo el código que hay que escribir y mantener para exponer, validar, comunicar y editar una entidad de datos cuando el modelo está en evolución constante.»<span style="color:var(--ink-3); font-style:normal; font-family:var(--mono); font-size:17px;"> — §1.2</span>
+      </div>
+
+      <div class="footer">
+        <div>I · Problema y objetivos</div>
+        <div><span class="dot">●</span> &nbsp;04 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 05 · SOLUCIÓN PROPUESTA                                           -->
+  <!-- ================================================================ -->
+  <section data-label="05 Solucion">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Solución</span><span class="chap">Hipótesis y propuesta</span></div>
+        <div>05</div>
+      </div>
+      <div class="eyebrow">§1.3 · Solución propuesta</div>
+      <h2 class="title"></h2>
+
+      <div style="margin-top: 60px; flex:1; display:grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items:stretch;">
+
+        <!-- uniback -->
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 44px 46px; display:flex; flex-direction:column; gap: 20px;">
+          <div style="display:flex; align-items:baseline; gap:16px;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--accent-2); text-transform:uppercase;">Backend</div>
+            <div style="font-family:var(--serif); font-size:48px; font-weight:500; line-height:1; letter-spacing:-0.01em;">uniback</div>
+          </div>
+          <div style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Núcleo de modelos reutilizables, envoltorio normalizado, fábricas CRUD y derivación automática de JSON Schema enriquecido a partir del ORM.</div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">FastAPI</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">SQLAlchemy 2.x</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Continuum</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Alembic</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Pydantic</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">PostgreSQL</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Redis + Celery</span>
+          </div>
+          <div style="margin-top: 8px; font-size: 19px; color: var(--ink-3); font-family: var(--mono); line-height:1.5;">initialize(config) → (orm_base, sessions, app)</div>
+        </div>
+
+        <!-- ngt-gui -->
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 44px 46px; display:flex; flex-direction:column; gap: 20px;">
+          <div style="display:flex; align-items:baseline; gap:16px;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--accent-2); text-transform:uppercase;">Frontend</div>
+            <div style="font-family:var(--serif); font-size:48px; font-weight:500; line-height:1; letter-spacing:-0.01em;">ngt-gui</div>
+          </div>
+          <div style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Librería Angular publicable. Consume el contrato con una capa cliente genérica y genera formularios Formly sin HTML específico de entidad.</div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Angular</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">Formly</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">ng-zorro</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">EntityClient</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">SchemaService</span>
+            <span class="mono" style="font-size:14px; padding:4px 10px; border:1px solid var(--rule); background: var(--bg); border-radius:4px;">ng-packagr</span>
+          </div>
+          <div style="margin-top: 8px; font-size: 19px; color: var(--ink-3); font-family: var(--mono); line-height:1.5;">&lt;ngt-dynamic-form entityPath="/roles"&gt;</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 32px; padding: 22px 28px; border-left: 3px solid var(--accent); background: var(--bg-card);">
+        <div style="font-family:var(--serif); font-size: 24px; font-style: italic; color: var(--ink); line-height: 1.4;">El modelo ORM es la única fuente de verdad: un cambio en el modelo se propaga al esquema, al contrato y a la interfaz <span style="color:var(--ink-3); font-style:normal; font-family:var(--mono); font-size:16px;">automáticamente</span>.</div>
+      </div>
+
+      <div class="footer">
+        <div>I · Problema y objetivos</div>
+        <div><span class="dot">●</span> &nbsp;05 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 06 · OBJETIVOS                                                    -->
+  <!-- ================================================================ -->
+  <section data-label="06 Objetivos">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Objetivos</span><span class="chap">5 objetivos específicos</span></div>
+        <div>06</div>
+      </div>
+      <div class="eyebrow">§2.4 · Objetivos</div>
+      <h2 class="title">Cinco objetivos específicos, todos completados.</h2>
+
+      <div style="margin-top: 56px; display:flex; flex-direction:column; gap: 14px;">
+        <!-- OE1 -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE1</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">API modular</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Envoltorio uniforme, catálogo de errores y fábricas CRUD.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE2 -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE2</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Modelado de datos</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Consolidar el núcleo ORM con versionado e histórico.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE3 -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE3</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Comunicación estandarizada</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Descubrimiento de entidades y cliente genérico tipado.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE4 -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE4</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Generador de formularios</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Sobre Formly y Grid, guiado por el esquema.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE5 -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE5</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Generación de esquemas</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Esquemas derivados automáticamente desde el ORM.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>I · Problema y objetivos</div>
+        <div><span class="dot">●</span> &nbsp;06 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 07 · STAKEHOLDERS                                                 -->
+  <!-- ================================================================ -->
+  <section data-label="07 Stakeholders">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Stakeholders</span><span class="chap">Quién espera qué</span></div>
+        <div>07</div>
+      </div>
+      <div class="eyebrow">§5.1 · Identificación de stakeholders</div>
+      <h2 class="title">Una sola pieza conectora.</h2>
+
+      <div style="margin-top: 60px; flex:1; display:grid; grid-template-columns: repeat(4, 1fr); gap: 22px;">
+
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 28px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Propietario</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">ITC</div>
+          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">Necesita una base reutilizable que reduzca el coste de arrancar y mantener nuevos proyectos de gestión de datos científicos.</div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 28px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Constructor</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">Equipo de desarrollo</div>
+          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">Necesita una API predecible, tipada y bien documentada para construir aplicaciones sobre el framework.</div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--accent); padding: 32px 28px; display:flex; flex-direction:column; gap:14px; position:relative;">
+          <div style="position:absolute; top:-10px; right:24px; background: var(--accent-2); color:#fff; font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; padding: 4px 10px;">Caso de uso real</div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Cliente</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">Jardín Botánico Viera y Clavijo</div>
+          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">Aporta el caso de uso que valida la genericidad: catalogación de especies, anotaciones, jerarquías taxonómicas.</div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 28px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Beneficiario</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">Usuario final</div>
+          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">No interactúa con el framework, pero recibe formularios y vistas correctas, validadas y coherentes.</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 36px; padding: 22px 28px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+        <div style="font-family:var(--serif); font-size: 22px; font-style: italic; color: var(--ink-2); line-height: 1.4;">El framework no es la solución final para el Jardín, sino la herramienta con la que dicha solución se construye <span style="color:var(--ink-3); font-style:normal; font-family:var(--mono); font-size:15px;">— §2.1.2</span></div>
+      </div>
+
+      <div class="footer">
+        <div>I · Problema y objetivos</div>
+        <div><span class="dot">●</span> &nbsp;07 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 08 · ESTADO DEL ARTE                                              -->
+  <!-- ================================================================ -->
+  <section data-label="08 Estado del arte">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>II · Estado del arte</span><span class="chap">Comparativa</span></div>
+        <div>08</div>
+      </div>
+      <div class="eyebrow">§4.3 · Generación de interfaces dirigida por esquema</div>
+      <h2 class="title">El hueco: cerrar la cadena <em style="font-style:italic; color:var(--accent);">desde el ORM hasta el formulario</em>.</h2>
+
+      <div style="margin-top: 56px;">
+        <table style="width:100%; border-collapse: collapse; font-size: 22px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--ink); text-align:left;">
+              <th style="padding: 18px 16px 18px 0; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Enfoque</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Desde ORM</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Hints UI</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Contrato</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Versionado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 23px;">react-jsonschema-form</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Parcial</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 23px;">JSON Forms</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--ok);">Sí (uischema)</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 23px;">OpenAPI · Swagger UI</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Operaciones</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 23px;">Admin autogenerados <span class="mono" style="color:var(--ink-3); font-size:16px;">(p.ej. Django)</span></td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--ok);">Sí</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Limitado</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Acoplado</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+            </tr>
+            <tr style="background: rgba(30,58,138,0.06); border-bottom: 2px solid var(--accent);">
+              <td style="padding: 28px 16px 28px 0; font-weight:600; font-size: 25px; color:var(--accent);">Este trabajo · uniback + ngt-gui</td>
+              <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí</td>
+              <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí <span class="mono" style="font-size:16px; color:var(--ink-3);">(x-*)</span></td>
+              <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Uniforme</td>
+              <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">ETag</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 36px; font-size: 22px; color: var(--ink-2); max-width: 1500px; line-height:1.45;">
+        La aportación diferencial no es el renderizador: es <span style="color:var(--ink); font-weight:500;">cerrar la cadena completa</span> manteniendo backend y frontend desacoplados por un contrato versionado.
+      </div>
+
+      <div class="footer">
+        <div>II · Estado del arte</div>
+        <div><span class="dot">●</span> &nbsp;08 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 09 · STACK TECNOLÓGICO                                            -->
+  <!-- ================================================================ -->
+  <section data-label="09 Stack">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>II · Marco tecnológico</span><span class="chap">Stack</span></div>
+        <div>09</div>
+      </div>
+      <div class="eyebrow">§4.1 — §4.2 · Tecnologías empleadas</div>
+      <h2 class="title">Elegido para que cada capa hable el mismo idioma.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 1fr 1fr; gap: 0; flex:1;">
+        <!-- Backend -->
+        <div style="padding-right: 56px; border-right: 1px solid var(--rule);">
+          <div style="display:flex; align-items:baseline; gap: 18px; margin-bottom: 32px;">
+            <div class="mono" style="font-size:42px; color:var(--accent-2); font-weight:300;">⌘</div>
+            <div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase;">Backend · uniback</div>
+              <div style="font-family:var(--serif); font-size:34px; font-weight:500;">Python · datos & API</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap: 16px;">
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">FastAPI · Pydantic</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Tipado nativo, OpenAPI automático, JSON Schema emitido por Pydantic.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">SQLAlchemy 2.x</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">API <span class="mono" style="font-size:17px;">Mapped[...]</span>; introspección rica del modelo.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">Continuum · Alembic</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Versionado nativo automático + migraciones reproducibles.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">Postgres · Docker</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">JSONB, full-text search; despliegue reproducible multiplataforma.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">Redis · Celery</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Procesamiento asíncrono opcional (SystemProcess).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frontend -->
+        <div style="padding-left: 56px;">
+          <div style="display:flex; align-items:baseline; gap: 18px; margin-bottom: 32px;">
+            <div class="mono" style="font-size:42px; color:var(--accent-2); font-weight:300;">◢</div>
+            <div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase;">Frontend · ngt-gui</div>
+              <div style="font-family:var(--serif); font-size:34px; font-weight:500;">Angular · presentación</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap: 16px;">
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">Angular</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">TypeScript con tipado fuerte; librería publicable como paquete npm.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">Formly</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Formularios declarativos desde <span class="mono" style="font-size:17px;">FormlyFieldConfig[]</span>.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">ng-zorro</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Sistema de diseño Ant Design; base de ~20 tipos Formly personalizados.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 24px; align-items:start;">
+              <div style="width:180px; font-family:var(--mono); font-size:19px; color:var(--accent); font-weight:500;">ng-packagr</div>
+              <div style="flex:1; font-size:21px; color:var(--ink-2); line-height:1.4;">Empaquetado de la librería para distribución.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px; font-family:var(--serif); font-size: 23px; color: var(--ink-2); font-style:italic; text-align:center; border-top: 1px solid var(--rule); padding-top: 22px;">
+        Idioma común: <span class="mono" style="font-style:normal; color:var(--accent); font-size:22px;">JSON Schema</span> &nbsp;·&nbsp; <span class="mono" style="font-style:normal; color:var(--accent); font-size:22px;">OpenAPI 3.x</span> &nbsp;·&nbsp; extensiones <span class="mono" style="font-style:normal; color:var(--accent-2); font-size:22px;">x-*</span>
+      </div>
+
+      <div class="footer">
+        <div>II · Marco tecnológico</div>
+        <div><span class="dot">●</span> &nbsp;09 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 10 · ARQUITECTURA GLOBAL                                          -->
+  <!-- ================================================================ -->
+  <section data-label="10 Arquitectura">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Flujo extremo a extremo</span></div>
+        <div>10</div>
+      </div>
+      <div class="eyebrow">§6.1 · Visión general</div>
+      <h2 class="title">Del ORM al formulario, en una sola línea de flujo.</h2>
+
+      <!-- vertical pipeline -->
+      <div style="margin-top: 48px; flex:1; display:flex; flex-direction:column; gap: 8px;">
+
+        <!-- Source of truth -->
+        <div style="display:grid; grid-template-columns: 280px 1fr; gap: 0; align-items:stretch;">
+          <div style="background: var(--bg-deep); color:#e9e6df; padding: 20px 28px; display:flex; flex-direction:column; justify-content:center;">
+            <div class="mono" style="font-size:13px; letter-spacing:0.12em; color:#5fc9b8; text-transform:uppercase;">Fuente de verdad</div>
+            <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-top:4px;">Modelo SQLAlchemy</div>
+          </div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule); padding: 16px 26px; display:flex; align-items:center; font-family:var(--mono); font-size:17px; color:var(--ink-2);">
+            class Identity(FunctionalObject): name = mapped_column(String(255), nullable=False)
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; padding: 4px 0;"><div style="font-family:var(--serif); font-size:30px; color:var(--accent-2); font-weight:300; line-height:1;">↓ make_simple_rest_crud / make_crudie_rest_crud</div></div>
+
+        <div style="display:grid; grid-template-columns: 280px 1fr; gap: 0; align-items:stretch;">
+          <div style="background: var(--bg-deep); color:#e9e6df; padding: 20px 28px; display:flex; flex-direction:column; justify-content:center;">
+            <div class="mono" style="font-size:13px; letter-spacing:0.12em; color:#5fc9b8; text-transform:uppercase;">Derivación</div>
+            <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-top:4px;">sqlalchemy_to_pydantic</div>
+          </div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule); padding: 16px 26px; display:flex; align-items:center; font-family:var(--mono); font-size:17px; color:var(--ink-2);">
+            Pydantic + json_schema_extra · pistas <span style="color:var(--accent-2);">&nbsp;x-ui-widget · x-options-endpoint · x-hide-when</span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; padding: 4px 0;"><div style="font-family:var(--serif); font-size:30px; color:var(--accent-2); font-weight:300; line-height:1;">↓ get_enriched_json_schema</div></div>
+
+        <div style="display:grid; grid-template-columns: 280px 1fr; gap: 0; align-items:stretch;">
+          <div style="background: var(--bg-deep); color:#e9e6df; padding: 20px 28px; display:flex; flex-direction:column; justify-content:center;">
+            <div class="mono" style="font-size:13px; letter-spacing:0.12em; color:#5fc9b8; text-transform:uppercase;">Contrato HTTP</div>
+            <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-top:4px;">ResponseEnvelope</div>
+          </div>
+          <div style="background: var(--bg-card); border:1px solid var(--accent); padding: 16px 26px; display:flex; align-items:center; gap: 22px; font-family:var(--mono); font-size:16px;">
+            <span style="color:var(--ink-2);">GET /&lt;e&gt;/schema.json</span>
+            <span style="color:var(--ink-3);">·</span>
+            <span style="color:var(--ink-2);">GET /api/sys/schemas <span style="color:var(--accent-2);">[ETag]</span></span>
+            <span style="color:var(--ink-3);">·</span>
+            <span style="color:var(--ink-2);">GET /api/sys/entities</span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; padding: 4px 0;"><div style="font-family:var(--serif); font-size:30px; color:var(--accent-2); font-weight:300; line-height:1;">↓ envoltorio { content, count, issues }</div></div>
+
+        <div style="display:grid; grid-template-columns: 280px 1fr; gap: 0; align-items:stretch;">
+          <div style="background: var(--bg-deep); color:#e9e6df; padding: 20px 28px; display:flex; flex-direction:column; justify-content:center;">
+            <div class="mono" style="font-size:13px; letter-spacing:0.12em; color:#5fc9b8; text-transform:uppercase;">Frontend</div>
+            <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-top:4px;">ngt-gui · capa cliente</div>
+          </div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule); padding: 16px 26px; display:flex; align-items:center; gap: 22px; font-family:var(--mono); font-size:16px; color:var(--ink-2);">
+            EntityClient · SchemaService <span style="color:var(--accent);">→</span> schemaToFormly() <span style="color:var(--accent);">→</span> <span style="color:var(--accent-2);">&lt;ngt-dynamic-form&gt;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura</div>
+        <div><span class="dot">●</span> &nbsp;10 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 11 · MODELO POLIMÓRFICO                                           -->
+  <!-- ================================================================ -->
+  <section data-label="11 Modelo polimorfico">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Núcleo del modelo</span></div>
+        <div>11</div>
+      </div>
+      <div class="eyebrow">§6.5 — §6.6 · Modelo polimórfico y autorización</div>
+      <h2 class="title">FunctionalObject: tratar lo heterogéneo de manera homogénea.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 1.05fr 1fr; gap: 60px; flex:1; align-items:start;">
+
+        <!-- LEFT: diagram -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Esquema conceptual</div>
+          <div style="background:var(--bg-deep); color:#e9e6df; padding: 32px 36px; font-family:var(--mono); font-size:18px; line-height:1.65;">
+<span style="color:#5fc9b8;">ObjectType</span> <span style="color:#9a9388;">(id, uuid, name)</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">^ 1</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">| N</span><br>
+<span style="color:#fff;">FunctionalObject</span> <span style="color:#9a9388;">(id, uuid, owner,</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">created/updated, attrs)</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">| hereda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| referido por</span><br>
+[<span style="color:#9bbcd6;">Collection</span>, <span style="color:#9bbcd6;">Screen</span>, ...]&nbsp;&nbsp;<span style="color:#9bbcd6;">Annotation*</span> / <span style="color:#9bbcd6;">ACL*</span><br><br>
+<span style="color:#5fc9b8;">Authorizable</span> <span style="color:#9a9388;">(name, uuid)</span><br>
+&nbsp;&nbsp;<span style="color:#9a9388;">^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^&nbsp;&nbsp;&nbsp;&nbsp; ← herencia polimórfica</span><br>
+<span style="color:#9bbcd6;">Identity</span> &nbsp;&nbsp;<span style="color:#9bbcd6;">Role</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: explanation -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Por qué importa</div>
+
+          <div style="display:flex; flex-direction:column; gap: 22px;">
+            <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 24px 28px;">
+              <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-bottom: 8px;">Tratamiento polimórfico</div>
+              <div style="font-size: 20px; color: var(--ink-2); line-height: 1.4;">Anotaciones, ACLs y colecciones se refieren a «cualquier objeto funcional» sin conocer su clase concreta.</div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 24px 28px;">
+              <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-bottom: 8px;">Permisos por tipo o por instancia</div>
+              <div style="font-size: 20px; color: var(--ink-2); line-height: 1.4;">ACL + ACLExpression + ACLDetail permiten expresar permisos a nivel de <span class="mono" style="font-size:17px;">ObjectType</span> o de <span class="mono" style="font-size:17px;">FunctionalObject</span> concreto.</div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--accent); padding: 24px 28px;">
+              <div style="font-family:var(--serif); font-size:24px; font-weight:500; margin-bottom: 8px; color:var(--accent);">Habilita el oneOf del bundle</div>
+              <div style="font-size: 20px; color: var(--ink-2); line-height: 1.4;">Cuando una clase es raíz de jerarquía, el esquema emite un <span class="mono" style="font-size:17px;">oneOf</span> con sus subclases y un <span class="mono" style="font-size:17px;">x-discriminator</span> deducido del <span class="mono" style="font-size:17px;">object_type_id</span>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura</div>
+        <div><span class="dot">●</span> &nbsp;11 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 12 · SISTEMA DE PLUGINS                                            -->
+  <!-- ================================================================ -->
+  <section data-label="12 Plugins">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Extensibilidad</span></div>
+        <div>12</div>
+      </div>
+      <div class="eyebrow">§6.3 · Sistema de plugins y extensibilidad · RNF-01</div>
+      <h2 class="title">El dominio entra desde fuera: el núcleo no lo conoce.</h2>
+
+      <div style="margin-top: 44px; display:grid; grid-template-columns: 1fr 1.05fr; gap: 56px; flex:1; align-items:start;">
+
+        <!-- LEFT: the contract -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">El contrato &middot; UnibackPlugin</div>
+          <div style="display:flex; flex-direction:column; gap: 22px;">
+            <div>
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase; margin-bottom: 12px;">Ciclo de vida</div>
+              <div style="display:grid; grid-template-columns: auto 1fr; gap: 9px 20px; font-size:18px; color:var(--ink-2); align-items:baseline;">
+                <span class="mono" style="font-size:16px; color:var(--ink);">on_init</span><span>config y servicios de terceros</span>
+                <span class="mono" style="font-size:16px; color:var(--ink);">get_model_modules</span><span>modelos ORM antes de mapear</span>
+                <span class="mono" style="font-size:16px; color:var(--ink);">get_routers</span><span>routers FastAPI a montar</span>
+                <span class="mono" style="font-size:16px; color:var(--ink);">on_seed</span><span>filas por defecto (auto-seed)</span>
+              </div>
+            </div>
+            <div>
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase; margin-bottom: 12px;">Extensiones inyectables</div>
+              <div style="display:grid; grid-template-columns: auto 1fr; gap: 9px 20px; font-size:18px; color:var(--ink-2); align-items:baseline;">
+                <span class="mono" style="font-size:16px; color:var(--ink);">get_field_widgets</span><span>pistas x-* para el esquema</span>
+                <span class="mono" style="font-size:16px; color:var(--ink);">get_importers / exporters</span><span>formatos del insertador genérico</span>
+                <span class="mono" style="font-size:16px; color:var(--ink);">get_fk_resolvers</span><span>resolución de claves foráneas</span>
+              </div>
+            </div>
+            <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 16px 22px; font-size:18px; color:var(--ink-2); line-height:1.45;">
+              <span style="font-family:var(--serif); font-style:italic;">Descubrimiento automático:</span> el <span class="mono" style="font-size:16px;">PluginManager</span> escanea <span class="mono" style="font-size:16px;">src/plugins</span> al arrancar &mdash; sin registro manual. &laquo;El &uacute;ltimo registrado para un mismo <span class="mono" style="font-size:16px;">name</span> gana.&raquo;
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: plants example -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Ejemplo &middot; el plugin de plantas</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 24px 28px; font-family: var(--mono); font-size: 16px; line-height: 1.55; margin: 0; white-space: pre; overflow:hidden;"><span style="color:#c7c2b6;">class</span> <span style="color:#fff;">PlantsPlugin</span>(<span style="color:#9bbcd6;">UnibackPlugin</span>):
+    name = <span style="color:#e9c897;">"PlantsApp"</span>
+
+    <span style="color:#9a9388;"># modelo Plant (subclase de FunctionalObject)</span>
+    <span style="color:#c7c2b6;">def</span> <span style="color:#fff;">get_model_modules</span>(self):
+        <span style="color:#c7c2b6;">return</span> [<span style="color:#e9c897;">"plants.models"</span>]
+
+    <span style="color:#9a9388;"># CRUD REST + /schema.json + /bulk</span>
+    <span style="color:#c7c2b6;">def</span> <span style="color:#fff;">get_routers</span>(self):
+        <span style="color:#c7c2b6;">return</span> [make_simple_rest_crud(<span style="color:#9bbcd6;">Plant</span>, <span style="color:#e9c897;">"plants"</span>)]
+
+    <span style="color:#9a9388;"># pista de UI para el mapa</span>
+    <span style="color:#c7c2b6;">def</span> <span style="color:#fff;">get_field_widgets</span>(self):
+        <span style="color:#c7c2b6;">return</span> [MapCoordinatesWidget()]</pre>
+
+          <div style="margin-top: 22px; background:var(--bg-card); border:1px solid var(--accent); padding: 18px 24px;">
+            <div style="font-size:19px; color:var(--ink-2); line-height:1.45;">Sin tocar el n&uacute;cleo, la entidad aparece en <span class="mono" style="font-size:16px; color:var(--accent);">/api/sys/entities</span>, entra en el bundle, publica su <span class="mono" style="font-size:16px;">schema.json</span> y <span class="mono" style="font-size:16px;">&lt;ngt-dynamic-form&gt;</span> genera su formulario. <span style="font-family:var(--serif); font-style:italic;">A mano, solo el mapa.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura</div>
+        <div><span class="dot">●</span> &nbsp;12 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 13 · INCREMENTO 1 · API & MODELADO                                -->
+  <!-- ================================================================ -->
+  <section data-label="13 Incremento 1">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Incremento 1</span></div>
+        <div>13</div>
+      </div>
+      <div class="eyebrow">§7.3.1 · Iteración 1 · API backend y modelado</div>
+      <h2 class="title">Despliegue reproducible y núcleo de modelos consolidado.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1.1fr 1fr; gap: 56px; flex:1; align-items:start;">
+
+        <!-- LEFT: bullets -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Resultados consolidados</div>
+
+          <div style="display:flex; flex-direction:column; gap: 20px;">
+            <div style="display:flex; gap: 22px; align-items:start;">
+              <div class="mono" style="color:var(--accent-2); font-size:18px; padding-top:3px;">▍</div>
+              <div>
+                <div style="font-family:var(--serif); font-size:24px; font-weight:500;">Entorno reproducible con <span class="mono" style="font-size:20px; color:var(--accent);">docker compose</span></div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top:4px;">PostgreSQL · Redis · worker Celery · web; probado en Windows, macOS y Linux con arquitecturas distintas.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap: 22px; align-items:start;">
+              <div class="mono" style="color:var(--accent-2); font-size:18px; padding-top:3px;">▍</div>
+              <div>
+                <div style="font-family:var(--serif); font-size:24px; font-weight:500;">8 módulos de dominio</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top:4px;">core · sysadmin · annotations · hierarchies · species · files · geographics · screens.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap: 22px; align-items:start;">
+              <div class="mono" style="color:var(--accent-2); font-size:18px; padding-top:3px;">▍</div>
+              <div>
+                <div style="font-family:var(--serif); font-size:24px; font-weight:500;">SQLAlchemy-Continuum &middot; versionado nativo</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top:4px;">Histórico automático. Restricción crítica: <span class="mono" style="font-size:17px;">make_versioned()</span> antes de definir los modelos.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap: 22px; align-items:start;">
+              <div class="mono" style="color:var(--accent-2); font-size:18px; padding-top:3px;">▍</div>
+              <div>
+                <div style="font-family:var(--serif); font-size:24px; font-weight:500;">Prefijo de tablas configurable</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top:4px;"><span class="mono" style="font-size:17px;">ub_</span> por defecto; permite convivir con tablas del proyecto consumidor sin colisión.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap: 22px; align-items:start;">
+              <div class="mono" style="color:var(--accent-2); font-size:18px; padding-top:3px;">▍</div>
+              <div>
+                <div style="font-family:var(--serif); font-size:24px; font-weight:500;">Punto de entrada único</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top:4px;"><span class="mono" style="font-size:17px;">initialize(config)</span> normaliza con Pydantic Settings y prepara ORM, sesiones, app FastAPI, Redis y Celery.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: code -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Uso del backend como librería</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 26px 30px; font-family: var(--mono); font-size: 17px; line-height: 1.55; margin: 0; white-space: pre; overflow: hidden;"><span style="color:#c7c2b6;">from</span> <span style="color:#9bbcd6;">uniback</span> <span style="color:#c7c2b6;">import</span> <span style="color:#fff;">initialize</span>
+
+<span style="color:#9a9388;">config = {</span>
+<span style="color:#9a9388;">  "database": {"url": </span><span style="color:#e9c897;">"postgresql://..."</span><span style="color:#9a9388;">},</span>
+<span style="color:#9a9388;">  "api": {"title": </span><span style="color:#e9c897;">"Mi API"</span><span style="color:#9a9388;">, "version": </span><span style="color:#e9c897;">"1.0.0"</span><span style="color:#9a9388;">},</span>
+<span style="color:#9a9388;">}</span>
+
+<span style="color:#fff;">orm_base, session_factory, app</span> = initialize(config)
+
+<span style="color:#c7c2b6;">class</span> <span style="color:#fff;">MiEntidad</span>(<span style="color:#9bbcd6;">orm_base</span>):
+    __tablename__ = <span style="color:#e9c897;">"mi_entidad"</span>
+    id: <span style="color:#9bbcd6;">Mapped[int]</span> = mapped_column(<span style="color:#c7c2b6;">primary_key=True</span>)
+    name: <span style="color:#9bbcd6;">Mapped[str]</span> = mapped_column(<span style="color:#9bbcd6;">String</span>(<span style="color:#e9c897;">100</span>))</pre>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 1 · API y modelado</div>
+        <div><span class="dot">●</span> &nbsp;13 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 14 · INCREMENTO 2 · CONTRATO                                      -->
+  <!-- ================================================================ -->
+  <section data-label="14 Incremento 2">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Incremento 2</span></div>
+        <div>14</div>
+      </div>
+      <div class="eyebrow">§7.3.2 · Contrato de comunicación back–front</div>
+      <h2 class="title">ResponseEnvelope: una sola forma, éxito o error.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1fr 1fr; gap: 48px; flex:1;">
+        <!-- LEFT: envelope codes -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 20px;">Envoltorio · catálogo de códigos</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 24px 28px; font-family: var(--mono); font-size: 16px; line-height: 1.55; margin: 0; white-space: pre;">{ <span style="color:#9bbcd6;">"content"</span>: [ { <span style="color:#9bbcd6;">"id"</span>: <span style="color:#e9c897;">1</span>, <span style="color:#9bbcd6;">"name"</span>: <span style="color:#e9c897;">"admin"</span> } ],
+  <span style="color:#9bbcd6;">"count"</span>: <span style="color:#e9c897;">1</span>, <span style="color:#9bbcd6;">"issues"</span>: [] }
+
+{ <span style="color:#9bbcd6;">"content"</span>: <span style="color:#5fc9b8;">null</span>, <span style="color:#9bbcd6;">"count"</span>: <span style="color:#e9c897;">0</span>,
+  <span style="color:#9bbcd6;">"issues"</span>: [ { <span style="color:#9bbcd6;">"type"</span>: <span style="color:#e9c897;">"ERROR"</span>,
+                <span style="color:#9bbcd6;">"code"</span>: <span style="color:#e9c897;">"VALIDATION_ERROR"</span>,
+                <span style="color:#9bbcd6;">"message"</span>: <span style="color:#e9c897;">"field required"</span>,
+                <span style="color:#9bbcd6;">"location"</span>: <span style="color:#e9c897;">"/body/name"</span> } ] }</pre>
+
+          <div style="margin-top: 28px; display:grid; grid-template-columns: auto 1fr auto; gap: 6px 18px; font-size:18px; font-family:var(--mono); color:var(--ink-2);">
+            <div style="color:var(--accent); font-weight:500;">BAD_REQUEST</div><div>petición malformada</div><div class="mono" style="color:var(--ink-3);">400</div>
+            <div style="color:var(--accent); font-weight:500;">UNAUTHORIZED</div><div>sesión inválida</div><div class="mono" style="color:var(--ink-3);">401</div>
+            <div style="color:var(--accent); font-weight:500;">FORBIDDEN</div><div>sin permisos</div><div class="mono" style="color:var(--ink-3);">403</div>
+            <div style="color:var(--accent); font-weight:500;">NOT_FOUND</div><div>recurso inexistente</div><div class="mono" style="color:var(--ink-3);">404</div>
+            <div style="color:var(--accent); font-weight:500;">CONFLICT</div><div>estado en conflicto</div><div class="mono" style="color:var(--ink-3);">409</div>
+            <div style="color:var(--accent); font-weight:500;">VALIDATION_ERROR</div><div>Pydantic con <span style="font-style:italic;">location</span></div><div class="mono" style="color:var(--ink-3);">422</div>
+            <div style="color:var(--accent); font-weight:500;">INTERNAL_ERROR</div><div>excepción no capturada</div><div class="mono" style="color:var(--ink-3);">500</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: CRUD factories + endpoint convention -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 20px;">Fábricas CRUD &middot; convención de endpoints</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 24px 28px; font-family: var(--mono); font-size: 17px; line-height: 1.6; margin: 0;">make_simple_rest_crud(<span style="color:#9bbcd6;">Role</span>, <span style="color:#e9c897;">"/roles"</span>)
+make_crudie_rest_crud(<span style="color:#9bbcd6;">Identity</span>, <span style="color:#e9c897;">"/identities"</span>)</pre>
+
+          <table style="width:100%; border-collapse: collapse; font-size:19px; margin-top: 22px;">
+            <thead>
+              <tr style="border-bottom: 1.5px solid var(--ink); text-align:left;">
+                <th style="padding: 12px 8px 12px 0; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Método</th>
+                <th style="padding: 12px 8px; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Ruta</th>
+                <th style="padding: 12px 8px; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Propósito</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--rule);"><td class="mono" style="padding:10px 8px 10px 0; color:var(--accent);">GET</td><td class="mono" style="padding:10px 8px;">/&lt;e&gt;/</td><td style="padding:10px 8px; color:var(--ink-2);">Listado con filtros</td></tr>
+              <tr style="border-bottom:1px solid var(--rule);"><td class="mono" style="padding:10px 8px 10px 0; color:var(--accent);">GET</td><td class="mono" style="padding:10px 8px;">/&lt;e&gt;/{id}</td><td style="padding:10px 8px; color:var(--ink-2);">Obtener uno</td></tr>
+              <tr style="border-bottom:1px solid var(--rule);"><td class="mono" style="padding:10px 8px 10px 0; color:var(--accent);">POST</td><td class="mono" style="padding:10px 8px;">/&lt;e&gt;/</td><td style="padding:10px 8px; color:var(--ink-2);">Crear (valida create_schema)</td></tr>
+              <tr style="border-bottom:1px solid var(--rule);"><td class="mono" style="padding:10px 8px 10px 0; color:var(--accent);">PUT</td><td class="mono" style="padding:10px 8px;">/&lt;e&gt;/{id}</td><td style="padding:10px 8px; color:var(--ink-2);">Actualizar</td></tr>
+              <tr style="border-bottom:1px solid var(--rule);"><td class="mono" style="padding:10px 8px 10px 0; color:var(--accent);">DELETE</td><td class="mono" style="padding:10px 8px;">/&lt;e&gt;/{id}</td><td style="padding:10px 8px; color:var(--ink-2);">Borrar (soft / hard)</td></tr>
+              <tr style="background: rgba(178,82,22,0.06);"><td class="mono" style="padding:14px 8px 14px 0; color:var(--accent-2); font-weight:600;">GET</td><td class="mono" style="padding:14px 8px;">/&lt;e&gt;/schema.json</td><td style="padding:14px 8px; color:var(--ink); font-weight:500;">JSON Schema enriquecido (ETag)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 2 · Contrato</div>
+        <div><span class="dot">●</span> &nbsp;14 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 15 · DESCUBRIMIENTO + ENTITYCLIENT                                -->
+  <!-- ================================================================ -->
+  <section data-label="15 Descubrimiento">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Descubrimiento + cliente genérico</span></div>
+        <div>15</div>
+      </div>
+      <div class="eyebrow">§7.3.2.3 — §7.3.2.4 · Autodescriptivo</div>
+      <h2 class="title">El frontend pregunta qué entidades hay, no las codifica.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1fr 1fr; gap: 48px; flex:1;">
+
+        <!-- LEFT: discovery -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Endpoints de descubrimiento</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 28px 32px; display:flex; flex-direction:column; gap:18px;">
+            <div>
+              <div class="mono" style="font-size:18px; color:var(--accent); font-weight:500;">GET /api/sys/entities</div>
+              <div style="font-size:19px; color:var(--ink-2); margin-top:6px; line-height:1.4;">Lista entidades CRUD detectadas con sus capacidades: <span class="mono" style="font-size:16px;">list · get · create · update · delete · schema</span>.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div>
+              <div class="mono" style="font-size:18px; color:var(--accent); font-weight:500;">GET /api/sys/discovery</div>
+              <div style="font-size:19px; color:var(--ink-2); margin-top:6px; line-height:1.4;">Servicios externos detectados vía Traefik.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div>
+              <div class="mono" style="font-size:18px; color:var(--accent); font-weight:500;">GET /api/sys/schemas</div>
+              <div style="font-size:19px; color:var(--ink-2); margin-top:6px; line-height:1.4;">Bundle versionado de todos los esquemas (Incremento 4).</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 32px; padding: 20px 26px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+            <div style="font-family:var(--serif); font-size: 21px; font-style: italic; color: var(--ink-2); line-height: 1.4;">El descubrimiento hace el sistema <span style="color:var(--ink); font-style:normal; font-weight:500;">autodescriptivo</span>.</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: client -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Capa cliente genérica · ngt-gui</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 26px 30px; font-family: var(--mono); font-size: 17px; line-height: 1.6; margin: 0; white-space: pre;"><span style="color:#c7c2b6;">const</span> <span style="color:#fff;">roles</span> = <span style="color:#c7c2b6;">this</span>.api.for&lt;<span style="color:#9bbcd6;">Role</span>&gt;(<span style="color:#e9c897;">'/roles'</span>);
+
+roles.<span style="color:#fff;">list</span>().subscribe(res =&gt; <span style="color:#9a9388;">/* Role[] */</span>);
+roles.<span style="color:#fff;">create</span>({ name: <span style="color:#e9c897;">'editor'</span> }).subscribe(res =&gt; ...);
+roles.<span style="color:#fff;">schema</span>&lt;<span style="color:#9bbcd6;">JSONSchema</span>&gt;().subscribe(res =&gt; ...);
+
+<span style="color:#9a9388;">// caché de esquemas con invalidación</span>
+<span style="color:#c7c2b6;">this</span>.schemas.<span style="color:#fff;">get</span>(<span style="color:#e9c897;">'/roles'</span>).subscribe(s =&gt; ...);
+<span style="color:#c7c2b6;">this</span>.schemas.<span style="color:#fff;">getBundle</span>().subscribe(b =&gt; ...);
+
+<span style="color:#9a9388;">// observable de entidades</span>
+<span style="color:#c7c2b6;">this</span>.discovery.<span style="color:#fff;">entities$</span>.subscribe(l =&gt; ...);</pre>
+
+          <div style="margin-top: 28px; display:flex; gap: 16px;">
+            <div style="flex:1; padding: 16px 18px; background: rgba(180,83,9,0.08); border:1px solid var(--warn);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--warn); text-transform:uppercase; margin-bottom:4px;">Compatibilidad</div>
+              <div style="font-size:18px; color:var(--ink-2); line-height:1.4;">El <span class="mono" style="font-size:15px;">BackendService</span> heredado (<span class="mono" style="font-size:15px;">~272</span> métodos) sigue funcionando.</div>
+            </div>
+            <div style="flex:1; padding: 16px 18px; background: rgba(47,107,58,0.08); border:1px solid var(--ok);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase; margin-bottom:4px;">Aditiva</div>
+              <div style="font-size:18px; color:var(--ink-2); line-height:1.4;">Migración progresiva, sin romper código en producción.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 2 · Contrato</div>
+        <div><span class="dot">●</span> &nbsp;15 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 16 · INCREMENTO 3 · HEURÍSTICAS X-*                               -->
+  <!-- ================================================================ -->
+  <section data-label="16 Heuristicas x-*">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Incremento 3 · backend</span></div>
+        <div>16</div>
+      </div>
+      <div class="eyebrow">§7.3.3.1 · Enriquecimiento del esquema</div>
+      <h2 class="title">Heurísticas <em style="font-style:italic; color:var(--accent);">x-*</em> por columna.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1.2fr 1fr; gap: 56px; flex:1; align-items:start;">
+
+        <!-- LEFT: mapping table -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Por tipo de columna SQLAlchemy</div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule);">
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 14px 20px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:18px;">Boolean</div>
+              <div style="font-size:19px; color:var(--ink-2);"><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: checkbox</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 14px 20px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:18px;">DateTime</div>
+              <div style="font-size:19px; color:var(--ink-2);"><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: datepicker</span> <span style="color:var(--ink-3); font-size:16px;">(con hora)</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 14px 20px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:18px;">Enum</div>
+              <div style="font-size:19px; color:var(--ink-2);"><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: select</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 14px 20px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:18px;">String (&gt;500)</div>
+              <div style="font-size:19px; color:var(--ink-2);"><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: textarea</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 14px 20px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:18px;">JSON / JSONB</div>
+              <div style="font-size:19px; color:var(--ink-2);"><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: json</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.1fr 1.4fr; padding: 18px 20px; align-items:center; background: rgba(30,58,138,0.04);">
+              <div class="mono" style="font-size:18px;">ForeignKey</div>
+              <div style="font-size:19px; color:var(--ink-2);">
+                <div><span class="mono" style="font-size:16px; color:var(--accent);">x-ui-widget: select-lazy-loading</span></div>
+                <div style="margin-top:4px;"><span class="mono" style="font-size:16px; color:var(--accent);">x-options-endpoint: /&lt;tabla&gt;/</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 22px; padding: 16px 20px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+            <div style="font-size: 19px; color: var(--ink-2); line-height: 1.4;">El override manual en <span class="mono" style="font-size:16px; color:var(--ink);">column.info["ui"]</span> siempre gana sobre la heurística.</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: x-* keywords -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Extensiones x-* reconocidas</div>
+          <div style="background: var(--bg-deep); color: #e9e6df; padding: 26px 30px; font-family: var(--mono); font-size: 17px; line-height: 2.0;">
+            <span style="color:#5fc9b8;">x-formly-type</span><span style="color:#9a9388;"> · sobrescribe el type</span><br>
+            <span style="color:#5fc9b8;">x-ui-widget</span><span style="color:#9a9388;"> · alias semántico</span><br>
+            <span style="color:#5fc9b8;">x-options-endpoint</span><span style="color:#9a9388;"> · select lazy</span><br>
+            <span style="color:#5fc9b8;">x-placeholder</span><span style="color:#9a9388;"> · props.placeholder</span><br>
+            <span style="color:#5fc9b8;">x-formly-props</span><span style="color:#9a9388;"> · fusionado en props</span><br>
+            <span style="color:#5fc9b8;">x-hide-when</span><span style="color:#9a9388;"> · expressions.hide</span><br>
+            <span style="color:#5fc9b8;">x-required-when</span><span style="color:#9a9388;"> · props.required</span><br>
+            <span style="color:#5fc9b8;">x-disabled-when</span><span style="color:#9a9388;"> · props.disabled</span><br>
+            <span style="color:#5fc9b8;">x-discriminator</span><span style="color:#9a9388;"> · polimorfismo</span><br>
+            <span style="color:#5fc9b8;">x-relationships</span><span style="color:#9a9388;"> · relaciones ORM</span><br>
+            <span style="color:#5fc9b8;">x-foreign-key</span><span style="color:#9a9388;"> · FK por columna</span>
+          </div>
+
+          <div style="margin-top: 22px; font-size: 20px; color: var(--ink-2); line-height: 1.4;">Las pistas viajan en <span class="mono" style="font-size:17px;">json_schema_extra</span>: sobreviven a cualquier serialización o cacheo.</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 3 · Formly</div>
+        <div><span class="dot">●</span> &nbsp;16 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 17 · INCREMENTO 3 · NGT-DYNAMIC-FORM                              -->
+  <!-- ================================================================ -->
+  <section data-label="17 ngt-dynamic-form">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Incremento 3 · frontend</span></div>
+        <div>17</div>
+      </div>
+      <div class="eyebrow">§7.3.3.3 — §7.3.3.4 · Conversor y componente</div>
+      <h2 class="title">Una etiqueta, un formulario.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1.05fr 1fr; gap: 56px; flex:1; align-items:start;">
+
+        <!-- LEFT -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Conversor — schemaToFormly</div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule);">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">string</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">input</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">string + date-time</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">datepicker</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">string + enum</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">select</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">integer / number</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">input (number)</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">boolean</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">checkbox</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">object</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">fieldGroup</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div class="mono" style="font-size:17px;">array of object</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">repeat</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; padding: 14px 22px; align-items:center; background:rgba(30,58,138,0.04);">
+              <div class="mono" style="font-size:17px;">$ref interno</div>
+              <div class="mono" style="font-size:17px; color:var(--accent);">resuelve recursivamente</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 22px; font-size: 19px; color: var(--ink-2); line-height: 1.4;">Conversor puro, sin dependencia de UI. Validadores derivados de <span class="mono" style="font-size:16px;">minLength · maxLength · pattern · format</span>.</div>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Componente — &lt;ngt-dynamic-form&gt;</div>
+
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 26px 30px; font-family: var(--mono); font-size: 18px; line-height: 1.55; margin: 0; white-space: pre;"><span style="color:#9a9388;">&lt;</span><span style="color:#5fc9b8;">ngt-dynamic-form</span>
+  <span style="color:#9bbcd6;">entityPath</span>=<span style="color:#e9c897;">"/roles"</span>
+  <span style="color:#9bbcd6;">[(model)]</span>=<span style="color:#e9c897;">"model"</span>
+  <span style="color:#9bbcd6;">mode</span>=<span style="color:#e9c897;">"create"</span>
+  <span style="color:#9bbcd6;">(submitted)</span>=<span style="color:#e9c897;">"save($event)"</span><span style="color:#9a9388;">&gt;</span>
+<span style="color:#9a9388;">&lt;/</span><span style="color:#5fc9b8;">ngt-dynamic-form</span><span style="color:#9a9388;">&gt;</span></pre>
+
+          <div style="margin-top: 28px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div style="padding: 16px 18px; border:1px solid var(--rule); background:var(--bg-card);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">Modo</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 4px;">create</div>
+            </div>
+            <div style="padding: 16px 18px; border:1px solid var(--rule); background:var(--bg-card);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">Modo</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 4px;">edit</div>
+            </div>
+            <div style="padding: 16px 18px; border:1px solid var(--rule); background:var(--bg-card);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">Modo</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 4px;">view</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding: 22px 28px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+            <div style="font-family:var(--serif); font-size: 22px; font-style: italic; color: var(--ink-2); line-height: 1.4;">El componente compone <span class="mono" style="font-style:normal; font-size:18px; color:var(--ink);">DiscoveryService → SchemaService → schemaToFormly → EntityClient</span> sin acoplarse al dominio.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 3 · Formly</div>
+        <div><span class="dot">●</span> &nbsp;17 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 18 · INCREMENTO 4 · BUNDLE                                        -->
+  <!-- ================================================================ -->
+  <section data-label="18 Bundle ETag">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Incrementos</span><span class="chap">Incremento 4</span></div>
+        <div>18</div>
+      </div>
+      <div class="eyebrow">§7.3.4 · Generación automática de esquemas</div>
+      <h2 class="title">Bundle versionado, polimorfismo y relaciones.</h2>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: 1.1fr 1fr; gap: 56px; flex:1; align-items:start;">
+
+        <!-- LEFT: bundle code -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">GET /api/sys/schemas · bundle</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 26px 30px; font-family: var(--mono); font-size: 16px; line-height: 1.55; margin: 0; white-space: pre;">{ <span style="color:#9bbcd6;">"$schema"</span>: <span style="color:#e9c897;">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span style="color:#9bbcd6;">"version"</span>: <span style="color:#e9c897;">"9f3a1b2c4d5e6f70"</span>,    <span style="color:#9a9388;">// ETag</span>
+  <span style="color:#9bbcd6;">"generated_at"</span>: <span style="color:#e9c897;">"2026-05-11T10:38:02Z"</span>,
+  <span style="color:#9bbcd6;">"entities"</span>: {
+    <span style="color:#9bbcd6;">"roles"</span>: { <span style="color:#9bbcd6;">"type"</span>: <span style="color:#e9c897;">"object"</span>, ... },
+    <span style="color:#9bbcd6;">"identities"</span>: {
+      ...,
+      <span style="color:#5fc9b8;">"oneOf"</span>: [ ... ],
+      <span style="color:#5fc9b8;">"x-discriminator"</span>: {
+        <span style="color:#9bbcd6;">"propertyName"</span>: <span style="color:#e9c897;">"object_type_id"</span>,
+        <span style="color:#9bbcd6;">"mapping"</span>: { ... }
+      },
+      <span style="color:#5fc9b8;">"x-relationships"</span>: [ ... ]
+    }
+  } }</pre>
+
+          <div style="margin-top: 22px; display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="padding:18px 20px; background:rgba(30,58,138,0.08); border:1px solid var(--accent);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase; margin-bottom: 6px;">Caché</div>
+              <div style="font-size:19px; color:var(--ink); line-height:1.35;">Hash SHA-256 truncado, respuesta 304 ante If-None-Match.</div>
+            </div>
+            <div style="padding:18px 20px; background:var(--bg-card); border:1px solid var(--rule);">
+              <div class="mono" style="font-size:13px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 6px;">Determinista</div>
+              <div style="font-size:19px; color:var(--ink); line-height:1.35;">Variantes y relaciones ordenadas; ETag estable entre llamadas idénticas.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: explanation -->
+        <div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 18px;">Las dos piezas que cierran el incremento</div>
+
+          <div style="display:flex; flex-direction:column; gap: 22px;">
+            <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 26px 30px;">
+              <div style="font-family:var(--serif); font-size:26px; font-weight:500; margin-bottom: 10px;">Polimorfismo <span class="mono" style="font-size:18px; color:var(--accent); font-weight:400;">oneOf + x-discriminator</span></div>
+              <div style="font-size: 20px; color: var(--ink-2); line-height: 1.4;">Si la clase ORM es raíz de jerarquía, el esquema emite un <span class="mono" style="font-size:17px;">oneOf</span> con cada subclase y un discriminador deducido de <span class="mono" style="font-size:17px;">object_type_id</span>.</div>
+              <div style="margin-top:10px; font-size:18px; color:var(--ink-3); line-height:1.4;">Decisión: incrustar las variantes en lugar de <span class="mono" style="font-size:15px;">$ref</span> → bundle autocontenido.</div>
+            </div>
+
+            <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 26px 30px;">
+              <div style="font-family:var(--serif); font-size:26px; font-weight:500; margin-bottom: 10px;"><span class="mono" style="font-size:18px; color:var(--accent); font-weight:400;">x-relationships</span> &middot; relaciones ORM</div>
+              <div style="font-size: 20px; color: var(--ink-2); line-height: 1.4;">Cada <span class="mono" style="font-size:17px;">relationship()</span> se refleja: nombre, destino, dirección, FK locales y endpoint si está registrada.</div>
+            </div>
+
+            <div style="background:var(--bg-card); border:1px solid var(--accent); padding: 22px 28px;">
+              <div style="font-family:var(--serif); font-size: 20px; font-style: italic; color: var(--ink-2); line-height: 1.4;">Habilita codegen externo: tipos TypeScript, validadores, documentación, espejos de microservicios.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Incremento 4 · Bundle versionado</div>
+        <div><span class="dot">●</span> &nbsp;18 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 19 · PRUEBAS                                                       -->
+  <!-- ================================================================ -->
+  <section data-label="19 Pruebas">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Evaluación</span><span class="chap">Pruebas automatizadas</span></div>
+        <div>19</div>
+      </div>
+      <div class="eyebrow">§7.4 · Estrategia de pruebas</div>
+      <h2 class="title">Cobertura por incremento, backend y frontend.</h2>
+
+      <div style="margin-top: 48px;">
+        <table style="width:100%; border-collapse: collapse; font-size:21px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--ink); text-align:left;">
+              <th style="padding: 16px 14px 16px 0; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Inc.</th>
+              <th style="padding: 16px 14px; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Suite</th>
+              <th style="padding: 16px 14px; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Qué verifica</th>
+              <th style="padding: 16px 14px; font-family:var(--mono); font-weight:500; font-size:14px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Capa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--rule);">
+              <td class="mono" style="padding: 16px 14px 16px 0; color:var(--accent);">1</td>
+              <td class="mono" style="padding: 16px 14px;">test_initialization.py</td>
+              <td style="padding: 16px 14px; color:var(--ink-2);">Inicialización de base ORM y app FastAPI.</td>
+              <td style="padding: 16px 14px; text-align:center; color:var(--ink-3); font-size:18px;">backend</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule);">
+              <td class="mono" style="padding: 16px 14px 16px 0; color:var(--accent);">2</td>
+              <td class="mono" style="padding: 16px 14px;">test_envelope.py</td>
+              <td style="padding: 16px 14px; color:var(--ink-2);">Forma del envoltorio · 404 · validación · /sys/entities · schema.json.</td>
+              <td style="padding: 16px 14px; text-align:center; color:var(--ink-3); font-size:18px;">backend</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule);">
+              <td class="mono" style="padding: 16px 14px 16px 0; color:var(--accent);">2</td>
+              <td class="mono" style="padding: 16px 14px;">test_auth.py</td>
+              <td style="padding: 16px 14px; color:var(--ink-2);">Autenticación · modo local de desarrollo.</td>
+              <td style="padding: 16px 14px; text-align:center; color:var(--ink-3); font-size:18px;">backend</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule);">
+              <td class="mono" style="padding: 16px 14px 16px 0; color:var(--accent);">3</td>
+              <td class="mono" style="padding: 16px 14px;">test_form_schema.py</td>
+              <td style="padding: 16px 14px; color:var(--ink-2);">Pistas x-* en columnas datetime y FK · unit de _ui_hints_for_column.</td>
+              <td style="padding: 16px 14px; text-align:center; color:var(--ink-3); font-size:18px;">backend</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule);">
+              <td class="mono" style="padding: 16px 14px 16px 0; color:var(--accent);">3</td>
+              <td class="mono" style="padding: 16px 14px;">schema-to-formly.spec.ts</td>
+              <td style="padding: 16px 14px; color:var(--ink-2);">Tipos · enum · overrides · $ref · expresiones · modo view.</td>
+              <td style="padding: 16px 14px; text-align:center; color:var(--ink-3); font-size:18px;">frontend</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule); background: rgba(30,58,138,0.04);">
+              <td class="mono" style="padding: 18px 14px 18px 0; color:var(--accent); font-weight:600;">4</td>
+              <td class="mono" style="padding: 18px 14px; font-weight:600;">test_schema_bundle.py</td>
+              <td style="padding: 18px 14px; color:var(--ink);">Versión estable · ETag round-trip (304) · sensibilidad del hash · oneOf + x-discriminator · x-relationships.</td>
+              <td style="padding: 18px 14px; text-align:center; color:var(--ink-3); font-size:18px;">backend</td>
+            </tr>
+            <tr style="background: rgba(30,58,138,0.04);">
+              <td class="mono" style="padding: 18px 14px 18px 0; color:var(--accent); font-weight:600;">4</td>
+              <td class="mono" style="padding: 18px 14px; font-weight:600;">schema-to-formly.spec.ts</td>
+              <td style="padding: 18px 14px; color:var(--ink);">Robustez ante raíz polimórfica (no rompe, no filtra variantes).</td>
+              <td style="padding: 18px 14px; text-align:center; color:var(--ink-3); font-size:18px;">frontend</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 32px; font-size: 21px; color: var(--ink-2); line-height:1.45; max-width: 1600px;">
+        La estrategia combina <span style="color:var(--ink); font-weight:500;">unit tests</span> de las piezas puras (heurística, conversor) con <span style="color:var(--ink); font-weight:500;">integración</span> de la API sobre PostgreSQL en memoria — cubre los puntos donde un cambio del modelo podría romper la cadena.
+      </div>
+
+      <div class="footer">
+        <div>V · Evaluación</div>
+        <div><span class="dot">●</span> &nbsp;19 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 20 · RESULTADOS · ANTES / DESPUÉS                                  -->
+  <!-- ================================================================ -->
+  <section data-label="20 Antes Despues">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Resultados</span><span class="chap">Antes / después</span></div>
+        <div>20</div>
+      </div>
+      <div class="eyebrow">§8.2.1 · El resultado más significativo</div>
+      <h2 class="title">Exponer y editar una entidad nueva.</h2>
+
+      <div style="margin-top: 48px; flex:1;">
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);">
+          <div style="padding: 18px 24px 14px; font-family:var(--mono); font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; border-right:1px solid var(--rule);">Tarea</div>
+          <div style="padding: 18px 24px 14px; font-family:var(--mono); font-size:14px; letter-spacing:0.12em; color:var(--err); text-transform:uppercase; border-right:1px solid var(--rule);">Antes</div>
+          <div style="padding: 18px 24px 14px; font-family:var(--mono); font-size:14px; letter-spacing:0.12em; color:var(--ok); text-transform:uppercase;">Después</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-bottom: 1px solid var(--rule); align-items:center;">
+          <div style="padding: 18px 24px; font-family:var(--serif); font-size:24px; font-weight:500; border-right:1px solid var(--rule);">Endpoints CRUD</div>
+          <div style="padding: 18px 24px; color:var(--ink-2); font-size:21px; border-right:1px solid var(--rule);">Router escrito a mano</div>
+          <div style="padding: 18px 24px; font-size:21px;"><span class="mono" style="color:var(--accent); font-size:18px;">make_simple_rest_crud()</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-bottom: 1px solid var(--rule); align-items:center;">
+          <div style="padding: 18px 24px; font-family:var(--serif); font-size:24px; font-weight:500; border-right:1px solid var(--rule);">Validación</div>
+          <div style="padding: 18px 24px; color:var(--ink-2); font-size:21px; border-right:1px solid var(--rule);">Esquemas Pydantic a mano</div>
+          <div style="padding: 18px 24px; font-size:21px;">Derivada del ORM</div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-bottom: 1px solid var(--rule); align-items:center;">
+          <div style="padding: 18px 24px; font-family:var(--serif); font-size:24px; font-weight:500; border-right:1px solid var(--rule);">Contrato / errores</div>
+          <div style="padding: 18px 24px; color:var(--ink-2); font-size:21px; border-right:1px solid var(--rule);">Ad hoc por endpoint</div>
+          <div style="padding: 18px 24px; font-size:21px;"><span class="mono" style="color:var(--accent); font-size:18px;">ResponseEnvelope</span> uniforme</div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-bottom: 1px solid var(--rule); align-items:center;">
+          <div style="padding: 18px 24px; font-family:var(--serif); font-size:24px; font-weight:500; border-right:1px solid var(--rule);">Cliente frontend</div>
+          <div style="padding: 18px 24px; color:var(--ink-2); font-size:21px; border-right:1px solid var(--rule);">Método dedicado en <span class="mono" style="font-size:18px;">BackendService</span></div>
+          <div style="padding: 18px 24px; font-size:21px;"><span class="mono" style="color:var(--accent); font-size:18px;">EntityClient.for(path)</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; border-bottom: 1px solid var(--rule); align-items:center;">
+          <div style="padding: 18px 24px; font-family:var(--serif); font-size:24px; font-weight:500; border-right:1px solid var(--rule);">Formulario</div>
+          <div style="padding: 18px 24px; color:var(--ink-2); font-size:21px; border-right:1px solid var(--rule);">HTML + lógica por campo</div>
+          <div style="padding: 18px 24px; font-size:21px;"><span class="mono" style="color:var(--accent); font-size:18px;">&lt;ngt-dynamic-form entityPath&gt;</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.05fr 1.05fr; gap: 0; align-items:center; background: rgba(30,58,138,0.05);">
+          <div style="padding: 20px 24px; font-family:var(--serif); font-size:26px; font-weight:600; border-right:1px solid var(--rule);">Coste ante cambio del modelo</div>
+          <div style="padding: 20px 24px; color:var(--err); font-size:22px; font-weight:500; border-right:1px solid var(--rule);">Propagación manual a 3 capas</div>
+          <div style="padding: 20px 24px; color:var(--ok); font-size:22px; font-weight:600;">Automática desde el ORM</div>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; padding-top: 24px; font-family:var(--serif); font-size: 24px; font-style:italic; color: var(--ink-2); line-height:1.4; max-width: 1600px; border-top: 1px solid var(--rule);">
+        El esfuerzo deja de crecer con el número de entidades y con la frecuencia de cambios del modelo.
+      </div>
+
+      <div class="footer">
+        <div>V · Resultados</div>
+        <div><span class="dot">●</span> &nbsp;20 / 22</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================================================================ -->
+  <!-- 21 · DEMO EN VIVO                                                  -->
+  <!-- ================================================================ -->
+  <section data-label="21 Demo">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Resultados</span><span class="chap">Demo en vivo</span></div>
+        <div>21</div>
+      </div>
+      <div class="eyebrow">§8.3 · Validación práctica</div>
+
+      <div style="flex:1; display:grid; grid-template-columns: 1.15fr 1fr; gap: 80px; align-items:center; padding-top: 40px;">
+        <div>
+          <div style="font-family: var(--serif); font-weight: 500; font-size: 280px; line-height: 0.92; letter-spacing: -0.035em; color: var(--ink);">Demo<span style="color: var(--accent-2);">.</span></div>
+          <div style="margin-top: 36px; font-family: var(--serif); font-style: italic; font-size: 34px; line-height: 1.35; color: var(--ink-2); max-width: 720px;">Una entidad nueva &mdash; del modelo ORM al formulario renderizado.</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap: 0; border-top: 1px solid var(--ink);">
+          <div style="display:grid; grid-template-columns: 56px 1fr; gap: 24px; padding: 26px 4px; border-bottom: 1px solid var(--rule); align-items:baseline;">
+            <div class="mono" style="font-size: 14px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;">01</div>
+            <div>
+              <div style="font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.2;">Declarar el modelo</div>
+              <div class="mono" style="font-size: 16px; color: var(--ink-3); margin-top: 6px;">class MiEntidad(orm_base): ...</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 56px 1fr; gap: 24px; padding: 26px 4px; border-bottom: 1px solid var(--rule); align-items:baseline;">
+            <div class="mono" style="font-size: 14px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;">02</div>
+            <div>
+              <div style="font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.2;">CRUD &middot; contrato &middot; esquema</div>
+              <div class="mono" style="font-size: 16px; color: var(--ink-3); margin-top: 6px;">make_simple_rest_crud(MiEntidad, "/mi-entidad")</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 56px 1fr; gap: 24px; padding: 26px 4px; border-bottom: 1px solid var(--rule); align-items:baseline;">
+            <div class="mono" style="font-size: 14px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase;">03</div>
+            <div>
+              <div style="font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.2;">Formulario generado</div>
+              <div class="mono" style="font-size: 16px; color: var(--ink-3); margin-top: 6px;">&lt;ngt-dynamic-form entityPath="/mi-entidad"&gt;</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 56px 1fr; gap: 24px; padding: 26px 4px; align-items:baseline;">
+            <div class="mono" style="font-size: 14px; letter-spacing: 0.12em; color: var(--accent-2); text-transform: uppercase;">→</div>
+            <div style="font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--ink-2); line-height: 1.4;">Cero líneas de pegamento entre capas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>V · Resultados</div>
+        <div><span class="dot">●</span> &nbsp;21 / 22</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- 22 · CIERRE                                                        -->
+  <!-- ================================================================ -->
+  <section data-label="22 Cierre">
+    <style>
+      .closer { position:absolute; inset:0; display:grid; grid-template-columns: 1.1fr 1fr; background:var(--bg-deep); color:#e9e6df; }
+      .closer .l { padding: 100px 80px 80px 100px; display:flex; flex-direction:column; justify-content:space-between; gap: 36px; }
+      .closer .r { padding: 100px 100px 80px 56px; display:flex; flex-direction:column; justify-content:space-between; border-left: 1px solid rgba(255,255,255,0.10); position:relative; }
+      .closer h1 { font-family: var(--serif); font-weight: 500; font-size: 168px; line-height: 0.95; letter-spacing: -0.025em; color: #fff; margin: 0; }
+      .closer h1 .acc { color: var(--accent-2); font-style: italic; }
+      .closer .crest { font-family: var(--mono); font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: #9a9388; }
+      .closer .meta { font-family: var(--mono); font-size: 17px; letter-spacing: 0.04em; color: #c7c2b6; line-height: 1.95; }
+      .closer .meta b { color: #fff; font-weight: 500; }
+      .closer .lede { font-family: var(--serif); font-size: 28px; line-height: 1.35; color: #c7c2b6; font-style: italic; max-width: 560px; }
+      .closer .qa { font-family: var(--mono); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-2); }
+
+      .closer .future { display:flex; flex-direction:column; gap: 16px; }
+      .closer .future .item { display:flex; gap: 14px; align-items:flex-start; }
+      .closer .future .item .b { font-family: var(--mono); font-size: 14px; color: var(--accent-2); padding-top:3px; letter-spacing:0.06em; }
+      .closer .future .item .t { font-size: 18px; color: #c7c2b6; line-height: 1.4; }
+      .closer .future .item .t b { color: #fff; font-weight: 500; }
+    </style>
+    <div class="closer">
+      <div class="l">
+        <div class="crest">Defensa TFG · 22 / 22</div>
+        <h1>Gracias.<br><span class="acc">¿Preguntas?</span></h1>
+        <div style="font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.45; color: #c7c2b6; max-width: 580px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,0.18);">
+          Mi agradecimiento a <b style="color:#fff; font-weight: 500;">Rafael Juan Nebot Medina</b>, tutor de empresa, y a <b style="color:#fff; font-weight: 500;">María Dolores Afonso Suárez</b>, tutora académica, por su orientación a lo largo del trabajo.
+        </div>
+        <div class="meta">
+          <div><b>Nicolás Rey Alonso</b></div>
+          <div>Empresa colaboradora · Instituto Tecnológico de Canarias</div>
+          <div style="margin-top:6px;">ULPGC · EII · Febrero 2026</div>
+        </div>
+      </div>
+      <div class="r">
+        <div class="qa">Líneas futuras</div>
+        <div>
+          <div class="lede">«El modelo ORM como única fuente: el resto se deriva.»</div>
+        </div>
+        <div class="future">
+          <div class="item"><div class="b">01</div><div class="t"><b>Codegen</b> de tipos TypeScript y documentación desde el bundle.</div></div>
+          <div class="item"><div class="b">02</div><div class="t">Migración progresiva del <b>BackendService heredado</b> a EntityClient.</div></div>
+          <div class="item"><div class="b">03</div><div class="t">Soporte de <b>oneOf / anyOf</b> en el conversor a Formly + overrides por path.</div></div>
+          <div class="item"><div class="b">04</div><div class="t">Vistas de <b>listado y tabla</b> guiadas por esquema, con la misma filosofía.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</deck-stage>
+
+<div id="tweaks-root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+
+<script>
+/* Presentación a pantalla completa: el índice de diapositivas arranca oculto
+   y se muestra/oculta con la tecla F. Solo se activa cuando el archivo se abre
+   directamente (doble clic), no dentro del editor — así no interfiere al editar. */
+(function () {
+  var standalone = window.self === window.top;
+  if (!standalone) return;
+  var railVisible = false;
+  function setRail(on) { window.postMessage({ type: '__deck_rail_visible', on: on }, '*'); }
+  window.addEventListener('load', function () { setTimeout(function () { setRail(false); }, 60); });
+  window.addEventListener('keydown', function (e) {
+    if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      railVisible = !railVisible;
+      setRail(railVisible);
+      e.preventDefault();
+    }
+  });
+})();
+</script>
+</body>
+</html>

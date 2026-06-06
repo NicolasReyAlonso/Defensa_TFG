@@ -1,0 +1,1770 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Defensa TFG · Nicolás Rey Alonso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style id="tweaks-css">
+  /* ─── ATMÓSFERA ─────────────────────────────────────────────────── */
+  html[data-mood="editorial"] {
+    --bg: #ffffff;
+    --bg-card: #fafaf7;
+    --bg-deep: #0a0a0a;
+    --ink: #0a0a0a;
+    --ink-2: #262626;
+    --ink-3: #737373;
+    --rule: #d4d4d4;
+    --rule-strong: #525252;
+    --accent: #c2410c;
+    --accent-2: #be185d;
+  }
+  html[data-mood="nocturne"] {
+    --bg: #0f1115;
+    --bg-card: #1a1d23;
+    --bg-deep: #050608;
+    --ink: #ede6d3;
+    --ink-2: #b8b0a0;
+    --ink-3: #7a7466;
+    --rule: #2a2e36;
+    --rule-strong: #4a4e56;
+    --accent: #f4a261;
+    --accent-2: #e76f51;
+  }
+  /* In nocturne, surfaces that hard-code dark backgrounds should invert */
+  html[data-mood="nocturne"] deck-stage > section { background: var(--bg) !important; color: var(--ink); }
+
+  /* ─── VOZ TIPOGRÁFICA ───────────────────────────────────────────── */
+  html[data-voice="editorial"] {
+    --serif: "Instrument Serif", "IBM Plex Serif", Georgia, serif;
+    --sans:  "Space Grotesk", "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  html[data-voice="editorial"] .title,
+  html[data-voice="editorial"] h1,
+  html[data-voice="editorial"] h2 {
+    font-weight: 400 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 0.98 !important;
+  }
+  html[data-voice="editorial"] .title em,
+  html[data-voice="editorial"] h1 em {
+    font-style: italic !important;
+  }
+
+  html[data-voice="technical"] {
+    --serif: "IBM Plex Mono", ui-monospace, monospace;
+    --sans:  "IBM Plex Mono", ui-monospace, monospace;
+  }
+  html[data-voice="technical"] body,
+  html[data-voice="technical"] deck-stage > section {
+    font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+  }
+  html[data-voice="technical"] .title,
+  html[data-voice="technical"] h1,
+  html[data-voice="technical"] h2,
+  html[data-voice="technical"] h3,
+  html[data-voice="technical"] h4 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.02em !important;
+    text-transform: none;
+  }
+  html[data-voice="technical"] .eyebrow {
+    text-transform: uppercase !important;
+  }
+
+  /* ─── DENSIDAD ──────────────────────────────────────────────────── */
+  html[data-density="tight"] {
+    --pad-x: 72px;
+    --pad-top: 56px;
+    --pad-bottom: 52px;
+    --type-title: 48px;
+    --type-subtitle: 30px;
+    --type-body: 22px;
+    --gap-title: 28px;
+  }
+  html[data-density="tight"] .frame { padding: 56px 72px 52px !important; }
+  html[data-density="tight"] .topbar { margin-bottom: 36px !important; padding-bottom: 12px !important; }
+  html[data-density="tight"] .eyebrow { margin-bottom: 18px !important; }
+
+  html[data-density="generous"] {
+    --pad-x: 150px;
+    --pad-top: 130px;
+    --pad-bottom: 110px;
+    --type-title: 76px;
+    --type-subtitle: 46px;
+    --type-body: 32px;
+    --gap-title: 64px;
+  }
+  html[data-density="generous"] .frame { padding: 130px 150px 110px !important; }
+  html[data-density="generous"] .topbar { margin-bottom: 80px !important; padding-bottom: 22px !important; }
+  html[data-density="generous"] .eyebrow { margin-bottom: 40px !important; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --bg: #f6f3ec;
+    --bg-card: #ffffff;
+    --bg-deep: #11161d;
+    --ink: #15181c;
+    --ink-2: #3a4049;
+    --ink-3: #6a7280;
+    --rule: #d9d3c4;
+    --rule-strong: #9a9388;
+    --accent: #1e3a8a;
+    --accent-2: #b25216;
+    --ok: #2f6b3a;
+    --warn: #b45309;
+    --err: #9b2218;
+
+    --type-display: 84px;
+    --type-title: 60px;
+    --type-subtitle: 40px;
+    --type-body: 28px;
+    --type-small: 22px;
+    --type-micro: 18px;
+    --type-mono: 22px;
+
+    --pad-x: 110px;
+    --pad-top: 90px;
+    --pad-bottom: 80px;
+    --gap-title: 44px;
+    --gap-item: 24px;
+
+    --sans: "IBM Plex Sans", -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif: "IBM Plex Serif", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  html, body { margin:0; padding:0; background:#0a0c10; color:var(--ink); font-family:var(--sans); }
+
+  deck-stage > section {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    line-height: 1.4;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ---------- shared chrome ---------- */
+  .frame {
+    position:absolute; inset:0;
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    display:flex; flex-direction:column;
+  }
+  .topbar {
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 18px;
+    margin-bottom: 56px;
+    white-space: nowrap;
+  }
+  .topbar .left { display:flex; gap:36px; align-items:baseline; white-space: nowrap; }
+  .topbar .chap { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  .footer {
+    position:absolute; left: var(--pad-x); right: var(--pad-x); bottom: 36px;
+    display:flex; justify-content:space-between;
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+  .footer .dot { color: var(--accent-2); }
+
+  /* ---------- typography ---------- */
+  h1, h2, h3, h4, p, ul, ol, li { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-2);
+    margin-bottom: 28px;
+  }
+  .title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: var(--type-title);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 1500px;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: var(--type-subtitle);
+    font-weight: 400;
+    color: var(--ink-2);
+    line-height: 1.2;
+    margin-top: 22px;
+    max-width: 1400px;
+    text-wrap: pretty;
+  }
+  .lede {
+    font-size: 32px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 1400px;
+    text-wrap: pretty;
+  }
+  .mono { font-family: var(--mono); }
+  .num  { font-variant-numeric: tabular-nums; }
+
+  /* utility */
+  .row { display:flex; gap:48px; }
+  .col { flex:1; min-width:0; }
+  .pad-l { padding-left: 56px; border-left: 1px solid var(--rule); }
+  .stack-sm > * + * { margin-top: 14px; }
+  .stack-md > * + * { margin-top: 22px; }
+  .stack-lg > * + * { margin-top: 36px; }
+  .pill {
+    display:inline-block;
+    font-family: var(--mono);
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    color: var(--ink-2);
+  }
+</style>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Buenos días. Mi nombre es Nicolás Rey Alonso y voy a presentar el Trabajo Fin de Grado titulado 'Framework backend Python y frontend Angular para el desarrollo rápido de aplicaciones web', tutorizado por María Dolores Alfonso Suárez como tutora académica y por Rafael Nebot Medina como tutor de empresa, y desarrollado en colaboración con el Instituto Tecnológico de Canarias.",
+  "La presentación se estructura en cinco bloques: el contexto y la motivación del proyecto, el estado del arte y las tecnologías empleadas, la arquitectura del sistema, los detalles de implementación más relevantes, y finalmente la evaluación y las conclusiones.",
+  "El proyecto nace de mi estancia de prácticas en el ITC. Allí desarrollé ngt-gui, una librería frontend Angular pensada para acelerar el desarrollo de aplicaciones internas. Sin embargo, la librería estaba acoplada a un backend concreto, lo que limitaba mucho su reutilización. De esa limitación nace la idea de convertirlo en un framework completo, con backend y frontend integrados, y formalizarlo como Trabajo Fin de Grado.",
+  "El problema concreto es que cualquier nueva entidad implica repetir el mismo trabajo en tres capas: modelo de datos, endpoints CRUD y vistas de UI. Esa duplicación es lenta y propicia inconsistencias. La hipótesis del trabajo es que, partiendo de un único modelo de datos, podemos derivar automáticamente tanto la API como la interfaz. Y el contrato que hace posible esa derivación es JSON Schema.",
+  "El objetivo general es diseñar, implementar y validar el framework. Se concreta en seis objetivos específicos: la tubería de transformación de esquemas, el sistema de plugins, los componentes Angular reutilizables, el editor visual de esquemas, el empaquetado Docker y la validación mediante pruebas y un caso de uso real en el ITC.",
+  "En el estado del arte se analizaron las principales soluciones RAD de código abierto. Django Admin y Rails Scaffold están muy acoplados a su stack y no son extensibles a otros entornos. Las plataformas low-code como Retool o Appsmith son potentes, pero son cerradas, basadas en SaaS, y difíciles de integrar en arquitecturas propias. La propuesta del TFG ocupa el hueco intermedio: un framework abierto, dirigido por esquema y embebible en proyectos existentes.",
+  "El stack se eligió buscando la integración natural entre capas. En backend, FastAPI y Pydantic permiten generar JSON Schema sin esfuerzo, y SQLAlchemy 2 expone los metadatos necesarios para introspeccionar el modelo. En frontend, Angular 19 con standalone components, Angular Formly para formularios declarativos, y AG Grid Community para la edición masiva tipo Excel.",
+  "Esta es la visión global del sistema. Tres capas: base de datos PostgreSQL, backend uniback que expone la API REST y los esquemas, y frontend ngt-gui que los consume para renderizar tablas, formularios y cuadrículas dinámicamente. Todo orquestado mediante Docker Compose.",
+  "Y este es el núcleo conceptual del proyecto: la tubería de transformación de esquemas. Partimos del modelo SQLAlchemy, lo convertimos en un modelo Pydantic, generamos el JSON Schema estándar, y los plugins añaden anotaciones x-* propias de OpenAPI. El resultado se ensambla en una definición de pantalla que el frontend consume directamente, sin tocar el código Angular.",
+  "El sistema de plugins por capas implementa el patrón Chain of Responsibility. Cada plugin recibe el esquema, lo enriquece y lo pasa al siguiente, ordenados por prioridad. Hay seis plugins en producción: etiquetas, claves foráneas, validadores, widgets, sólo lectura y orden. Añadir un comportamiento nuevo no requiere modificar el núcleo del generador.",
+  "El backend se organiza en módulos claros: la fábrica de routers CRUD, el generador de esquemas, los plugins, y los endpoints especiales de pantallas dinámicas y operaciones en bloque. Registrar una nueva entidad requiere literalmente dos líneas de código: definir el modelo y llamar a make_simple_rest_crud.",
+  "El frontend, ngt-gui, es una librería Angular distribuida como paquete npm. Tiene tres componentes clave: DynamicPage que actúa como enrutador de vistas, DynamicForm para formularios declarativos con Formly, y BulkEditGrid para la edición masiva tipo Excel sobre AG Grid. Todos los componentes son standalone y se inyectan a través de tokens opacos para máxima reutilización.",
+  "El endpoint de operaciones en bloque permite combinar creaciones, actualizaciones y eliminaciones en una sola petición. Tiene dos modos transaccionales: 'partial', donde cada operación se aísla con un savepoint SQL para que un error no afecte al resto, y 'abort', donde un error revierte toda la petición. Esta semántica configurable resulta clave para la importación masiva de datos.",
+  "El flujo de una pantalla dinámica es completamente declarativo. El usuario navega a una URL, un resolver Angular pide la definición de pantalla al backend, y DynamicPage selecciona el componente adecuado según screen_type. El backend decide qué vista mostrar; el frontend la renderiza. La lógica vive en el contrato, no en el código.",
+  "La estrategia de pruebas sigue la pirámide clásica. En backend, pruebas unitarias para la tubería de transformación, pruebas de integración para los endpoints con PostgreSQL real en contenedor, y cobertura sobre los módulos críticos. En frontend, pruebas unitarias con Jasmine y guiones de prueba manuales para los flujos principales.",
+  "Revisando los seis objetivos específicos: la tubería, los plugins, los componentes Angular, el empaquetado Docker y la validación están completados. El Formly Editor, el editor visual de esquemas, está estructuralmente completo con la vista previa en vivo funcional, y queda pendiente cerrar la persistencia de cambios en el backend.",
+  "Las aportaciones principales son cuatro: reducción drástica del tiempo de scaffolding, un contrato de datos unificado vía JSON Schema, extensibilidad sin acoplamiento gracias a los plugins y los tokens de inyección, y operaciones en bloque con semántica transaccional configurable. El framework ya está siendo utilizado en un proyecto real del ITC.",
+  "Como líneas de trabajo futuro: a corto plazo, completar el Formly Editor y publicar la librería en el registro npm interno. A medio plazo, soporte multi-base-de-datos y un módulo de autenticación propio. A largo plazo, escalabilidad horizontal mediante caché de esquemas, un marketplace de plugins, y la generación automática de un SDK cliente TypeScript a partir del OpenAPI.",
+  "Muchas gracias por su atención. Quedo a disposición del tribunal para responder a las preguntas que consideren oportunas."
+]
+</script>
+</head>
+
+<body>
+<deck-stage width="1920" height="1080">
+
+  <!-- ============================================== -->
+  <!-- 01 · PORTADA                                    -->
+  <!-- ============================================== -->
+  <section data-label="01 Portada">
+    <style>
+      .cover { position:absolute; inset:0; display:grid; grid-template-columns: 1fr 1fr; }
+      .cover .left { padding: 90px 90px 80px 110px; display:flex; flex-direction:column; justify-content:space-between; background: var(--bg); }
+      .cover .right { background: var(--bg-deep); color:#e9e6df; padding: 90px 110px 80px 90px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+      .cover .crest { display:flex; align-items:center; }
+      .cover .crest img { height: 110px; width: auto; display:block; }
+      .cover h1 { font-family: var(--serif); font-weight: 500; font-size: 78px; line-height: 1.0; letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+      .cover h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+      .cover .sub { font-size: 28px; color: var(--ink-2); margin-top: 36px; max-width: 660px; }
+      .cover .meta { font-family: var(--mono); font-size: 19px; letter-spacing: 0.04em; color: var(--ink-3); line-height: 1.95; }
+      .cover .meta b { color: var(--ink); font-weight: 600; }
+
+      .cover .markmark { position:absolute; right:-180px; bottom:-180px; width:780px; height:780px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
+      .cover .markmark::before { content:""; position:absolute; inset: 80px; border-radius:50%; border: 1px solid rgba(255,255,255,0.06); }
+      .cover .markmark::after { content:""; position:absolute; inset: 160px; border-radius:50%; border: 1px solid rgba(255,255,255,0.04); }
+      .cover .glyph { position: relative; z-index: 1; font-family: var(--serif); font-size: 240px; line-height: 1; color: #e9e6df; font-weight: 300; letter-spacing: -0.02em; }
+      .cover .glyph .slash { color: #b25216; }
+      .cover .tags { display:flex; gap:10px; flex-wrap:wrap; }
+      .cover .tag { font-family: var(--mono); font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6; }
+      .cover .rday { font-family: var(--mono); font-size: 18px; color: #9a9388; letter-spacing: 0.16em; text-transform: uppercase; }
+    </style>
+    <div class="cover">
+      <div class="left">
+        <div class="crest"><img src="assets/ulpgc-eii.png" alt="Universidad de Las Palmas de Gran Canaria · Escuela de Ingeniería Informática"></div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 19px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 36px; font-weight: 500;">Trabajo Fin de Grado</div>
+          <h1>Framework <em>backend Python</em> y <em>frontend Angular</em> para el desarrollo rápido de aplicaciones web</h1>
+          <div class="sub">Diseño, implementación y validación de un sistema RAD dirigido por esquemas.</div>
+        </div>
+        <div class="meta">
+          <div><b>Autor</b>&nbsp;&nbsp;Nicolás Rey Alonso</div>
+          <div><b>Tutora académica</b>&nbsp;&nbsp;María Dolores Alfonso Suárez</div>
+          <div><b>Tutor de empresa</b>&nbsp;&nbsp;Rafael Nebot Medina</div>
+          <div><b>Empresa colaboradora</b>&nbsp;&nbsp;Instituto Tecnológico de Canarias</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="rday">Convocatoria · Junio 2026</div>
+        <div style="display:flex; align-items:center; justify-content:center; flex:1;">
+          <div class="markmark"></div>
+          <div class="glyph" style="font-size: 200px">uni<span class="slash">/</span>Works</div>
+        </div>
+        <div class="tags">
+          <span class="tag">FastAPI</span>
+          <span class="tag">SQLAlchemy 2</span>
+          <span class="tag">JSON Schema</span>
+          <span class="tag">Angular 19</span>
+          <span class="tag">Formly</span>
+          <span class="tag">AG Grid</span>
+          <span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 02 · ÍNDICE                                     -->
+  <!-- ============================================== -->
+  <section data-label="02 Indice">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>Defensa TFG</span><span class="chap">Índice</span></div>
+        <div>Nicolás Rey Alonso · ULPGC · 2026</div>
+      </div>
+      <div class="eyebrow">02 · Estructura de la presentación</div>
+      <h2 class="title">Cinco bloques, una historia.</h2>
+      <div class="subtitle">Del problema al sistema validado.</div>
+
+      <div style="margin-top: 64px; display:grid; grid-template-columns: repeat(5, 1fr); gap: 36px;">
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">I · §1–2</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 14px; line-height:1.1;">Contexto<br>y motivación</div>
+          <div style="color:var(--ink-3); font-size:20px; margin-top: 18px;">Origen, problema, objetivos.</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">II · §4</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 14px; line-height:1.1;">Estado<br>del arte</div>
+          <div style="color:var(--ink-3); font-size:20px; margin-top: 18px;">RAD y tecnologías.</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">III · §5</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 14px; line-height:1.1;">Arquitectura<br>del sistema</div>
+          <div style="color:var(--ink-3); font-size:20px; margin-top: 18px;">Tubería de esquemas, plugins.</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">IV · §6</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 14px; line-height:1.1;">Implementación</div>
+          <div style="color:var(--ink-3); font-size:20px; margin-top: 18px;">uniback, ngt-gui, /bulk.</div>
+        </div>
+        <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">V · §7–8</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 14px; line-height:1.1;">Evaluación<br>y conclusiones</div>
+          <div style="color:var(--ink-3); font-size:20px; margin-top: 18px;">Pruebas, objetivos, futuro.</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>uniback · ngt-gui</div>
+        <div><span class="dot">●</span> &nbsp;02 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 03 · ORIGEN DEL PROYECTO                        -->
+  <!-- ============================================== -->
+  <section data-label="03 Origen">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Contexto</span><span class="chap">Origen del proyecto</span></div>
+        <div>03</div>
+      </div>
+      <div class="eyebrow">§1 · Prefacio</div>
+      <h2 class="title">Del trabajo de prácticas al framework completo.</h2>
+
+      <div style="margin-top: 64px; display:grid; grid-template-columns: 1fr 1.05fr; gap: 80px; flex:1; align-items:start;">
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Línea temporal</div>
+          <div style="position:relative; padding-left: 40px;">
+            <div style="position:absolute; left:9px; top:14px; bottom:14px; width:1px; background: var(--rule-strong);"></div>
+
+            <div style="position:relative; margin-bottom: 44px;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--ink-3); text-transform:uppercase;">2025 — Prácticas ITC</div>
+              <div style="font-size: 26px; font-weight:500; margin-top: 6px;">Librería <span class="mono" style="color:var(--accent);">ngt-gui</span></div>
+              <div style="font-size: 22px; color: var(--ink-2); margin-top: 8px;">Componentes Angular reutilizables sobre un backend específico (NextGenDem).</div>
+            </div>
+
+            <div style="position:relative; margin-bottom: 44px;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--ink-3); text-transform:uppercase;">Limitación detectada</div>
+              <div style="font-size: 26px; font-weight:500; margin-top: 6px;">Acoplamiento al backend</div>
+              <div style="font-size: 22px; color: var(--ink-2); margin-top: 8px;">Reutilizar la librería implicaba reescribir mucho código en cada arquitectura nueva.</div>
+            </div>
+
+            <div style="position:relative;">
+              <div style="position:absolute; left:-40px; top:6px; width:18px; height:18px; border-radius:50%; background:var(--accent-2); border:2px solid var(--accent-2);"></div>
+              <div style="font-family:var(--mono); font-size:14px; letter-spacing:0.08em; color:var(--accent-2); text-transform:uppercase;">2026 — TFG</div>
+              <div style="font-size: 26px; font-weight:500; margin-top: 6px;">Framework completo: <span class="mono">uniback + ngt-gui</span></div>
+              <div style="font-size: 22px; color: var(--ink-2); margin-top: 8px;">Backend Python y frontend Angular acoplados por un único contrato: JSON Schema.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 48px;">
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Estado previo al TFG</div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0;">
+            <div style="border-right:1px solid var(--rule); padding-right: 32px;">
+              <div style="font-family:var(--serif); font-size:30px; font-weight:500; margin-bottom: 14px;">ngt-gui</div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.08em; color:var(--accent); text-transform:uppercase; margin-bottom: 14px;">Autoría plena</div>
+              <ul style="font-size: 20px; line-height: 1.55; color: var(--ink-2);">
+                <li>✓ Tablas dinámicas, filtros</li>
+                <li>✓ Navegación lateral</li>
+                <li>✓ Formularios básicos</li>
+                <li style="color:var(--err); margin-top: 10px;">— Formularios declarativos</li>
+                <li style="color:var(--err);">— Edición masiva</li>
+              </ul>
+            </div>
+            <div style="padding-left: 32px;">
+              <div style="font-family:var(--serif); font-size:30px; font-weight:500; margin-bottom: 14px;">uniback</div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.08em; color:var(--accent); text-transform:uppercase; margin-bottom: 14px;">Código base ITC</div>
+              <ul style="font-size: 20px; line-height: 1.55; color: var(--ink-2);">
+                <li>✓ Autenticación JWT</li>
+                <li>✓ Gestión de errores</li>
+                <li>✓ Contenedores Docker</li>
+                <li style="color:var(--err); margin-top: 10px;">— Generación de esquemas</li>
+                <li style="color:var(--err);">— Sistema de plugins</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>I · Contexto y motivación</div>
+        <div><span class="dot">●</span> &nbsp;03 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 04 · MOTIVACIÓN                                 -->
+  <!-- ============================================== -->
+  <section data-label="04 Motivacion">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Contexto</span><span class="chap">Motivación</span></div>
+        <div>04</div>
+      </div>
+      <div class="eyebrow">§2.1 · Motivación</div>
+      <h2 class="title">Cada entidad nueva implica repetir el mismo trabajo en tres capas.</h2>
+
+      <div style="margin-top: 72px; display:grid; grid-template-columns: 1.05fr auto 1fr; gap: 56px; align-items:center;">
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--err); text-transform:uppercase; margin-bottom: 22px;">Enfoque convencional</div>
+          <div style="background: var(--bg-card); border: 1px solid var(--rule); padding: 36px;">
+            <div style="display:flex; flex-direction:column; gap: 16px;">
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:14px; width:90px; color:var(--ink-3);">MODELO</div>
+                <div style="flex:1; height:46px; background: repeating-linear-gradient(45deg, transparent 0 8px, rgba(155, 34, 24, 0.08) 8px 14px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:14px; width:90px; color:var(--ink-3);">API</div>
+                <div style="flex:1; height:46px; background: repeating-linear-gradient(45deg, transparent 0 8px, rgba(155, 34, 24, 0.08) 8px 14px); border:1px solid #d8c8c5;"></div>
+              </div>
+              <div style="display:flex; gap:18px; align-items:center;">
+                <div class="mono" style="font-size:14px; width:90px; color:var(--ink-3);">UI</div>
+                <div style="flex:1; height:46px; background: repeating-linear-gradient(45deg, transparent 0 8px, rgba(155, 34, 24, 0.08) 8px 14px); border:1px solid #d8c8c5;"></div>
+              </div>
+            </div>
+            <div style="margin-top: 28px; font-size:22px; color:var(--ink-2); line-height:1.4;">Código boilerplate replicado.<br>Definiciones que se desincronizan.</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--serif); font-size: 90px; font-weight:300; color: var(--accent-2); line-height:1; padding: 0 8px;">→</div>
+
+        <div>
+          <div class="mono" style="font-size:16px; letter-spacing:0.12em; color:var(--ok); text-transform:uppercase; margin-bottom: 22px;">Enfoque propuesto</div>
+          <div style="background: var(--bg-card); border: 1px solid var(--rule); padding: 36px;">
+            <div style="display:flex; gap:24px; align-items:stretch;">
+              <div style="width:90px; display:flex; flex-direction:column; justify-content:center; gap:6px;">
+                <div class="mono" style="font-size:14px; color:var(--ink-3);">MODELO</div>
+                <div style="font-family:var(--serif); font-size:22px; color:var(--accent);">único</div>
+              </div>
+              <div style="flex:1; position:relative; border-left: 2px solid var(--accent);">
+                <div style="display:flex; flex-direction:column; gap:16px; padding-left: 24px; padding-top: 2px;">
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="flex:1; height:46px; background: rgba(30,58,138,0.08); border:1px solid var(--accent); display:flex; align-items:center; padding: 0 14px;" class="mono">JSON Schema + x-*</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="flex:1; height:46px; background: rgba(30,58,138,0.04); border:1px solid var(--rule-strong); display:flex; align-items:center; padding: 0 14px;" class="mono">API REST — derivada</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="flex:1; height:46px; background: rgba(30,58,138,0.04); border:1px solid var(--rule-strong); display:flex; align-items:center; padding: 0 14px;" class="mono">UI — derivada</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 28px; font-size:22px; color:var(--ink-2); line-height:1.4;">Un solo contrato.<br>Cero duplicación, cero deriva.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; padding-top: 40px; font-family:var(--serif); font-size: 30px; color: var(--ink-2); font-style: italic; max-width: 1500px;">
+        «Reducir el tiempo necesario para llevar un prototipo funcional a producción»<span style="color:var(--ink-3); font-style:normal; font-family:var(--mono); font-size:18px;"> — §2.1</span>
+      </div>
+
+      <div class="footer">
+        <div>I · Contexto y motivación</div>
+        <div><span class="dot">●</span> &nbsp;04 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 05 · OBJETIVOS                                  -->
+  <!-- ============================================== -->
+  <section data-label="05 Objetivos">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>I · Contexto</span><span class="chap">Objetivos</span></div>
+        <div>05</div>
+      </div>
+      <div class="eyebrow">§2.2 · Objetivos específicos</div>
+      <h2 class="title">Seis objetivos, una hipótesis verificable.</h2>
+      <div class="subtitle">Diseñar, implementar y validar un framework RAD dirigido por esquemas.</div>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE1 · Núcleo</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Tubería de transformación de esquemas</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">SQLAlchemy → Pydantic → JSON Schema anotado, sin adaptación manual.</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE2 · Backend</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Sistema de plugins por capas</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Enriquecer esquemas sin modificar los modelos base.</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE3 · Frontend</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Componentes Angular reutilizables</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Tablas, formularios declarativos y cuadrícula tipo Excel.</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE4 · Herramienta</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Editor visual de esquemas</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Modificación interactiva de propiedades con vista previa en vivo.</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE5 · Despliegue</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Empaquetado mediante Docker</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Replicabilidad y configuración mínima entre entornos.</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 34px; display:flex; flex-direction:column; gap:14px;">
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">OE6 · Validación</div>
+          <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.15;">Pruebas y caso de uso real</div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Unitarias, integración y proyecto en producción en el ITC.</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>I · Contexto y motivación</div>
+        <div><span class="dot">●</span> &nbsp;05 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 06 · ESTADO DEL ARTE                            -->
+  <!-- ============================================== -->
+  <section data-label="06 Estado del arte">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>II · Estado del arte</span><span class="chap">Comparativa RAD</span></div>
+        <div>06</div>
+      </div>
+      <div class="eyebrow">§4.1 · Soluciones RAD existentes</div>
+      <h2 class="title">El hueco: <em style="font-style:italic; color:var(--accent);">framework abierto, dirigido por esquema, embebible</em>.</h2>
+
+      <div style="margin-top: 56px;">
+        <table style="width:100%; border-collapse: collapse; font-size: 22px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--ink); text-align:left;">
+              <th style="padding: 18px 16px 18px 0; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Solución</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Backend</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Frontend</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Extensible</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; text-align:center;">Schema-driven</th>
+              <th style="padding: 18px 16px; font-family:var(--mono); font-weight:500; font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">Modelo de distribución</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 24px;">Django Admin</td>
+              <td style="padding: 22px 16px;" class="mono">Python · Django</td>
+              <td style="padding: 22px 16px;" class="mono">Integrado</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Limitado</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; color:var(--ink-2);">Acoplado al stack</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 24px;">Rails Scaffold</td>
+              <td style="padding: 22px 16px;" class="mono">Ruby · Rails</td>
+              <td style="padding: 22px 16px;" class="mono">ERB</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--ok);">Sí</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
+              <td style="padding: 22px 16px; color:var(--ink-2);">Acoplado al stack</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 24px;">Retool</td>
+              <td style="padding: 22px 16px;" class="mono">SaaS</td>
+              <td style="padding: 22px 16px;" class="mono">Visual</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--ok);">Sí</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Parcial</td>
+              <td style="padding: 22px 16px; color:var(--ink-2);">Plataforma cerrada</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule);">
+              <td style="padding: 22px 16px 22px 0; font-weight:600; font-size: 24px;">Appsmith</td>
+              <td style="padding: 22px 16px;" class="mono">Node.js</td>
+              <td style="padding: 22px 16px;" class="mono">React</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--ok);">Sí</td>
+              <td style="padding: 22px 16px; text-align:center; color:var(--warn);">Parcial</td>
+              <td style="padding: 22px 16px; color:var(--ink-2);">Plataforma propia</td>
+            </tr>
+            <tr style="background: rgba(30,58,138,0.05); border-bottom: 2px solid var(--accent);">
+              <td style="padding: 26px 16px 26px 0; font-weight:600; font-size: 24px; color:var(--accent);">uniback + ngt-gui</td>
+              <td style="padding: 26px 16px;" class="mono">Python · FastAPI</td>
+              <td style="padding: 26px 16px;" class="mono">Angular 19</td>
+              <td style="padding: 26px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí</td>
+              <td style="padding: 26px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí</td>
+              <td style="padding: 26px 16px; color:var(--ink); font-weight:500;">Embebible · Open source</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 48px; font-size: 24px; color: var(--ink-2); max-width: 1500px; line-height:1.45;">
+        Sin imponer un stack cerrado ni requerir una plataforma SaaS, el framework se integra en proyectos con arquitecturas propias <span class="mono" style="color:var(--ink-3); font-size:18px;">— §4.1.1</span>
+      </div>
+
+      <div class="footer">
+        <div>II · Estado del arte</div>
+        <div><span class="dot">●</span> &nbsp;06 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 07 · STACK TECNOLÓGICO                          -->
+  <!-- ============================================== -->
+  <section data-label="07 Stack">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>II · Estado del arte</span><span class="chap">Stack tecnológico</span></div>
+        <div>07</div>
+      </div>
+      <div class="eyebrow">§4.2 — §4.3 · Tecnologías empleadas</div>
+      <h2 class="title">Elegido para que cada capa hable el mismo idioma.</h2>
+
+      <div style="margin-top: 60px; display:grid; grid-template-columns: 1fr 1fr; gap: 0; flex:1;">
+        <!-- Backend -->
+        <div style="padding-right: 56px; border-right: 1px solid var(--rule);">
+          <div style="display:flex; align-items:baseline; gap: 18px; margin-bottom: 36px;">
+            <div class="mono" style="font-size:48px; color:var(--accent-2); font-weight:300;">⌘</div>
+            <div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase;">Backend · uniback</div>
+              <div style="font-family:var(--serif); font-size:36px; font-weight:500;">Python · datos & API</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap: 20px;">
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">FastAPI</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Framework ASGI con tipado nativo y generación OpenAPI 3.x.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">SQLAlchemy 2</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">ORM con <span class="mono">mapped_column</span>; introspección rica del modelo.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">Pydantic</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Validación y serialización; <span class="mono">model_json_schema()</span>.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">PostgreSQL 16</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">JSONB, búsqueda de texto completo, UUIDs nativos.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">Docker</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Reproducibilidad del entorno y empaquetado de servicios.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frontend -->
+        <div style="padding-left: 56px;">
+          <div style="display:flex; align-items:baseline; gap: 18px; margin-bottom: 36px;">
+            <div class="mono" style="font-size:48px; color:var(--accent-2); font-weight:300;">◢</div>
+            <div>
+              <div class="mono" style="font-size:14px; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase;">Frontend · ngt-gui</div>
+              <div style="font-family:var(--serif); font-size:36px; font-weight:500;">Angular · presentación</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap: 20px;">
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">Angular 19</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Signals, defer blocks y <span class="mono">standalone components</span>.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">Angular Formly</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Formularios reactivos a partir de configuración JSON.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">AG Grid</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Cuadrícula de alto rendimiento; edición inline tipo Excel.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">NG-ZORRO</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Sistema de diseño Ant Design para chrome y controles.</div>
+            </div>
+            <div style="height:1px; background:var(--rule);"></div>
+            <div style="display:flex; gap: 28px; align-items:start;">
+              <div style="width:170px; font-family:var(--mono); font-size:20px; color:var(--accent); font-weight:500;">ng-packagr</div>
+              <div style="flex:1; font-size:22px; color:var(--ink-2); line-height:1.4;">Empaquetado de la librería como paquete npm.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 36px; font-family:var(--serif); font-size: 24px; color: var(--ink-2); font-style:italic; text-align:center; border-top: 1px solid var(--rule); padding-top: 24px;">
+        El idioma común: <span class="mono" style="font-style:normal; color:var(--accent); font-size:22px;">JSON Schema</span> &nbsp;·&nbsp; OpenAPI 3.x &nbsp;·&nbsp; extensiones <span class="mono" style="font-style:normal; color:var(--accent-2); font-size:22px;">x-*</span>
+      </div>
+
+      <div class="footer">
+        <div>II · Estado del arte</div>
+        <div><span class="dot">●</span> &nbsp;07 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 08 · ARQUITECTURA GLOBAL                        -->
+  <!-- ============================================== -->
+  <section data-label="08 Arquitectura">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Visión global</span></div>
+        <div>08</div>
+      </div>
+      <div class="eyebrow">§5.1 · Tres capas, un contrato</div>
+      <h2 class="title">Visión global del sistema.</h2>
+
+      <div style="margin-top: 60px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+        <!-- 3-layer diagram -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border:1px solid var(--rule); background: var(--bg-card);">
+
+          <!-- DB -->
+          <div style="padding: 44px 38px; border-right: 1px solid var(--rule); display:flex; flex-direction:column; gap:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">Capa de datos</div>
+              <div class="mono" style="font-size:14px; color:var(--accent-2);">01</div>
+            </div>
+            <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">PostgreSQL 16</div>
+            <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Tablas, restricciones, índices, JSONB.</div>
+            <div style="margin-top: 8px; display:flex; flex-direction:column; gap: 6px;">
+              <div style="height:8px; background: rgba(30,58,138,0.18);"></div>
+              <div style="height:8px; background: rgba(30,58,138,0.18); width:85%;"></div>
+              <div style="height:8px; background: rgba(30,58,138,0.18); width:70%;"></div>
+            </div>
+          </div>
+
+          <!-- Backend -->
+          <div style="padding: 44px 38px; border-right: 1px solid var(--rule); display:flex; flex-direction:column; gap:18px; background: rgba(30,58,138,0.04);">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase;">Backend · uniback</div>
+              <div class="mono" style="font-size:14px; color:var(--accent-2);">02</div>
+            </div>
+            <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">FastAPI + plugins</div>
+            <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">Tubería de esquemas, fábrica CRUD, /screens, /bulk.</div>
+            <div style="margin-top: 8px;" class="mono">
+              <div style="font-size:15px; color:var(--ink-3);">GET&nbsp;&nbsp;/api/&lt;entidad&gt;</div>
+              <div style="font-size:15px; color:var(--ink-3);">POST /api/&lt;entidad&gt;/bulk</div>
+              <div style="font-size:15px; color:var(--ink-3);">GET&nbsp;&nbsp;/screens/&lt;nombre&gt;</div>
+            </div>
+          </div>
+
+          <!-- Frontend -->
+          <div style="padding: 44px 38px; display:flex; flex-direction:column; gap:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">Frontend · ngt-gui</div>
+              <div class="mono" style="font-size:14px; color:var(--accent-2);">03</div>
+            </div>
+            <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">Angular 19 SPA</div>
+            <div style="font-size:20px; color:var(--ink-2); line-height:1.4;">DynamicPage, DynamicForm, BulkEditGrid.</div>
+            <div style="margin-top: 8px; display:flex; gap: 8px;">
+              <div style="flex:1; height:54px; background: rgba(178,82,22,0.12); border:1px solid #d8c5b8; display:flex; align-items:center; justify-content:center;" class="mono" data-tag="tbl">tbl</div>
+              <div style="flex:1; height:54px; background: rgba(178,82,22,0.12); border:1px solid #d8c5b8; display:flex; align-items:center; justify-content:center;" class="mono">form</div>
+              <div style="flex:1; height:54px; background: rgba(178,82,22,0.12); border:1px solid #d8c5b8; display:flex; align-items:center; justify-content:center;" class="mono">grid</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- arrows row -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 0;">
+          <div style="padding: 22px 38px 0; display:flex; align-items:center; gap:14px; justify-content:flex-end;">
+            <div class="mono" style="font-size:16px; color:var(--ink-3);">ORM</div>
+            <div style="font-size:28px; color:var(--accent); font-family:var(--serif); font-weight:300;">⇄</div>
+          </div>
+          <div style="padding: 22px 38px 0; display:flex; align-items:center; gap:14px; justify-content:center;">
+            <div class="mono" style="font-size:16px; color:var(--ink-3);">JSON Schema · REST</div>
+            <div style="font-size:28px; color:var(--accent); font-family:var(--serif); font-weight:300;">⇄</div>
+          </div>
+          <div style="padding: 22px 38px 0;"></div>
+        </div>
+
+        <!-- Docker wrapping -->
+        <div style="margin-top: 56px; padding: 20px 32px; border: 1px dashed var(--rule-strong); display:flex; justify-content:space-between; align-items:center;">
+          <div class="mono" style="font-size:18px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">— Docker Compose · entorno único —</div>
+          <div style="display:flex; gap: 22px;" class="mono">
+            <span style="font-size:18px; color:var(--ink-2);">db</span>
+            <span style="font-size:18px; color:var(--ink-3);">·</span>
+            <span style="font-size:18px; color:var(--ink-2);">backend</span>
+            <span style="font-size:18px; color:var(--ink-3);">·</span>
+            <span style="font-size:18px; color:var(--ink-2);">frontend</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura del sistema</div>
+        <div><span class="dot">●</span> &nbsp;08 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 09 · TUBERÍA DE TRANSFORMACIÓN                  -->
+  <!-- ============================================== -->
+  <section data-label="09 Tuberia esquemas">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Tubería de esquemas</span></div>
+        <div>09</div>
+      </div>
+      <div class="eyebrow">§5.2 · Núcleo funcional</div>
+      <h2 class="title">Tubería de transformación de esquemas.</h2>
+      <div class="subtitle">El modelo de datos viaja, paso a paso, hasta convertirse en pantalla.</div>
+
+      <!-- pipeline -->
+      <div style="margin-top: 72px; display:flex; align-items:stretch; gap: 0;">
+        <!-- stage -->
+        <div style="flex:1; padding: 28px 24px; background:var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height: 280px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase;">Etapa 01</div>
+          <div style="font-family:var(--serif); font-size:24px; font-weight:500; line-height:1.15;">Modelo<br>SQLAlchemy</div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div class="mono" style="font-size:14px; color:var(--ink-2); line-height:1.6; white-space:pre-wrap;">class Identity(Base):
+  id = mapped_column(Integer, primary_key=True)
+  name = mapped_column(
+    String(255), nullable=False
+  )</div>
+        </div>
+        <div style="display:flex; align-items:center; padding: 0 8px;"><div style="font-family:var(--serif); font-size:42px; color:var(--accent-2); font-weight:300;">→</div></div>
+
+        <div style="flex:1; padding: 28px 24px; background:var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height: 280px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase;">Etapa 02</div>
+          <div style="font-family:var(--serif); font-size:24px; font-weight:500; line-height:1.15;">Modelo<br>Pydantic</div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div style="font-size:18px; color:var(--ink-2); line-height:1.5;">Tipos y validadores Python derivados del ORM mediante <span class="mono" style="font-size:15px;">sqlalchemy_to_pydantic()</span>.</div>
+        </div>
+        <div style="display:flex; align-items:center; padding: 0 8px;"><div style="font-family:var(--serif); font-size:42px; color:var(--accent-2); font-weight:300;">→</div></div>
+
+        <div style="flex:1; padding: 28px 24px; background:var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap:14px; min-height: 280px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase;">Etapa 03</div>
+          <div style="font-family:var(--serif); font-size:24px; font-weight:500; line-height:1.15;">JSON Schema<br>(draft-07)</div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div class="mono" style="font-size:13px; color:var(--ink-2); line-height:1.5; white-space:pre-wrap;">{
+  "name": {
+    "type": "string",
+    "maxLength": 255
+  }
+}</div>
+        </div>
+        <div style="display:flex; align-items:center; padding: 0 8px;"><div style="font-family:var(--serif); font-size:42px; color:var(--accent-2); font-weight:300;">→</div></div>
+
+        <div style="flex:1; padding: 28px 24px; background:rgba(30,58,138,0.05); border:1px solid var(--accent); display:flex; flex-direction:column; gap:14px; min-height: 280px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;">Etapa 04 · plugins</div>
+          <div style="font-family:var(--serif); font-size:24px; font-weight:500; line-height:1.15;">Anotaciones<br><span class="mono" style="color:var(--accent);">x-*</span></div>
+          <div style="height:1px; background:var(--rule); margin: 4px 0;"></div>
+          <div class="mono" style="font-size:13px; color:var(--ink-2); line-height:1.5; white-space:pre-wrap;">"name": {
+  ...,
+  "x-label": "Nombre",
+  "x-widget": "input",
+  "x-required": true
+}</div>
+        </div>
+        <div style="display:flex; align-items:center; padding: 0 8px;"><div style="font-family:var(--serif); font-size:42px; color:var(--accent-2); font-weight:300;">→</div></div>
+
+        <div style="flex:1; padding: 28px 24px; background:var(--bg-deep); color:#e9e6df; border:1px solid var(--bg-deep); display:flex; flex-direction:column; gap:14px; min-height: 280px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase;">Etapa 05</div>
+          <div style="font-family:var(--serif); font-size:24px; font-weight:500; line-height:1.15; color:#fff;">Screen<br>definition</div>
+          <div style="height:1px; background: rgba(255,255,255,0.15); margin: 4px 0;"></div>
+          <div style="font-size:18px; color:#c7c2b6; line-height:1.5;">El frontend consume el objeto: <span class="mono" style="color:#fff; font-size:15px;">screen_type</span>, columnas, acciones, endpoint.</div>
+        </div>
+      </div>
+
+      <!-- bottom annotation -->
+      <div style="margin-top: 48px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-family:var(--serif); font-style:italic; font-size: 26px; color: var(--ink-2);">Del modelo a la UI sin tocar Angular.</div>
+        <div class="mono" style="font-size: 18px; color: var(--ink-3); letter-spacing: 0.06em;">GET /screens/&lt;nombre&gt;  →  &#123; screen_type, definition, entity_schema &#125;</div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura del sistema</div>
+        <div><span class="dot">●</span> &nbsp;09 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 10 · SISTEMA DE PLUGINS                         -->
+  <!-- ============================================== -->
+  <section data-label="10 Plugins">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>III · Arquitectura</span><span class="chap">Plugins por capas</span></div>
+        <div>10</div>
+      </div>
+      <div class="eyebrow">§5.3 · Chain of Responsibility</div>
+      <h2 class="title">Sistema de plugins por capas.</h2>
+      <div class="subtitle">Enriquecer el esquema sin tocar el núcleo del generador.</div>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 1.1fr 1fr; gap: 60px; flex:1; align-items:start;">
+        <!-- LEFT: visual chain -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Cadena de prioridad</div>
+          <div style="display:flex; flex-direction:column; gap: 10px;">
+            <!-- pipeline node -->
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">10</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">LabelPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-label</span>
+              </div>
+            </div>
+            <div style="margin-left: 64px; height: 12px; border-left: 1px dashed var(--rule-strong);"></div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">20</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">ForeignKeyPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-foreign-key</span>
+              </div>
+            </div>
+            <div style="margin-left: 64px; height: 12px; border-left: 1px dashed var(--rule-strong);"></div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">30</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">ValidatorPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-validators</span>
+              </div>
+            </div>
+            <div style="margin-left: 64px; height: 12px; border-left: 1px dashed var(--rule-strong);"></div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">40</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">WidgetPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-widget</span>
+              </div>
+            </div>
+            <div style="margin-left: 64px; height: 12px; border-left: 1px dashed var(--rule-strong);"></div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">50</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">ReadonlyPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-readonly</span>
+              </div>
+            </div>
+            <div style="margin-left: 64px; height: 12px; border-left: 1px dashed var(--rule-strong);"></div>
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="mono" style="width:50px; font-size:16px; color:var(--ink-3); text-align:right;">60</div>
+              <div style="flex:1; padding: 14px 20px; background: var(--bg-card); border:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-family:var(--mono); font-size: 20px; color: var(--accent); font-weight:500;">OrderPlugin</span>
+                <span class="mono" style="font-size:15px; color:var(--ink-3);">x-order</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: interface code + benefit -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Interfaz común</div>
+          <pre style="background: var(--bg-deep); color: #e9e6df; padding: 22px 28px; font-family: var(--mono); font-size: 20px; line-height: 1.5; border-radius: 0; margin: 0; white-space: pre;"><span style="color:#c7c2b6;">class</span> <span style="color:#fff;">SchemaPlugin</span>(<span style="color:#c0bcae;">Protocol</span>):
+<span style="color:#9a9388;">    priority: int</span>
+
+<span style="color:#9a9388;">    def</span> <span style="color:#fff;">apply</span>(
+<span style="color:#c7c2b6;">        self,
+        schema: dict,
+        model: type[Base],
+        field_name: str,
+        column_info,</span>
+    ) <span style="color:#c7c2b6;">-&gt;</span> <span style="color:#c7c2b6;">dict</span>: ...</pre>
+
+          <div style="margin-top: 24px; padding: 22px 28px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+            <div class="mono" style="font-size:14px; letter-spacing:0.1em; color:var(--accent-2); text-transform:uppercase; margin-bottom: 10px;">Por qué importa</div>
+            <div style="font-size: 21px; color: var(--ink-2); line-height: 1.4;">Añadir un comportamiento nuevo es escribir <span class="mono" style="font-size: 18px;">apply()</span> y registrar la prioridad. Cero cambios en el núcleo.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>III · Arquitectura del sistema</div>
+        <div><span class="dot">●</span> &nbsp;10 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 11 · BACKEND uniback                            -->
+  <!-- ============================================== -->
+  <section data-label="11 Backend uniback">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Implementación</span><span class="chap">Backend · uniback</span></div>
+        <div>11</div>
+      </div>
+      <div class="eyebrow">§6.2 · Capa de servicio</div>
+      <h2 class="title">Una nueva entidad: dos líneas de código.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 1fr 1.2fr; gap: 64px; flex:1;">
+        <!-- LEFT: module tree -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Estructura de módulos</div>
+          <div class="mono" style="background:var(--bg-card); border:1px solid var(--rule); padding: 28px 32px; font-size: 18px; line-height: 1.85; color: var(--ink-2);">
+<span style="color:var(--ink);">src/uniback/</span><br>
+&nbsp;&nbsp;api/routers/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--accent);">gui.py</span> &nbsp;&nbsp;<span style="color:var(--ink-3);"># /screens</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--accent);">crud_factory.py</span> &nbsp;&nbsp;<span style="color:var(--ink-3);"># router CRUD</span><br>
+&nbsp;&nbsp;core/schema/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--accent);">generator.py</span> &nbsp;&nbsp;<span style="color:var(--ink-3);"># tubería</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;plugins/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label.py · foreign_key.py<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validator.py · widget.py<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readonly.py · order.py<br>
+&nbsp;&nbsp;models/ &nbsp;&nbsp;<span style="color:var(--ink-3);"># entidades</span><br>
+&nbsp;&nbsp;database.py &nbsp;&nbsp;main.py
+          </div>
+        </div>
+
+        <!-- RIGHT: factory usage -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Registro de una entidad — <span style="color:var(--accent-2);">make_simple_rest_crud</span></div>
+          <div style="background: var(--bg-deep); color: #e9e6df; padding: 36px 40px; font-family: var(--mono); font-size: 20px; line-height: 1.65;">
+<span style="color:#9a9388;">router = </span><span style="color:#fff;">make_simple_rest_crud</span>(<br>
+&nbsp;&nbsp;<span style="color:#c7c2b6;">model</span>=<span style="color:#e9c897;">Identity</span>,<br>
+&nbsp;&nbsp;<span style="color:#c7c2b6;">prefix</span>=<span style="color:#9bbcd6;">"/api/identities"</span>,<br>
+&nbsp;&nbsp;<span style="color:#c7c2b6;">schema_overrides</span>={<span style="color:#9bbcd6;">"name"</span>: {<span style="color:#9bbcd6;">"x-label"</span>: <span style="color:#9bbcd6;">"Nombre"</span>}},<br>
+)<br>
+<span style="color:#9a9388;">app.</span><span style="color:#fff;">include_router</span>(router)
+          </div>
+
+          <div style="margin-top: 32px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+            <div style="border-top:2px solid var(--accent); padding-top: 16px;">
+              <div class="mono" style="font-size:15px; color:var(--ink-3); letter-spacing:0.06em;">GET / POST / PUT</div>
+              <div style="font-size:20px; color:var(--ink); font-weight:500; margin-top:6px;">CRUD estándar</div>
+            </div>
+            <div style="border-top:2px solid var(--accent); padding-top: 16px;">
+              <div class="mono" style="font-size:15px; color:var(--ink-3); letter-spacing:0.06em;">GET /screens</div>
+              <div style="font-size:20px; color:var(--ink); font-weight:500; margin-top:6px;">Pantallas dinámicas</div>
+            </div>
+            <div style="border-top:2px solid var(--accent-2); padding-top: 16px;">
+              <div class="mono" style="font-size:15px; color:var(--accent-2); letter-spacing:0.06em;">POST /bulk</div>
+              <div style="font-size:20px; color:var(--ink); font-weight:500; margin-top:6px;">Operaciones en bloque</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; font-family:var(--serif); font-size: 22px; font-style: italic; color: var(--ink-2); line-height:1.4;">
+            La fábrica devuelve un router FastAPI completo. Modelo + prefijo, y la entidad queda lista para consumir.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Implementación</div>
+        <div><span class="dot">●</span> &nbsp;11 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 12 · FRONTEND ngt-gui                           -->
+  <!-- ============================================== -->
+  <section data-label="12 Frontend ngt-gui">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Implementación</span><span class="chap">Frontend · ngt-gui</span></div>
+        <div>12</div>
+      </div>
+      <div class="eyebrow">§6.3 · Librería Angular</div>
+      <h2 class="title">Tres componentes interpretan todo el contrato.</h2>
+
+      <div style="margin-top: 60px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; flex:1;">
+
+        <!-- DynamicPage -->
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 36px; display:flex; flex-direction:column;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">01 · Enrutador</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 12px; line-height:1.1;">DynamicPage<br>Component</div>
+          <div style="height:1px; background:var(--rule); margin: 24px 0;"></div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4; margin-bottom: 24px;">Lee <span class="mono" style="font-size:17px;">screen_type</span> y renderiza el componente adecuado.</div>
+
+          <!-- mock UI: browser -->
+          <div style="margin-top:auto; background: var(--bg); border: 1px solid var(--rule); padding: 14px;">
+            <div style="display:flex; gap: 6px; margin-bottom: 12px;">
+              <div style="width:8px; height:8px; border-radius:50%; background:#d8c5b8;"></div>
+              <div style="width:8px; height:8px; border-radius:50%; background:#d8c5b8;"></div>
+              <div style="width:8px; height:8px; border-radius:50%; background:#d8c5b8;"></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap: 4px;">
+              <div style="height:10px; background: rgba(30,58,138,0.18); width: 60%;"></div>
+              <div style="height:10px; background: rgba(30,58,138,0.10); width: 85%;"></div>
+              <div style="height:10px; background: rgba(30,58,138,0.10); width: 75%;"></div>
+              <div style="height:10px; background: rgba(30,58,138,0.10); width: 80%;"></div>
+            </div>
+          </div>
+          <div class="mono" style="font-size:14px; color:var(--ink-3); margin-top: 14px;">/d/&lt;screenName&gt;</div>
+        </div>
+
+        <!-- DynamicForm -->
+        <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 36px; display:flex; flex-direction:column;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">02 · Formulario</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 12px; line-height:1.1;">DynamicForm<br>Component</div>
+          <div style="height:1px; background:var(--rule); margin: 24px 0;"></div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4; margin-bottom: 24px;">Mapeo JSON Schema → Formly. Validación y widgets desde <span class="mono" style="font-size:17px;">x-*</span>.</div>
+
+          <!-- mock UI: form -->
+          <div style="margin-top:auto; background: var(--bg); border: 1px solid var(--rule); padding: 18px; display:flex; flex-direction:column; gap: 12px;">
+            <div>
+              <div style="height:8px; background: rgba(30,58,138,0.22); width: 25%;"></div>
+              <div style="height:28px; background:#fff; border:1px solid var(--rule); margin-top: 6px;"></div>
+            </div>
+            <div>
+              <div style="height:8px; background: rgba(30,58,138,0.22); width: 35%;"></div>
+              <div style="height:28px; background:#fff; border:1px solid var(--rule); margin-top: 6px;"></div>
+            </div>
+            <div style="height: 28px; background: var(--accent); width: 90px; margin-top: 4px;"></div>
+          </div>
+          <div class="mono" style="font-size:14px; color:var(--ink-3); margin-top: 14px;">schema-to-formly.ts</div>
+        </div>
+
+        <!-- BulkEditGrid -->
+        <div style="background:var(--bg-card); border:1px solid var(--accent); padding: 36px; display:flex; flex-direction:column; position:relative;">
+          <div style="position:absolute; top: -10px; right: 24px; background: var(--accent-2); color:#fff; font-family:var(--mono); font-size:12px; letter-spacing: 0.12em; text-transform:uppercase; padding: 4px 10px;">Aportación clave</div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">03 · Cuadrícula</div>
+          <div style="font-family:var(--serif); font-size:34px; font-weight:500; margin-top: 12px; line-height:1.1;">BulkEditGrid<br>Component</div>
+          <div style="height:1px; background:var(--rule); margin: 24px 0;"></div>
+          <div style="font-size:20px; color:var(--ink-2); line-height:1.4; margin-bottom: 24px;">Edición masiva tipo Excel sobre AG Grid. Estados de fila por celda.</div>
+
+          <!-- mock UI: grid -->
+          <div style="margin-top:auto; background: var(--bg); border: 1px solid var(--rule);">
+            <div style="display:grid; grid-template-columns: 36px 1fr 1fr 1fr; background:#ece8df; font-family:var(--mono); font-size:11px; color:var(--ink-3);">
+              <div style="padding:6px; text-align:center;">#</div>
+              <div style="padding:6px;">name</div>
+              <div style="padding:6px;">type</div>
+              <div style="padding:6px;">value</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 36px 1fr 1fr 1fr; background:#fff; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:11px;">
+              <div style="padding:6px; text-align:center; color:var(--ink-3);">1</div>
+              <div style="padding:6px;">Alpha</div>
+              <div style="padding:6px;">A</div>
+              <div style="padding:6px;">10</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 36px 1fr 1fr 1fr; background:rgba(30,58,138,0.08); border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:11px;">
+              <div style="padding:6px; text-align:center; color:var(--accent);">2</div>
+              <div style="padding:6px;">Beta</div>
+              <div style="padding:6px;">B</div>
+              <div style="padding:6px;">22</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 36px 1fr 1fr 1fr; background:rgba(178,82,22,0.10); font-family:var(--mono); font-size:11px;">
+              <div style="padding:6px; text-align:center; color:var(--accent-2);">+</div>
+              <div style="padding:6px;">Gamma</div>
+              <div style="padding:6px;">C</div>
+              <div style="padding:6px;">—</div>
+            </div>
+          </div>
+          <div class="mono" style="font-size:14px; color:var(--ink-3); margin-top: 14px;">unchanged · new · modified · deleted</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Implementación</div>
+        <div><span class="dot">●</span> &nbsp;12 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 13 · ENDPOINT /BULK                             -->
+  <!-- ============================================== -->
+  <section data-label="13 Bulk endpoint">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Implementación</span><span class="chap">Endpoint /bulk</span></div>
+        <div>13</div>
+      </div>
+      <div class="eyebrow">§5.5 — §6.2.4 · Operaciones en bloque</div>
+      <h2 class="title">Crear, actualizar y eliminar en una sola petición.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 1.05fr 1fr; gap: 56px; flex:1;">
+
+        <!-- Payload + response -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 16px;">POST /&lt;entidad&gt;/bulk · payload</div>
+          <div style="background: var(--bg-deep); color: #e9e6df; padding: 24px 28px; font-family: var(--mono); font-size: 18px; line-height: 1.55; white-space: pre;">[
+  { <span style="color:#9bbcd6;">"data"</span>: { <span style="color:#9bbcd6;">"name"</span>: <span style="color:#e9c897;">"Nueva fila"</span> } },
+  { <span style="color:#9bbcd6;">"id"</span>: <span style="color:#e9c897;">42</span>, <span style="color:#9bbcd6;">"data"</span>: { <span style="color:#9bbcd6;">"name"</span>: <span style="color:#e9c897;">"Modificada"</span> } },
+  { <span style="color:#9bbcd6;">"_op"</span>: <span style="color:#e9c897;">"delete"</span>, <span style="color:#9bbcd6;">"id"</span>: <span style="color:#e9c897;">17</span> }
+]</div>
+
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin: 28px 0 16px;">respuesta</div>
+          <div style="background: var(--bg-card); border:1px solid var(--rule); padding: 24px 28px; font-family: var(--mono); font-size: 18px; line-height: 1.55; white-space: pre; color: var(--ink-2);">{
+  <span style="color:var(--ink);">"results"</span>: [
+    { "ok": <span style="color:var(--ok);">true</span>, "id": 101 },
+    { "ok": <span style="color:var(--ok);">true</span>, "id": 42  },
+    { "ok": <span style="color:var(--err);">false</span>, "errors": [...] }
+  ],
+  <span style="color:var(--ink);">"summary"</span>: {
+    "created": 1, "updated": 1, "deleted": 0, "failed": 1
+  }
+}</div>
+        </div>
+
+        <!-- two modes -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Semántica transaccional · <span style="color:var(--accent-2);">?on_error=</span></div>
+
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 36px; margin-bottom: 22px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 14px;">
+              <div style="font-family:var(--serif); font-size:32px; font-weight:500;">partial</div>
+              <div class="mono" style="font-size:14px; color:var(--ink-3); letter-spacing:0.08em;">SAVEPOINTS SQL</div>
+            </div>
+            <div style="font-size:21px; color:var(--ink-2); line-height:1.45;">Cada operación se aísla con <span class="mono" style="font-size:18px;">begin_nested()</span>. Un fallo no afecta a las exitosas.</div>
+            <div style="margin-top: 22px; display:flex; gap: 4px;">
+              <div style="flex:1; height:18px; background: var(--ok);"></div>
+              <div style="flex:1; height:18px; background: var(--ok);"></div>
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+              <div style="flex:1; height:18px; background: var(--ok);"></div>
+              <div style="flex:1; height:18px; background: var(--ok);"></div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 36px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 14px;">
+              <div style="font-family:var(--serif); font-size:32px; font-weight:500;">abort</div>
+              <div class="mono" style="font-size:14px; color:var(--ink-3); letter-spacing:0.08em;">TRANSACCIÓN GLOBAL</div>
+            </div>
+            <div style="font-size:21px; color:var(--ink-2); line-height:1.45;">Cualquier error provoca <span class="mono" style="font-size:18px;">ROLLBACK</span> total de la petición.</div>
+            <div style="margin-top: 22px; display:flex; gap: 4px;">
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+              <div style="flex:1; height:18px; background: var(--err);"></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; font-family:var(--serif); font-size: 22px; font-style: italic; color: var(--ink-2); line-height:1.4;">
+            El cliente elige la semántica según el caso de uso: importación tolerante o atómica.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Implementación</div>
+        <div><span class="dot">●</span> &nbsp;13 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 14 · PANTALLAS DINÁMICAS                        -->
+  <!-- ============================================== -->
+  <section data-label="14 Pantallas dinamicas">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>IV · Implementación</span><span class="chap">Pantallas dinámicas</span></div>
+        <div>14</div>
+      </div>
+      <div class="eyebrow">§5.4 · Flujo de datos declarativo</div>
+      <h2 class="title">El backend decide qué vista mostrar; el frontend la renderiza.</h2>
+
+      <!-- horizontal sequence diagram -->
+      <div style="margin-top: 48px; flex:1; display:flex; flex-direction:column;">
+        <!-- lane labels -->
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 18px;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">Usuario</div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">Router · Resolver</div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase;">DynamicPage</div>
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">Backend uniback</div>
+        </div>
+
+        <!-- timeline rows -->
+        <div style="position:relative; display:grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 20px 0;">
+          <!-- vertical guides -->
+          <div style="position:absolute; left:0; top:0; bottom:0; display:grid; grid-template-columns: repeat(4, 1fr); width:100%;">
+            <div style="border-right: 1px dashed var(--rule-strong);"></div>
+            <div style="border-right: 1px dashed var(--rule-strong);"></div>
+            <div style="border-right: 1px dashed var(--rule-strong);"></div>
+            <div></div>
+          </div>
+
+          <!-- rows -->
+          <div style="grid-column: 1 / span 4; display:grid; grid-template-columns: repeat(4, 1fr); align-items:center; padding: 10px 0;">
+            <div style="position:relative; padding-right: 24px;">
+              <div style="position:absolute; right: -10px; top:50%; transform:translateY(-50%); width:20px; height:20px; border-radius:50%; background: var(--accent-2);"></div>
+              <div style="text-align:right; font-size:20px;">Navega a /d/&lt;screenName&gt;</div>
+            </div>
+            <div></div><div></div><div></div>
+          </div>
+
+          <div style="grid-column: 1 / span 4; display:grid; grid-template-columns: repeat(4, 1fr); align-items:center; padding: 10px 0;">
+            <div></div>
+            <div style="padding: 0 18px;">
+              <div style="background: var(--bg-card); border:1px solid var(--rule); padding: 12px 16px; font-size: 18px; line-height:1.35;">DynamicPageResolver dispara<br><span class="mono" style="font-size:15px; color:var(--accent);">GET /screens/&lt;name&gt;</span></div>
+            </div>
+            <div></div>
+            <div style="display:flex; justify-content:center;">
+              <div style="font-family:var(--serif); font-size:38px; color:var(--accent-2); font-weight:300;">→</div>
+            </div>
+          </div>
+
+          <div style="grid-column: 1 / span 4; display:grid; grid-template-columns: repeat(4, 1fr); align-items:center; padding: 10px 0;">
+            <div></div><div></div><div></div>
+            <div style="text-align:left; padding-left: 18px;">
+              <div style="background: var(--bg-deep); color:#e9e6df; padding: 12px 16px; font-family:var(--mono); font-size:15px; line-height:1.4;">{ screen_type: <span style="color:#9bbcd6;">"editable_table"</span>,<br>&nbsp;&nbsp;definition: {...},<br>&nbsp;&nbsp;entity_schema: {...} }</div>
+            </div>
+          </div>
+
+          <div style="grid-column: 1 / span 4; display:grid; grid-template-columns: repeat(4, 1fr); align-items:center; padding: 10px 0;">
+            <div></div><div></div>
+            <div style="padding: 0 18px;">
+              <div style="background: rgba(30,58,138,0.06); border:1px solid var(--accent); padding: 12px 16px; font-size:18px; line-height:1.35;">
+                Lee <span class="mono" style="font-size:15px;">screen_type</span> y monta:<br>
+                <span class="mono" style="font-size:15px; color:var(--accent);">&lt;ngt-bulk-edit-grid&gt;</span>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <!-- 4 screen_type chips -->
+        <div style="margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--rule); display:flex; gap: 22px; justify-content:space-between; align-items:center;">
+          <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--ink-3); text-transform:uppercase;">screen_type →</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 8px 18px; font-size: 18px;" class="mono">browser</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 8px 18px; font-size: 18px;" class="mono">form</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 8px 18px; font-size: 18px;" class="mono">editable_table</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 8px 18px; font-size: 18px;" class="mono">detail</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>IV · Implementación</div>
+        <div><span class="dot">●</span> &nbsp;14 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 15 · PRUEBAS Y EVALUACIÓN                        -->
+  <!-- ============================================== -->
+  <section data-label="15 Pruebas">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Evaluación</span><span class="chap">Pruebas y validación</span></div>
+        <div>15</div>
+      </div>
+      <div class="eyebrow">§7 · Estrategia de pruebas</div>
+      <h2 class="title">Pirámide de pruebas y caso de uso real.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: 0.95fr 1.1fr; gap: 64px; flex:1;">
+        <!-- LEFT: pyramid -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Niveles</div>
+          <div style="display:flex; flex-direction:column; gap: 14px; align-items:center; margin-top: 12px;">
+            <div style="width:280px; background:rgba(178,82,22,0.12); border:1px solid #d8c5b8; padding: 18px; text-align:center;">
+              <div class="mono" style="font-size:14px; color:var(--accent-2); letter-spacing:0.1em; text-transform:uppercase;">Sistema · manual</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 6px;">8 guiones de prueba</div>
+            </div>
+            <div style="width:440px; background:rgba(30,58,138,0.10); border:1px solid var(--accent); padding: 22px; text-align:center;">
+              <div class="mono" style="font-size:14px; color:var(--accent); letter-spacing:0.1em; text-transform:uppercase;">Integración · pytest + httpx</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 6px;">/bulk, /screens, CRUD</div>
+            </div>
+            <div style="width:600px; background:var(--bg-card); border:1px solid var(--rule); padding: 26px; text-align:center;">
+              <div class="mono" style="font-size:14px; color:var(--ink-3); letter-spacing:0.1em; text-transform:uppercase;">Unitarias · backend + frontend</div>
+              <div style="font-size:21px; font-weight:500; margin-top: 6px;">Tubería, plugins, mapeos JSON↔Formly↔AG Grid</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: highlight cases -->
+        <div>
+          <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase; margin-bottom: 22px;">Casos verificados — extracto</div>
+          <div style="background:var(--bg-card); border:1px solid var(--rule);">
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div style="font-size: 20px;">Crear filas válidas en bloque</div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ ok: true · id asignado</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div style="font-size: 20px;">Mezclar create + update + delete</div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ summary coherente</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; border-bottom: 1px solid var(--rule); align-items:center; background: rgba(30,58,138,0.04);">
+              <div style="font-size: 20px;">Modo <span class="mono" style="color:var(--accent);">partial</span> · fila inválida</div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ no bloquea al resto</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; border-bottom: 1px solid var(--rule); align-items:center; background: rgba(30,58,138,0.04);">
+              <div style="font-size: 20px;">Modo <span class="mono" style="color:var(--accent);">abort</span> · fallo en lote</div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ rollback total</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; border-bottom: 1px solid var(--rule); align-items:center;">
+              <div style="font-size: 20px;">Plugins aplicados en orden de prioridad</div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ override correcto</div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1.6fr auto; padding: 16px 24px; align-items:center;">
+              <div style="font-size: 20px;">Foreign keys → <span class="mono" style="font-size:17px;">x-options-endpoint</span></div>
+              <div style="color: var(--ok); font-family: var(--mono); font-size:18px;">✓ select cargado</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 32px; padding: 24px 28px; background: var(--bg-deep); color: #e9e6df;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase; margin-bottom: 10px;">Caso de uso real · OE6</div>
+            <div style="font-size:22px; line-height:1.45;">El framework está siendo utilizado en un proyecto activo del Instituto Tecnológico de Canarias.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>V · Evaluación y conclusiones</div>
+        <div><span class="dot">●</span> &nbsp;15 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 16 · CUMPLIMIENTO DE OBJETIVOS                   -->
+  <!-- ============================================== -->
+  <section data-label="16 Cumplimiento">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Conclusiones</span><span class="chap">Cumplimiento de objetivos</span></div>
+        <div>16</div>
+      </div>
+      <div class="eyebrow">§8.1 · Revisión de OE1–OE6</div>
+      <h2 class="title">Cinco objetivos completados, uno en progreso.</h2>
+
+      <div style="margin-top: 56px; display:flex; flex-direction:column; gap: 14px;">
+        <!-- OE1 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color: var(--accent); font-weight:500;">OE1</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Tubería de transformación</div>
+          <div style="font-size:19px; color:var(--ink-2);">Validada con múltiples modelos del proyecto.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE2 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color: var(--accent); font-weight:500;">OE2</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Sistema de plugins por capas</div>
+          <div style="font-size:19px; color:var(--ink-2);">Seis plugins cubren los casos de uso identificados.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE3 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color: var(--accent); font-weight:500;">OE3</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Componentes Angular reutilizables</div>
+          <div style="font-size:19px; color:var(--ink-2);">Tablas, formularios Formly y BulkEditGrid en producción.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE4 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: rgba(180,83,9,0.06); border:1px solid var(--warn);">
+          <div class="mono" style="font-size:20px; color: var(--warn); font-weight:500;">OE4</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Editor visual de esquemas</div>
+          <div style="font-size:19px; color:var(--ink-2);">Vista previa en vivo operativa; queda la persistencia de overrides.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--warn);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--warn); text-transform:uppercase;">En progreso</div>
+          </div>
+        </div>
+        <!-- OE5 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color: var(--accent); font-weight:500;">OE5</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Empaquetado Docker</div>
+          <div style="font-size:19px; color:var(--ink-2);">Despliegue con <span class="mono" style="font-size:17px;">docker compose up</span>.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+        <!-- OE6 -->
+        <div style="display:grid; grid-template-columns: 100px 1.05fr 1.05fr 220px; gap: 28px; align-items:center; padding: 22px 26px; background: var(--bg-card); border:1px solid var(--rule);">
+          <div class="mono" style="font-size:20px; color: var(--accent); font-weight:500;">OE6</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Validación y caso de uso real</div>
+          <div style="font-size:19px; color:var(--ink-2);">Pruebas + uso en proyecto activo del ITC.</div>
+          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
+            <div style="width:14px; height:14px; border-radius:50%; background: var(--ok);"></div>
+            <div class="mono" style="font-size:16px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>V · Evaluación y conclusiones</div>
+        <div><span class="dot">●</span> &nbsp;16 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 17 · CONCLUSIONES — APORTACIONES                -->
+  <!-- ============================================== -->
+  <section data-label="17 Conclusiones">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Conclusiones</span><span class="chap">Aportaciones</span></div>
+        <div>17</div>
+      </div>
+      <div class="eyebrow">§8.1.1 · Aportaciones principales</div>
+      <h2 class="title">Cuatro aportaciones que validan la hipótesis.</h2>
+
+      <div style="margin-top: 64px; display:grid; grid-template-columns: repeat(2, 1fr); gap: 28px; flex:1;">
+        <div style="padding: 40px 44px; background: var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap: 18px;">
+          <div style="display:flex; align-items:baseline; gap: 18px;">
+            <div style="font-family:var(--serif); font-size:64px; color:var(--accent-2); font-weight:300; line-height:1;">01</div>
+            <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.1;">Reducción del tiempo de scaffolding</div>
+          </div>
+          <div style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Una nueva entidad requiere únicamente el modelo SQLAlchemy y <span class="mono" style="font-size:18px;">make_simple_rest_crud()</span>. API y UI quedan disponibles de forma inmediata.</div>
+        </div>
+
+        <div style="padding: 40px 44px; background: var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap: 18px;">
+          <div style="display:flex; align-items:baseline; gap: 18px;">
+            <div style="font-family:var(--serif); font-size:64px; color:var(--accent-2); font-weight:300; line-height:1;">02</div>
+            <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.1;">Contrato de datos unificado</div>
+          </div>
+          <div style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">JSON Schema como lenguaje común entre capas elimina la duplicación de definiciones y reduce la probabilidad de inconsistencias.</div>
+        </div>
+
+        <div style="padding: 40px 44px; background: var(--bg-card); border:1px solid var(--rule); display:flex; flex-direction:column; gap: 18px;">
+          <div style="display:flex; align-items:baseline; gap: 18px;">
+            <div style="font-family:var(--serif); font-size:64px; color:var(--accent-2); font-weight:300; line-height:1;">03</div>
+            <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.1;">Extensibilidad sin acoplamiento</div>
+          </div>
+          <div style="font-size: 22px; color: var(--ink-2); line-height: 1.45;">Plugins por prioridad y tokens opacos de inyección permiten adaptar el framework a requisitos específicos sin tocar el núcleo.</div>
+        </div>
+
+        <div style="padding: 40px 44px; background: var(--bg-deep); color: #e9e6df; border:1px solid var(--bg-deep); display:flex; flex-direction:column; gap: 18px;">
+          <div style="display:flex; align-items:baseline; gap: 18px;">
+            <div style="font-family:var(--serif); font-size:64px; color:var(--accent-2); font-weight:300; line-height:1;">04</div>
+            <div style="font-family:var(--serif); font-size:30px; font-weight:500; line-height:1.1; color:#fff;">Bulk con semántica configurable</div>
+          </div>
+          <div style="font-size: 22px; color: #c7c2b6; line-height: 1.45;">La dualidad <span class="mono" style="color:#fff; font-size:18px;">partial</span> / <span class="mono" style="color:#fff; font-size:18px;">abort</span> ofrece flexibilidad real para la importación masiva de datos.</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>V · Evaluación y conclusiones</div>
+        <div><span class="dot">●</span> &nbsp;17 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 18 · TRABAJO FUTURO                              -->
+  <!-- ============================================== -->
+  <section data-label="18 Trabajo futuro">
+    <div class="frame">
+      <div class="topbar">
+        <div class="left"><span>V · Conclusiones</span><span class="chap">Trabajo futuro</span></div>
+        <div>18</div>
+      </div>
+      <div class="eyebrow">§8.2 · Líneas abiertas</div>
+      <h2 class="title">Tres horizontes de evolución.</h2>
+
+      <div style="margin-top: 56px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 0; flex:1;">
+
+        <!-- Short -->
+        <div style="padding: 16px 36px 16px 0; border-right: 1px solid var(--rule);">
+          <div style="display:flex; align-items:baseline; gap:18px; margin-bottom: 28px;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Horizonte</div>
+            <div style="font-family:var(--serif); font-size:36px; font-weight:500; line-height:1;">Corto</div>
+          </div>
+          <ul style="display:flex; flex-direction:column; gap: 22px;">
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Cierre del Formly Editor</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Persistencia de overrides y exportación.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Pruebas E2E con Playwright</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Flujos de edición masiva y formularios.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Publicación en npm privado</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Distribución en el registro interno del ITC.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Medium -->
+        <div style="padding: 16px 36px; border-right: 1px solid var(--rule);">
+          <div style="display:flex; align-items:baseline; gap:18px; margin-bottom: 28px;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Horizonte</div>
+            <div style="font-family:var(--serif); font-size:36px; font-weight:500; line-height:1;">Medio</div>
+          </div>
+          <ul style="display:flex; flex-direction:column; gap: 22px;">
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Soporte multi-base-de-datos</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">MySQL y SQLite.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Módulo de autenticación propio</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">OAuth2 y LDAP, configurables.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Migraciones automáticas</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Integración con Alembic.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Long -->
+        <div style="padding: 16px 0 16px 36px;">
+          <div style="display:flex; align-items:baseline; gap:18px; margin-bottom: 28px;">
+            <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Horizonte</div>
+            <div style="font-family:var(--serif); font-size:36px; font-weight:500; line-height:1;">Largo</div>
+          </div>
+          <ul style="display:flex; flex-direction:column; gap: 22px;">
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Escalabilidad horizontal</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Caché de esquemas con Redis y múltiples réplicas.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Marketplace de plugins</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Registro público para extensiones de terceros.</div>
+              </div>
+            </li>
+            <li style="display:flex; gap: 16px; align-items:flex-start;">
+              <div class="mono" style="font-size:16px; color:var(--accent); padding-top: 4px;">▍</div>
+              <div>
+                <div style="font-size:22px; font-weight:500;">Generación de SDK cliente</div>
+                <div style="font-size:19px; color:var(--ink-2); margin-top: 4px;">Cliente TypeScript tipado a partir del OpenAPI.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>V · Evaluación y conclusiones</div>
+        <div><span class="dot">●</span> &nbsp;18 / 19</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 19 · GRACIAS                                    -->
+  <!-- ============================================== -->
+  <section data-label="19 Gracias">
+    <style>
+      .closer { position:absolute; inset:0; display:grid; grid-template-columns: 1.1fr 1fr; background:var(--bg-deep); color:#e9e6df; }
+      .closer .l { padding: 110px 90px 90px 110px; display:flex; flex-direction:column; justify-content:space-between; }
+      .closer .r { padding: 110px 110px 90px 60px; display:flex; flex-direction:column; justify-content:space-between; border-left: 1px solid rgba(255,255,255,0.10); position:relative; }
+      .closer h1 { font-family: var(--serif); font-weight: 500; font-size: 200px; line-height: 0.95; letter-spacing: -0.025em; color: #fff; }
+      .closer h1 .acc { color: var(--accent-2); font-style: italic; }
+      .closer .crest { font-family: var(--mono); font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: #9a9388; }
+      .closer .meta { font-family: var(--mono); font-size: 16px; letter-spacing: 0.04em; color: #c7c2b6; line-height: 1.9; }
+      .closer .meta b { color: #fff; font-weight: 500; }
+      .closer .lede2 { font-family: var(--serif); font-size: 30px; line-height: 1.35; color: #c7c2b6; font-style: italic; max-width: 540px; }
+      .closer .qa { font-family: var(--mono); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-2); }
+    </style>
+    <div class="closer">
+      <div class="l">
+        <div class="crest">Defensa TFG · 19 / 19</div>
+        <h1>Gracias.<br><span class="acc">
+</span></h1>
+        <div class="meta">
+          <div><b>Nicolás Rey Alonso</b></div>
+          <div>Tutora académica · María Dolores Alfonso Suárez</div>
+          <div>Tutor de empresa · Rafael Nebot Medina</div>
+          <div>Empresa colaboradora · Instituto Tecnológico de Canarias</div>
+          <div style="margin-top:14px;">ULPGC · Escuela de Ingeniería Informática · Junio 2026</div>
+        </div>
+      </div>
+      <div class="r">
+        <div class="qa">Turno de preguntas</div>
+        <div>
+          <div class="lede2">«Reducir el tiempo necesario para llevar un prototipo funcional a producción.»</div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">FastAPI</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">SQLAlchemy 2</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">JSON Schema</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">Angular 19</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">Formly</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">AG Grid</span>
+          <span style="font-family:var(--mono); font-size:13px; letter-spacing:0.08em; text-transform:uppercase; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; color:#c7c2b6;">Docker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</deck-stage>
+
+<div id="tweaks-root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+</body>
+</html>
