@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-mood="academic" data-voice="serif" data-density="balanced">
 <head>
 <meta charset="utf-8">
 <title>Defensa TFG · Nicolás Rey Alonso</title>
@@ -74,10 +74,6 @@
   html[data-density="generous"] .topbar { margin-bottom: 80px !important; padding-bottom: 22px !important; }
   html[data-density="generous"] .eyebrow { margin-bottom: 40px !important; }
 </style>
-
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
 <style>
   :root{
@@ -195,7 +191,7 @@
   "El trabajo nace de mi estancia de prácticas en el ITC, donde desarrollé la librería NextGenDem-GUI-LIB para el proyecto homónimo. Esa librería estaba acoplada a un backend específico, lo que limitaba mucho su reutilización. En paralelo, el ITC arrancaba un proyecto con el Jardín Botánico Viera y Clavijo, donde las necesidades de catalogación, anotaciones y jerarquías taxonómicas obligan a un modelo de datos en evolución constante. Ese contexto convierte la reutilización en una necesidad operativa.",
   "El problema concreto es que, cada vez que el modelo de datos cambia, el coste se propaga en cascada: hay que tocar el ORM, los esquemas, los endpoints, el cliente HTTP y los formularios. Buena parte de ese código se escribe a mano y se acopla al dominio. La hipótesis del trabajo es que ese coste puede reducirse a cero si el modelo se convierte en la única fuente de verdad y el resto del sistema se deriva automáticamente de él.",
   "La solución es un framework full-stack compuesto por dos artefactos. Uniback, en Python con FastAPI, SQLAlchemy 2 y PostgreSQL, expone modelos, contrato y esquemas. Ngt-gui, librería Angular con Formly, consume el esquema y genera los formularios. La frontera entre ambos es un contrato uniforme: el envoltorio de respuesta y los esquemas enriquecidos con extensiones x-*.",
-  "Los cinco objetivos específicos son: una API modular con envoltorio uniforme y fábricas CRUD; el modelado y consolidación de los esquemas de datos; un sistema de comunicación estandarizado con descubrimiento y cliente genérico tipado; el generador automático de formularios sobre Formly; y la generación automática de esquemas a partir del ORM. Los cinco quedan completados al cierre del trabajo.",
+  "Los cinco objetivos específicos son: una API modular con envoltorio uniforme y fábricas CRUD; el modelado y consolidación de los esquemas de datos; un sistema de comunicación estandarizado con descubrimiento y cliente genérico tipado; el generador automático de formularios sobre Formly; y la generación automática de esquemas a partir del ORM. Los cinco quedan cubiertos al cierre del trabajo y, más allá de ellos, el framework se concibe para una evolución continua: incorporar nuevas entidades y dominios sin reescribir el núcleo.",
   "El framework tiene cuatro stakeholders. El ITC, propietario y principal consumidor, busca acortar el arranque de futuros proyectos. El equipo de desarrollo que construirá sobre él necesita una API predecible y tipada. El Jardín Botánico Viera y Clavijo, cliente del primer proyecto real, aporta el caso de uso que valida la genericidad. Y el usuario final, que nunca toca el framework, requiere formularios y vistas correctas y validadas.",
   "En el estado del arte se analizaron las alternativas habituales para generar interfaces desde un esquema. React-jsonschema-form y JSON Forms se centran en el lado cliente y asumen un esquema dado. OpenAPI describe operaciones, no presentación. Los admin autogenerados —tipo Django Admin— acoplan la interfaz al servidor y son difíciles de reutilizar. La aportación diferencial es cerrar la cadena completa: derivar el esquema desde el ORM, enriquecerlo con pistas de presentación, transportarlo por un contrato versionado con ETag y consumirlo con un cliente genérico.",
   "El stack se eligió por su capacidad de hablar el mismo idioma entre capas. En backend, FastAPI y Pydantic emiten JSON Schema de forma natural; SQLAlchemy 2 con su API Mapped expone los metadatos necesarios; Continuum aporta versionado e histórico; Alembic gestiona las migraciones; Docker garantiza la reproducibilidad. En frontend, Angular con Formly y ng-zorro construye formularios reactivos a partir de configuración declarativa.",
@@ -268,10 +264,10 @@
         </div>
       </div>
       <div class="right">
-        <div class="rday">Febrero de 2026</div>
+        <div class="rday">INICIO DEL PROYECTO: FEBRERO DE 2026</div>
         <div style="display:flex; align-items:center; justify-content:center; flex:1;">
           <div class="markmark"></div>
-          <div class="glyph">uni<span class="slash">/</span>back</div>
+          <div class="glyph">uni<span class="slash">/Works</span></div>
         </div>
         <div class="tags">
           <span class="tag">FastAPI</span>
@@ -300,7 +296,7 @@
       <h2 class="title">Cinco bloques.</h2>
       <div class="subtitle">Del problema al framework consolidado y validado.</div>
 
-      <div style="margin-top: 64px; display:grid; grid-template-columns: repeat(5, 1fr); gap: 36px;">
+      <div style="margin-top: 52px; display:grid; grid-template-columns: repeat(5, 1fr); gap: 36px;">
         <div style="border-top: 2px solid var(--accent); padding-top: 22px;">
           <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ink-3); text-transform:uppercase;">I</div>
           <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Problema<br>y objetivos</div>
@@ -326,6 +322,11 @@
           <div style="font-family:var(--serif); font-size:32px; font-weight:500; margin-top: 14px; line-height:1.1;">Resultados<br>y conclusiones</div>
           <div style="color:var(--ink-3); font-size:19px; margin-top: 18px;">Pruebas · antes/después</div>
         </div>
+      </div>
+
+      <div style="margin-top: 48px; display:grid; grid-template-columns: auto 1fr; gap: 30px; align-items:center; padding: 24px 30px; border-left: 3px solid var(--accent-2); background: var(--bg-card);">
+        <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Metodología</div>
+        <div style="font-size: 21px; color: var(--ink-2); line-height: 1.45;">Desarrollo <span style="color:var(--ink); font-weight:500;">iterativo e incremental</span>. La integración con el equipo de desarrollo fue baja, pero los requisitos cambiantes hicieron necesario iterar sobre el diseño a lo largo de los cuatro incrementos.</div>
       </div>
 
       <div class="footer">
@@ -555,58 +556,45 @@
         <div>06</div>
       </div>
       <div class="eyebrow">§2.4 · Objetivos</div>
-      <h2 class="title">Cinco objetivos específicos, todos completados.</h2>
+      <h2 class="title">Cinco objetivos específicos.</h2>
 
-      <div style="margin-top: 56px; display:flex; flex-direction:column; gap: 14px;">
+      <div style="margin-top: 40px; display:flex; flex-direction:column; gap: 12px;">
         <!-- OE1 -->
-        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
           <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE1</div>
           <div style="font-family:var(--serif); font-size:26px; font-weight:500;">API modular</div>
           <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Envoltorio uniforme, catálogo de errores y fábricas CRUD.</div>
-          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
-            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
-          </div>
         </div>
         <!-- OE2 -->
-        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
           <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE2</div>
           <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Modelado de datos</div>
           <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Consolidar el núcleo ORM con versionado e histórico.</div>
-          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
-            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
-          </div>
         </div>
         <!-- OE3 -->
-        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
           <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE3</div>
           <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Comunicación estandarizada</div>
           <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Descubrimiento de entidades y cliente genérico tipado.</div>
-          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
-            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
-          </div>
         </div>
         <!-- OE4 -->
-        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
           <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE4</div>
           <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Generador de formularios</div>
           <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Sobre Formly y Grid, guiado por el esquema.</div>
-          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
-            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
-          </div>
         </div>
         <!-- OE5 -->
-        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr 200px; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-card); border:1px solid var(--rule);">
           <div class="mono" style="font-size:20px; color:var(--accent); font-weight:500;">OE5</div>
           <div style="font-family:var(--serif); font-size:26px; font-weight:500;">Generación de esquemas</div>
           <div style="font-size:20px; color:var(--ink-2); line-height:1.35;">Esquemas derivados automáticamente desde el ORM.</div>
-          <div style="display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-            <div style="width:13px; height:13px; border-radius:50%; background: var(--ok);"></div>
-            <div class="mono" style="font-size:15px; letter-spacing:0.1em; color:var(--ok); text-transform:uppercase;">Completado</div>
-          </div>
+        </div>
+
+        <!-- Evolución continua -->
+        <div style="display:grid; grid-template-columns: 100px 1.1fr 1.4fr; gap: 28px; align-items:center; padding: 22px 28px; background: var(--bg-deep); border:1px solid var(--bg-deep); margin-top: 6px;">
+          <div style="font-family:var(--serif); font-size:30px; color:var(--accent-2); font-weight:400; line-height:1;">&infin;</div>
+          <div style="font-family:var(--serif); font-size:26px; font-weight:500; color:#fff;">Evolución continua</div>
+          <div style="font-size:20px; color:#c7c2b6; line-height:1.35;">No es un punto final: el framework está diseñado para crecer. Nuevas entidades y dominios se incorporan sin reescribir el núcleo.</div>
         </div>
       </div>
 
@@ -653,7 +641,7 @@
         <div style="background:var(--bg-card); border:1px solid var(--rule); padding: 32px 28px; display:flex; flex-direction:column; gap:14px;">
           <div class="mono" style="font-size:14px; letter-spacing:0.12em; color:var(--accent-2); text-transform:uppercase;">Beneficiario</div>
           <div style="font-family:var(--serif); font-size:34px; font-weight:500; line-height:1.05;">Usuario final</div>
-          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">No interactúa con el framework, pero recibe formularios y vistas correctas, validadas y coherentes.</div>
+          <div style="font-size:19px; color:var(--ink-2); line-height:1.4;">No interactúa con el framework, pero recibe formularios y vistas correctas, validadas y coherentes. Además, las mejoras del núcleo se propagan a todos los proyectos que usan el framework.</div>
         </div>
       </div>
 
@@ -721,7 +709,7 @@
               <td style="padding: 22px 16px; text-align:center; color:var(--err);">No</td>
             </tr>
             <tr style="background: rgba(30,58,138,0.06); border-bottom: 2px solid var(--accent);">
-              <td style="padding: 28px 16px 28px 0; font-weight:600; font-size: 25px; color:var(--accent);">Este trabajo · uniback + ngt-gui</td>
+              <td style="padding: 28px 16px 28px 0; font-weight:600; font-size: 25px; color:var(--accent);">Este trabajo · uniWorks</td>
               <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí</td>
               <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Sí <span class="mono" style="font-size:16px; color:var(--ink-3);">(x-*)</span></td>
               <td style="padding: 28px 16px; text-align:center; color:var(--ok); font-weight:600;">Uniforme</td>
@@ -1159,6 +1147,7 @@
             <div style="color:var(--accent); font-weight:500;">VALIDATION_ERROR</div><div>Pydantic con <span style="font-style:italic;">location</span></div><div class="mono" style="color:var(--ink-3);">422</div>
             <div style="color:var(--accent); font-weight:500;">INTERNAL_ERROR</div><div>excepción no capturada</div><div class="mono" style="color:var(--ink-3);">500</div>
           </div>
+          <div class="mono" style="margin-top: 18px; font-size: 14px; color: var(--ink-3); letter-spacing: 0.04em; line-height:1.5;">Códigos de estado conformes al estándar <span style="color:var(--accent-2); font-weight:500;">RFC 7231</span> · semántica HTTP/1.1.</div>
         </div>
 
         <!-- RIGHT: CRUD factories + endpoint convention -->
@@ -1767,24 +1756,33 @@ roles.<span style="color:#fff;">schema</span>&lt;<span style="color:#9bbcd6;">JS
 
 </deck-stage>
 
-<div id="tweaks-root"></div>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="tweaks.jsx"></script>
-
 <script>
-/* Presentación a pantalla completa: el índice de diapositivas arranca oculto
-   y se muestra/oculta con la tecla F. Solo se activa cuando el archivo se abre
-   directamente (doble clic), no dentro del editor — así no interfiere al editar. */
+/* Índice de diapositivas: el rail de miniaturas arranca oculto.
+   Pulsa F para mostrarlo / ocultarlo; haz clic en una miniatura para saltar
+   a esa diapositiva. Esc también lo oculta. */
 (function () {
-  var standalone = window.self === window.top;
-  if (!standalone) return;
-  var railVisible = false;
-  function setRail(on) { window.postMessage({ type: '__deck_rail_visible', on: on }, '*'); }
-  window.addEventListener('load', function () { setTimeout(function () { setRail(false); }, 60); });
+  var visible = false;
+  function setRail(on) {
+    window.postMessage({ type: '__deck_rail_visible', on: on }, '*');
+  }
+  function toggle(on) {
+    visible = on;
+    setRail(visible);
+  }
+  // Arranca con el índice oculto.
+  window.addEventListener('load', function () {
+    setTimeout(function () { toggle(false); }, 60);
+  });
   window.addEventListener('keydown', function (e) {
-    if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      railVisible = !railVisible;
-      setRail(railVisible);
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var el = e.target;
+    if (el && (el.isContentEditable ||
+        /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+    if (e.key === 'f' || e.key === 'F') {
+      toggle(!visible);
+      e.preventDefault();
+    } else if (e.key === 'Escape' && visible) {
+      toggle(false);
       e.preventDefault();
     }
   });

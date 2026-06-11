@@ -1,0 +1,56 @@
+name: Deploy Presentation to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Presentation/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+# Permisos que necesita el deploy oficial de Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita despliegues solapados; deja terminar el que esté en curso
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar sitio
+        run: |
+          mkdir -p _site
+          # Copia toda la carpeta de la presentación (html, js, jsx, assets/)
+          cp -r "Presentation/." _site/
+          # El archivo principal tiene espacios; lo servimos como index.html
+          cp "Presentation/Presentacion TFG.html" "_site/index.html"
+          # Sin Jekyll: sirve los ficheros tal cual (incluidos los que empiezan por _)
+          touch _site/.nojekyll
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
