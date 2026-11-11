@@ -184,7 +184,8 @@
       z-index: 2147483000;
       user-select: none;
     }
-    .overlay[data-visible] {
+    .overlay[data-visible],
+    .overlay:hover {
       opacity: 1;
       pointer-events: auto;
       transform: translate(-50%, 0) scale(1);
@@ -217,15 +218,18 @@
     .btn:focus-visible { outline: none; }
     .btn::-moz-focus-inner { border: 0; }
     .btn svg { width: 14px; height: 14px; display: block; }
-    .btn.reset {
+    .btn.reset,
+    .btn.fullscreen {
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.02em;
       padding: 0 10px 0 12px;
       gap: 6px;
       color: rgba(255,255,255,0.72);
+      cursor: pointer;
     }
-    .btn.reset .kbd {
+    .btn.reset .kbd,
+    .btn.fullscreen .kbd {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -240,17 +244,27 @@
       border-radius: 4px;
     }
 
-    .count {
+    .btn.count {
       font-variant-numeric: tabular-nums;
       color: #fff;
       font-weight: 500;
-      padding: 0 8px;
-      min-width: 42px;
+      padding: 0 10px;
+      height: 28px;
+      min-width: 44px;
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .count .sep { color: rgba(255,255,255,0.45); margin: 0 3px; font-weight: 400; }
-    .count .total { color: rgba(255,255,255,0.55); }
+    .btn.count:hover {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .btn.count .sep { color: rgba(255,255,255,0.45); margin: 0 3px; font-weight: 400; }
+    .btn.count .total { color: rgba(255,255,255,0.55); }
 
     .divider {
       width: 1px;
@@ -566,6 +580,7 @@
       this._onTapBack = this._onTapBack.bind(this);
       this._onTapForward = this._onTapForward.bind(this);
       this._onMessage = this._onMessage.bind(this);
+      this._onFullscreenChange = this._onFullscreenChange.bind(this);
       // Capture-phase close so a click anywhere dismisses the menu, but
       // ignore clicks that land inside the menu itself — otherwise the
       // capture handler runs before the menu's own (bubble) handler and
@@ -596,6 +611,8 @@
       window.addEventListener('mousemove', this._onMouseMove, { passive: true });
       window.addEventListener('message', this._onMessage);
       window.addEventListener('click', this._onDocClick, true);
+      document.addEventListener('fullscreenchange', this._onFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', this._onFullscreenChange);
       // Initial collection + layout happens via slotchange, which fires on mount.
       this._enableRail();
       // Hold the stage hidden until webfonts are ready so the first visible
@@ -783,6 +800,8 @@
       window.removeEventListener('mousemove', this._onMouseMove);
       window.removeEventListener('message', this._onMessage);
       window.removeEventListener('click', this._onDocClick, true);
+      document.removeEventListener('fullscreenchange', this._onFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', this._onFullscreenChange);
       if (this._hideTimer) clearTimeout(this._hideTimer);
       if (this._mouseIdleTimer) clearTimeout(this._mouseIdleTimer);
       if (this._liveTimer) clearTimeout(this._liveTimer);
@@ -854,17 +873,22 @@
         <button class="btn prev" type="button" aria-label="Previous slide" title="Previous (←)">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
         </button>
-        <span class="count" aria-live="polite"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span>
+        <button class="btn count" type="button" aria-label="Alternar miniaturas" title="Alternar miniaturas (M)"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></button>
         <button class="btn next" type="button" aria-label="Next slide" title="Next (→)">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
         </button>
         <span class="divider"></span>
         <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button>
+        <button class="btn fullscreen" type="button" aria-label="Pantalla completa" title="Pantalla completa (F)"><span class="label">Pantalla completa</span><span class="kbd">F</span></button>
       `;
 
       overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1, 'click'));
       overlay.querySelector('.next').addEventListener('click', () => this._advance(1, 'click'));
       overlay.querySelector('.reset').addEventListener('click', () => this._go(0, 'click'));
+      overlay.querySelector('.count').addEventListener('click', () => this.toggleRail());
+      const fsBtn = overlay.querySelector('.fullscreen');
+      fsBtn.addEventListener('click', () => this.toggleFullscreen());
+      this._fsBtn = fsBtn;
 
       // Thumbnail rail + context menu. Thumbnails are populated in
       // _renderRail() after _collectSlides().
@@ -1221,20 +1245,77 @@
       // whether the Tweaks panel itself is open — closing the panel
       // doesn't change rail visibility. Persists alongside rail width.
       if (d && d.type === '__deck_rail_visible' && typeof d.on === 'boolean') {
-        if (d.on === this._railVisible) return;
-        this._railVisible = d.on;
-        try { localStorage.setItem('deck-stage.railVisible', d.on ? '1' : '0'); } catch (e) {}
-        // Arm the transition, commit it, then flip state — otherwise the
-        // browser coalesces both writes and nothing animates on show.
-        this.setAttribute('data-rail-anim', '');
-        void (this._rail && this._rail.offsetHeight);
-        this._syncRailHidden();
-        this._fit();
-        this._scaleThumbs();
-        clearTimeout(this._railAnimTimer);
-        this._railAnimTimer = setTimeout(() => this.removeAttribute('data-rail-anim'), 220);
+        this.setRailVisible(d.on);
       }
       if (d && d.type === '__omelette_rail_enabled') this._enableRail();
+    }
+
+    setRailVisible(on) {
+      if (on === this._railVisible) return;
+      this._railVisible = on;
+      try { localStorage.setItem('deck-stage.railVisible', on ? '1' : '0'); } catch (e) {}
+      // Arm the transition, commit it, then flip state — otherwise the
+      // browser coalesces both writes and nothing animates on show.
+      this.setAttribute('data-rail-anim', '');
+      void (this._rail && this._rail.offsetHeight);
+      this._syncRailHidden();
+      this._fit();
+      this._scaleThumbs();
+      clearTimeout(this._railAnimTimer);
+      this._railAnimTimer = setTimeout(() => this.removeAttribute('data-rail-anim'), 220);
+    }
+
+    toggleRail(forceState) {
+      const target = typeof forceState === 'boolean' ? forceState : !this._railVisible;
+      this.setRailVisible(target);
+    }
+
+    toggleFullscreen() {
+      const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFull) {
+        this._railBeforeFullscreen = this._railVisible;
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen;
+        if (req) {
+          const p = req.call(el);
+          if (p && p.catch) p.catch(() => {});
+        }
+        this.setRailVisible(false);
+      } else {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) {
+          const p = exit.call(document);
+          if (p && p.catch) p.catch(() => {});
+        }
+        if (this._railBeforeFullscreen !== undefined) {
+          this.setRailVisible(this._railBeforeFullscreen);
+          this._railBeforeFullscreen = undefined;
+        } else {
+          this.setRailVisible(true);
+        }
+      }
+    }
+
+    _onFullscreenChange() {
+      const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (this._fsBtn) {
+        this._fsBtn.setAttribute('title', isFull ? 'Salir de pantalla completa (F)' : 'Pantalla completa (F)');
+        const lbl = this._fsBtn.querySelector('.label');
+        if (lbl) lbl.textContent = isFull ? 'Salir' : 'Pantalla completa';
+      }
+      if (!isFull) {
+        if (this._railBeforeFullscreen !== undefined) {
+          this.setRailVisible(this._railBeforeFullscreen);
+          this._railBeforeFullscreen = undefined;
+        } else if (!this._railVisible) {
+          this.setRailVisible(true);
+        }
+      } else {
+        if (this._railVisible) {
+          this.setRailVisible(false);
+        }
+      }
+      this._fit();
     }
 
     _syncRailHidden() {
@@ -1295,6 +1376,10 @@
         this._go(this._slides.length - 1, 'keyboard');
       } else if (key === 'r' || key === 'R') {
         this._go(0, 'keyboard');
+      } else if (key === 'f' || key === 'F') {
+        this.toggleFullscreen();
+      } else if (key === 'm' || key === 'M') {
+        this.toggleRail();
       } else if (/^[0-9]$/.test(key)) {
         // 1..9 jump to that slide; 0 jumps to 10.
         const n = key === '0' ? 9 : parseInt(key, 10) - 1;
