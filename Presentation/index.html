@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UniWorks · Defensa TFG · Nicolás Rey Alonso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3eee3; --paper-2:#e8e1d1; --ink:#13231c; --ink-2:#34443b; --muted:#55635a;
+  --forest:#0f2219; --forest-2:#183226; --leaf:#1d6a49; --lime:#c9f26a; --clay:#b8451f;
+  --on-dark:#eef1e6; --on-dark-2:#b3c1b6; --line:rgba(19,35,28,.2); --line-d:rgba(238,241,230,.22);
+  --display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+html,body{margin:0;height:100%;background:#0a1510}
+deck-stage:not(:defined){visibility:hidden}
+deck-stage > section{
+  font-family:var(--body);font-size:34px;line-height:1.35;color:var(--ink);background:var(--paper);
+  padding:84px 120px 110px;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;
+  text-wrap:pretty;
+}
+deck-stage > section *{box-sizing:border-box}
+section.dark{background:var(--forest);color:var(--on-dark)}
+section p,section h1,section h2,section h3,section ul,section ol,section dl,section dd,section pre{margin:0;padding:0}
+section ul,section ol{list-style:none}
+code,pre{font-family:var(--mono)}
+code{font-size:.88em}
+
+.eyebrow{font-family:var(--mono);font-size:24px;letter-spacing:.09em;text-transform:uppercase;color:var(--leaf);font-weight:500;display:flex;align-items:center;gap:24px}
+.dark .eyebrow{color:var(--lime)}
+h2{font-family:var(--display);font-weight:460;font-size:72px;line-height:1.07;letter-spacing:-.012em;margin-top:22px !important;max-width:1560px;font-variation-settings:"opsz" 100}
+h2 em,h1 em{font-style:italic;color:var(--leaf);font-weight:420}
+.dark h2 em{color:var(--lime)}
+h2.xl{font-size:104px;max-width:1500px;margin-top:40px !important}
+.lead{font-size:36px;line-height:1.38;color:var(--ink-2);margin-top:36px !important;max-width:720px}
+.tag{font-family:var(--mono);font-size:22px;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:999px;font-weight:500}
+.tag.clay{background:var(--clay);color:#fff}
+.tag.lime{background:var(--lime);color:var(--forest)}
+.clay-t{color:var(--clay)}
+.p-k{font-family:var(--mono);font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dark .p-k{color:var(--on-dark-2)}
+.cap{font-size:28px;color:var(--muted);line-height:1.35}
+.dark .cap{color:var(--on-dark-2)}
+
+/* pie */
+.foot{position:absolute;left:120px;right:120px;bottom:38px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:20px;color:var(--muted);letter-spacing:.04em}
+.foot nav{display:flex;gap:26px;margin-left:auto;margin-right:48px;font-size:18px}
+.foot nav span{padding-top:8px;border-top:2px solid transparent}
+.foot nav .on{color:var(--ink);border-top-color:var(--leaf);font-weight:700}
+.foot .brand{font-family:var(--display);font-size:26px;font-style:italic;letter-spacing:0;color:var(--ink)}
+.dark .foot{color:var(--on-dark-2)}
+.dark .foot nav .on{color:var(--on-dark);border-top-color:var(--lime)}
+.dark .foot .brand{color:var(--on-dark)}
+
+/* portada */
+section.cover{padding:0;display:grid;grid-template-columns:1160px 760px}
+.cover-l{padding:76px 70px 80px 120px;display:flex;flex-direction:column;justify-content:space-between}
+.cover .logo{width:520px;height:auto;margin-left:-28px}
+.cover h1{font-family:var(--display);font-size:216px;line-height:.92;font-weight:420;letter-spacing:-.03em;margin:26px 0 34px -8px !important;font-variation-settings:"opsz" 144}
+.cover-sub{font-size:40px;line-height:1.26;max-width:900px;color:var(--ink)}
+.cover-app{font-size:30px;color:var(--muted);margin-top:18px !important}
+.credits{display:grid;grid-template-columns:max-content max-content 1fr;gap:52px;justify-content:start;border-top:1.5px solid var(--line);padding-top:26px !important}
+.credits dt{font-family:var(--mono);font-size:20px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.credits dd{font-size:27px;line-height:1.3;font-weight:500;white-space:nowrap}
+.credits div:nth-child(3) dd{white-space:normal}
+.repo{font-family:var(--mono);font-size:26px;color:var(--leaf);margin-top:26px !important}
+.cover-r{background:var(--forest);color:var(--lime);position:relative;overflow:hidden}
+.plant{position:absolute;inset:0;width:100%;height:100%}
+.plant circle{fill:var(--forest);stroke:currentColor;stroke-width:2}
+.plant circle.seed{fill:var(--lime);stroke:none}
+.seed-label{position:absolute;left:0;right:0;bottom:76px;text-align:center;font-family:var(--mono);font-size:22px;letter-spacing:.1em;text-transform:uppercase;color:var(--on-dark-2)}
+section.close h1{font-size:200px}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .plant path{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:grow .5s ease-out var(--d) forwards}
+  section[data-deck-active] .plant circle:not(.seed){opacity:0;animation:pop .3s ease-out var(--d) forwards}
+}
+@keyframes grow{to{stroke-dashoffset:0}}
+@keyframes pop{to{opacity:1}}
+@media print{.plant path{stroke-dasharray:none !important;stroke-dashoffset:0 !important;animation:none !important}.plant circle{opacity:1 !important;animation:none !important}}
+
+/* rejillas */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center;flex:1;min-height:0}
+.two.even{align-items:start;margin-top:52px}
+.two.wide-r{grid-template-columns:720px 1fr;gap:60px}
+.col-text h2{font-size:68px}
+
+/* 2 · cascada */
+.cascade{display:flex;flex-direction:column;gap:18px;padding-right:20px}
+.c-model{background:var(--forest);color:var(--on-dark);padding:30px 36px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;font-size:38px;width:560px}
+.c-arrow{width:2px;height:44px;background:var(--clay);margin-left:60px;position:relative}
+.c-arrow::after{content:"";position:absolute;left:-8px;bottom:-2px;border-top:14px solid var(--clay);border-left:9px solid transparent;border-right:9px solid transparent}
+.c-layer{border:1.5px solid var(--ink);border-radius:10px;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;gap:24px;width:600px;background:#fbf8f0}
+.c-layer:nth-of-type(3){margin-left:0}.c-layer:nth-of-type(4){margin-left:70px}.c-layer:nth-of-type(5){margin-left:140px}
+.c-layer b{display:block;font-size:36px}
+.c-layer small{font-size:26px;color:var(--muted)}
+.hand{font-family:var(--mono);font-size:24px;color:var(--clay);font-weight:700;white-space:nowrap}
+
+/* 3 · cadena */
+section.statement{justify-content:flex-start}
+.chain{display:grid;grid-template-columns:repeat(4,1fr);margin-top:auto;position:relative;padding-top:8px}
+.chain::before{content:"";position:absolute;left:14px;right:12%;top:21px;height:2px;background:var(--lime);opacity:.7}
+.node{display:flex;flex-direction:column;gap:10px;padding-right:36px;position:relative}
+.node i{width:28px;height:28px;border-radius:50%;border:2px solid var(--lime);background:var(--forest);margin-bottom:26px;position:relative}
+.node.seed i{background:var(--lime);box-shadow:0 0 0 9px rgba(201,242,106,.18)}
+.node b{font-family:var(--display);font-size:46px;font-weight:460;line-height:1.1}
+.node code{font-size:26px;color:var(--lime)}
+.node small{font-size:26px;color:var(--on-dark-2)}
+.chain-legend{display:flex;gap:64px;margin-top:54px;padding-top:24px;border-top:1px solid var(--line-d);font-size:28px;color:var(--on-dark-2)}
+.chain-legend b{color:var(--on-dark)}
+
+/* 4 · fases */
+.phases{display:grid;grid-template-columns:1fr 150px 1fr 150px 1.08fr;align-items:stretch;margin-top:56px;flex:1;min-height:0;max-height:560px}
+.phase{border-top:4px solid var(--ink);padding:26px 8px 0 0;display:flex;flex-direction:column;gap:18px}
+.phase h3{font-family:var(--display);font-size:44px;font-weight:480;line-height:1.1}
+.phase .ph-k{font-family:var(--mono);font-size:21px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.phase li{font-size:30px;line-height:1.3;padding:13px 0;border-top:1px solid var(--line);color:var(--ink-2)}
+.phase li b{color:var(--ink)}
+.phase.final{background:var(--forest);color:var(--on-dark);border-top-color:var(--lime);padding:26px 36px 30px;border-radius:0 0 12px 12px}
+.phase.final .ph-k{color:var(--lime)}
+.phase.final li{color:var(--on-dark-2);border-top-color:var(--line-d)}
+.phase.final li b{color:var(--on-dark)}
+.ph-step{display:flex;align-items:flex-start;justify-content:center;padding-top:118px}
+.ph-step span{font-family:var(--mono);font-size:21px;line-height:1.3;text-align:center;color:var(--muted);padding-bottom:16px;position:relative;width:118px;border-bottom:2px solid var(--muted)}
+.ph-step span::after{content:"";position:absolute;right:-2px;bottom:-9px;border-left:13px solid var(--muted);border-top:8px solid transparent;border-bottom:8px solid transparent}
+.ph-step.me span{color:var(--clay);font-weight:700;border-bottom-color:var(--clay)}
+.ph-step.me span::after{border-left-color:var(--clay)}
+
+/* 5 · objetivos */
+.goals{margin-top:auto !important;margin-bottom:26px !important}
+.goals li{display:grid;grid-template-columns:100px 600px 1fr;align-items:baseline;padding:30px 0;border-top:1.5px solid var(--line)}
+.goals li:last-child{border-bottom:1.5px solid var(--line)}
+.goals .n{font-family:var(--display);font-size:60px;font-style:italic;color:var(--leaf);line-height:1}
+.goals b{font-size:40px;font-weight:600}
+.goals li>span:last-child{font-size:32px;color:var(--ink-2)}
+
+/* 6 y 18 · tablas */
+table{border-collapse:collapse;width:100%}
+.cmp{margin-top:auto;margin-bottom:22px;font-size:32px}
+.cmp th,.cmp td{text-align:left;padding:21px 28px;border-top:1.5px solid var(--line)}
+.cmp thead th{font-family:var(--mono);font-size:21px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;border-top:none;padding-bottom:16px}
+.cmp tbody th{font-weight:600;width:30%}
+.cmp td{font-weight:600;color:var(--ink)}
+.cmp td.no{color:var(--muted);font-weight:400}
+.cmp td.mid{color:var(--ink-2);font-weight:400}
+.cmp tr.us th,.cmp tr.us td{background:var(--forest);color:var(--lime);border-top:none;font-size:36px;padding:28px}
+.cmp tr.us th{color:var(--on-dark);font-family:var(--display);font-style:italic;font-weight:480;font-size:44px;border-radius:10px 0 0 10px}
+.cmp tr.us td:last-child{border-radius:0 10px 10px 0}
+
+.ba{margin-top:auto;margin-bottom:22px;font-size:33px}
+.ba th,.ba td{text-align:left;padding:25px 28px;border-top:1.5px solid var(--line)}
+.ba thead th{font-family:var(--mono);font-size:21px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;border-top:none;padding-bottom:14px}
+.ba tbody th{font-weight:600;width:27%}
+.ba td:nth-child(2){color:var(--muted);width:35%}
+.ba td:nth-child(3){color:var(--leaf);font-weight:700}
+.ba tr.key th,.ba tr.key td{background:var(--forest);color:var(--on-dark);border-top:none;padding:26px 28px}
+.ba tr.key th{border-radius:10px 0 0 10px}
+.ba tr.key td:nth-child(2){color:var(--on-dark-2)}
+.ba tr.key td:nth-child(3){color:var(--lime);border-radius:0 10px 10px 0}
+
+/* 7 · arquitectura */
+.arch{display:grid;grid-template-columns:1fr 64px 1.08fr 64px 1fr;align-items:center;margin-top:auto;margin-bottom:24px}
+.panel{border:1.5px solid var(--ink);border-radius:12px;padding:30px 30px 34px;display:flex;flex-direction:column;align-items:stretch;gap:0;height:440px;justify-content:space-between;background:#fbf8f0}
+.panel .p-k{margin-bottom:12px}
+.panel.inv{background:var(--forest);color:var(--on-dark);border-color:var(--forest)}
+.panel.inv .p-k{color:var(--lime)}
+.chip{border:1.5px solid var(--line);border-radius:8px;padding:17px 22px;font-size:29px;font-weight:500;text-align:center;background:var(--paper)}
+.chip.strong{background:var(--forest);color:var(--on-dark);border-color:var(--forest)}
+.panel.inv .chip.strong{background:var(--lime);color:var(--forest);border-color:var(--lime)}
+.eps{display:flex;flex-direction:column;gap:0}
+.eps li{font-size:26px;padding:15px 4px;border-top:1px solid var(--line-d);color:var(--on-dark)}
+.dn{width:2px;height:24px;background:var(--ink);margin:0 auto;position:relative;opacity:.75}
+.dn::after{content:"";position:absolute;left:-6px;bottom:-2px;border-top:10px solid var(--ink);border-left:7px solid transparent;border-right:7px solid transparent}
+.rt{height:2px;background:var(--ink);position:relative;margin:0 8px}
+.rt::after{content:"";position:absolute;right:-2px;top:-7px;border-left:13px solid var(--ink);border-top:8px solid transparent;border-bottom:8px solid transparent}
+.rt.light{background:var(--lime)}.rt.light::after{border-left-color:var(--lime)}
+
+/* 8 · polimorfismo */
+.poly{width:900px;height:640px;justify-self:end}
+.poly text{font-family:var(--body);font-size:31px;font-weight:600;text-anchor:middle;fill:var(--ink)}
+.poly text.sub{font-size:22px;font-weight:400;fill:var(--muted)}
+.poly text.lbl{font-family:var(--mono);font-size:21px;font-weight:400;text-anchor:start;fill:var(--muted)}
+.poly .bx rect{fill:#fbf8f0;stroke:var(--ink);stroke-width:2}
+.poly .bx.main rect{fill:var(--forest);stroke:var(--forest)}
+.poly .bx.main text{fill:var(--on-dark)}.poly .bx.main text.sub{fill:var(--on-dark-2)}
+.poly .bx.plug rect{stroke:var(--clay);stroke-width:3;stroke-dasharray:9 7}
+.poly .bx.plug text{fill:var(--clay)}
+.poly .bx.ref rect{fill:var(--paper-2);stroke:none}
+.poly .bx.ref text{font-size:27px;font-weight:500}
+.poly .ln path{fill:none;stroke:var(--ink);stroke-width:2}
+.poly .ln path.dash{stroke:var(--muted);stroke-dasharray:5 8}
+
+/* código */
+.code{background:var(--forest);color:#e6ecdf;padding:34px 40px;border-radius:12px;font-size:27px;line-height:1.5;white-space:pre;overflow:hidden;tab-size:2}
+.code b{color:#fff;font-weight:700}
+.code .k{color:var(--lime)}.code .s{color:#f2bd92}.code .c{color:#93a89a}
+.dark .code{background:var(--forest-2);border:1px solid var(--line-d)}
+.code.big{font-size:33px;line-height:1.6;padding:38px 44px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.code.ok{border-left:8px solid var(--lime)}
+.code.err{border-left:8px solid #e8855c}
+
+/* 9 · nodos */
+.nodes{display:flex;flex-direction:column;align-items:stretch}
+.gw{background:var(--forest);color:var(--on-dark);border-radius:10px;padding:22px;text-align:center;font-size:30px;font-weight:500}
+.fan{width:2px;height:30px;background:var(--ink);margin:0 auto}
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid6 span,.hot span{border:1.5px solid var(--ink);border-radius:8px;padding:17px 10px;text-align:center;font-family:var(--mono);font-size:27px;background:#fbf8f0}
+.hot{display:flex;align-items:center;gap:22px;margin-top:14px}
+.hot span{border:3px dashed var(--clay);color:var(--clay);font-weight:700;width:calc((100% - 28px)/3)}
+.hot small{font-size:27px;color:var(--clay)}
+.nodes .cap{margin-top:28px !important}
+
+/* listas de puntos */
+.points li{font-size:33px;line-height:1.34;padding:21px 0;border-top:1.5px solid var(--line);color:var(--ink-2)}
+.points li:last-child{border-bottom:1.5px solid var(--line)}
+.points li b{color:var(--ink)}
+.dark .points li{border-color:var(--line-d);color:var(--on-dark);font-size:38px;padding:32px 0}
+
+/* 10 · metodología */
+.meth{margin-top:auto;margin-bottom:18px}
+.mhead,.mrow{display:grid;grid-template-columns:640px 1fr 110px 110px;align-items:center;column-gap:28px}
+.mhead{font-family:var(--mono);font-size:21px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;padding-bottom:12px}
+.mhead .lg{display:flex;align-items:center;gap:12px}
+.mhead .lg i{display:inline-block;width:34px;height:12px}
+.mhead .lg i.est{border:1.5px solid var(--ink)}.mhead .lg i.real{background:var(--leaf);margin-left:18px}
+.mrow{padding:13px 0;border-top:1.5px solid var(--line)}
+.mn b{display:block;font-size:31px;font-weight:600;line-height:1.2}
+.mn small{font-size:24px;color:var(--muted)}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bars i{display:block;height:13px}
+.bars .est{border:1.5px solid var(--ink)}
+.bars .real{background:var(--leaf)}.bars .real.over{background:var(--clay)}
+.h{font-family:var(--mono);font-size:30px;text-align:right;color:var(--muted)}
+.h.r{color:var(--ink);font-weight:700}
+.mhead .h{font-size:21px}
+.mrow.total{border-top:3px solid var(--ink)}
+.mrow.total .mn b{font-family:var(--display);font-size:38px;font-style:italic;font-weight:480}
+.mrow.total .h{font-size:38px;color:var(--ink)}
+
+/* 12 · incremento 3 */
+.i3{display:grid;grid-template-columns:640px 250px 1fr;align-items:center;margin-top:auto;margin-bottom:auto}
+.hints dl{margin-top:16px !important}
+.hints dl div{display:grid;grid-template-columns:250px 1fr;padding:15px 0;border-top:1px solid var(--line-d);align-items:baseline}
+.hints dt{font-family:var(--mono);font-size:27px;color:var(--on-dark-2)}
+.hints dd{font-size:31px;font-weight:600;color:var(--on-dark)}
+.conv{display:flex;flex-direction:column;gap:18px;align-items:center;padding:0 22px}
+.conv .rt{width:100%;margin:0}
+.conv code{font-size:23px;color:var(--lime)}
+.onetag .code{margin:16px 0 22px}
+
+/* demos */
+section.demo{padding:46px 120px 0}
+.demo-h{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:34px}
+.demo-h h2{font-size:50px;margin:0 !important}
+.demo-cap{font-size:27px;color:var(--on-dark-2);text-align:right;line-height:1.3}
+.vwrap{margin-top:24px;display:flex;justify-content:center}
+.vwrap video{height:820px;aspect-ratio:16/9;background:#000;border-radius:10px;box-shadow:0 0 0 1px var(--line-d),0 30px 80px rgba(0,0,0,.45);display:block}
+
+/* 17 · cifras */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:44px;margin-top:auto;margin-bottom:34px}
+.stats>div{border-top:4px solid var(--ink);padding-top:14px}
+.stats b{display:block;font-family:var(--display);font-size:150px;line-height:1;font-weight:420;color:var(--leaf);letter-spacing:-.03em;font-variation-settings:"opsz" 144}
+.stats span{display:block;font-size:28px;line-height:1.3;color:var(--ink-2);margin-top:14px}
+
+/* 19 · costes */
+.costs{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:auto}
+.costs + .note{margin-bottom:auto !important}
+.costs>div{border-top:4px solid var(--ink);padding-top:22px}
+.costs b{display:block;font-family:var(--display);font-size:112px;line-height:1.05;font-weight:420;letter-spacing:-.025em;margin:12px 0 16px;white-space:nowrap;font-variation-settings:"opsz" 144}
+.costs b i{font-size:40px;font-style:italic;color:var(--muted);letter-spacing:0}
+.costs>div:first-child b{color:var(--leaf)}
+.costs span{font-size:29px;line-height:1.34;color:var(--ink-2);display:block}
+.note{font-size:28px;color:var(--muted);margin:44px 0 26px !important;padding-top:22px !important;border-top:1.5px solid var(--line)}
+
+/* 20 · conclusiones */
+.concl{grid-template-columns:1.25fr 1fr;margin-top:auto;flex:none;margin-bottom:30px}
+.future{border:1.5px solid var(--line-d);border-radius:12px;padding:30px 36px 20px}
+.future li{font-size:32px;padding:21px 0;border-top:1px solid var(--line-d);color:var(--on-dark)}
+.future ul{margin-top:16px !important}
+
+.tall .code{font-size:31px;line-height:1.58;padding:40px 44px}
+.tall .points li{font-size:35px;padding:28px 0}
+.c-model{width:600px}.c-layer{width:640px;padding:28px 34px}
+
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+<section class="cover" data-label="Portada">
+<div class="cover-l">
+  <img class="logo" src="assets/ulpgc-eii.png" alt="Universidad de Las Palmas de Gran Canaria · Escuela de Ingeniería Informática">
+  <div class="cover-main">
+    <p class="eyebrow">Trabajo de Fin de Grado · Grado en Ingeniería Informática</p>
+    <h1>Uni<em>Works</em></h1>
+    <p class="cover-sub">Framework backend–frontend para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución</p>
+    <p class="cover-app">Aplicación a los proyectos con el Jardín Botánico Viera y Clavijo</p>
+  </div>
+  <dl class="credits">
+    <div><dt>Autor</dt><dd>Nicolás Rey Alonso</dd></div>
+    <div><dt>Tutores</dt><dd>Rafael Juan Nebot Medina<br>María Dolores Afonso Suárez</dd></div>
+    <div><dt>En colaboración con</dt><dd>Instituto Tecnológico de Canarias</dd></div>
+  </dl>
+</div>
+<div class="cover-r"><svg class="plant" viewBox="0 0 760 1080" width="760" height="1080" aria-hidden="true">
+<path d="M380.0 930.0 Q373.7 812.5 380.0 695.0" fill="none" stroke="currentColor" stroke-width="5.7" stroke-linecap="round" style="--len:306;--d:0.00s"/>
+<path d="M380.0 695.0 Q337.5 621.2 293.6 548.1" fill="none" stroke="currentColor" stroke-width="5.0" stroke-linecap="round" style="--len:222;--d:0.22s"/>
+<path d="M293.6 548.1 Q249.5 503.2 194.3 472.7" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:162;--d:0.44s"/>
+<path d="M194.3 472.7 Q147.1 482.1 109.1 452.4" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:114;--d:0.66s"/>
+<path d="M109.1 452.4 Q76.5 446.6 53.7 470.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:76;--d:0.88s"/>
+<path d="M53.7 470.7 Q46.9 492.9 26.9 504.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M53.7 470.7 Q33.2 474.0 14.0 465.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M109.1 452.4 Q84.2 429.1 58.4 406.9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:89;--d:0.88s"/>
+<path d="M58.4 406.9 Q33.3 401.4 8.9 393.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:67;--d:1.10s"/>
+<path d="M58.4 406.9 Q57.3 379.7 44.3 355.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:1.10s"/>
+<path d="M194.3 472.7 Q186.8 429.8 157.0 398.0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:109;--d:0.66s"/>
+<path d="M157.0 398.0 Q142.1 367.9 109.1 362.5" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M109.1 362.5 Q91.3 348.5 69.1 353.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:53;--d:1.10s"/>
+<path d="M109.1 362.5 Q103.2 343.1 92.1 326.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M157.0 398.0 Q168.3 366.7 149.3 339.5" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:77;--d:0.88s"/>
+<path d="M149.3 339.5 Q130.8 326.7 128.1 304.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:53;--d:1.10s"/>
+<path d="M149.3 339.5 Q154.4 318.3 161.9 297.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M194.3 472.7 Q153.9 461.2 134.4 423.9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:101;--d:0.66s"/>
+<path d="M134.4 423.9 Q113.3 401.8 83.2 406.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:70;--d:0.88s"/>
+<path d="M134.4 423.9 Q121.0 400.6 113.4 374.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:0.88s"/>
+<path d="M293.6 548.1 Q261.4 484.3 272.2 413.7" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:177;--d:0.44s"/>
+<path d="M272.2 413.7 Q237.0 379.3 220.1 333.0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:125;--d:0.66s"/>
+<path d="M220.1 333.0 Q186.7 316.8 167.0 285.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:93;--d:0.88s"/>
+<path d="M167.0 285.4 Q146.3 265.1 117.8 270.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:67;--d:1.10s"/>
+<path d="M167.0 285.4 Q150.6 265.0 152.3 238.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:64;--d:1.10s"/>
+<path d="M220.1 333.0 Q219.3 298.9 201.5 269.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:86;--d:0.88s"/>
+<path d="M201.5 269.7 Q191.7 243.0 165.6 231.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:68;--d:1.10s"/>
+<path d="M201.5 269.7 Q216.2 249.9 208.5 226.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M272.2 413.7 Q286.9 362.7 290.4 309.8" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:137;--d:0.66s"/>
+<path d="M290.4 309.8 Q265.2 273.0 278.2 230.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:104;--d:0.88s"/>
+<path d="M278.2 230.4 Q266.0 201.3 246.9 176.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:81;--d:1.10s"/>
+<path d="M278.2 230.4 Q275.8 203.1 286.9 178.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:1.10s"/>
+<path d="M290.4 309.8 Q311.0 278.2 326.3 243.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:98;--d:0.88s"/>
+<path d="M326.3 243.8 Q347.2 217.7 336.8 185.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:77;--d:1.10s"/>
+<path d="M326.3 243.8 Q336.7 217.0 364.6 210.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:66;--d:1.10s"/>
+<path d="M380.0 695.0 Q408.7 611.8 440.7 529.8" fill="none" stroke="currentColor" stroke-width="5.0" stroke-linecap="round" style="--len:229;--d:0.22s"/>
+<path d="M440.7 529.8 Q400.4 463.0 426.8 389.6" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:183;--d:0.44s"/>
+<path d="M426.8 389.6 Q408.3 335.5 365.3 297.6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:144;--d:0.66s"/>
+<path d="M365.3 297.6 Q322.7 285.8 286.2 260.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:113;--d:0.88s"/>
+<path d="M286.2 260.8 Q252.8 268.3 218.6 269.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:89;--d:1.10s"/>
+<path d="M286.2 260.8 Q263.3 237.3 247.2 208.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:85;--d:1.10s"/>
+<path d="M365.3 297.6 Q379.7 252.5 349.2 216.2" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:108;--d:0.88s"/>
+<path d="M349.2 216.2 Q334.0 189.6 307.6 174.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:77;--d:1.10s"/>
+<path d="M349.2 216.2 Q367.5 193.8 371.4 165.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:72;--d:1.10s"/>
+<path d="M426.8 389.6 Q453.3 347.3 459.4 297.8" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:127;--d:0.66s"/>
+<path d="M459.4 297.8 Q444.7 260.8 450.8 221.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:100;--d:0.88s"/>
+<path d="M450.8 221.4 Q430.8 198.3 428.6 167.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:75;--d:1.10s"/>
+<path d="M450.8 221.4 Q468.7 196.9 462.9 167.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:72;--d:1.10s"/>
+<path d="M459.4 297.8 Q491.5 279.2 505.4 244.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:91;--d:0.88s"/>
+<path d="M505.4 244.8 Q509.9 220.0 509.8 194.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:65;--d:1.10s"/>
+<path d="M505.4 244.8 Q534.7 246.3 557.2 227.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:71;--d:1.10s"/>
+<path d="M426.8 389.6 Q416.7 347.1 411.3 303.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:113;--d:0.66s"/>
+<path d="M411.3 303.7 Q400.0 274.2 381.0 248.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:81;--d:0.88s"/>
+<path d="M411.3 303.7 Q418.3 269.6 428.8 236.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:91;--d:0.88s"/>
+<path d="M440.7 529.8 Q495.7 505.3 534.2 459.1" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:152;--d:0.44s"/>
+<path d="M534.2 459.1 Q535.1 407.8 578.4 380.3" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:117;--d:0.66s"/>
+<path d="M578.4 380.3 Q594.6 352.8 589.0 321.3" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M589.0 321.3 Q589.3 301.1 583.9 281.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M589.0 321.3 Q611.5 308.2 614.0 282.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:60;--d:1.10s"/>
+<path d="M578.4 380.3 Q590.4 347.1 624.8 339.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:80;--d:0.88s"/>
+<path d="M624.8 339.4 Q627.7 317.7 640.6 300.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:55;--d:1.10s"/>
+<path d="M624.8 339.4 Q648.8 339.0 669.0 326.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:60;--d:1.10s"/>
+<path d="M534.2 459.1 Q575.5 473.4 612.4 449.9" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:102;--d:0.66s"/>
+<path d="M612.4 449.9 Q639.1 439.1 661.7 421.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:74;--d:0.88s"/>
+<path d="M661.7 421.4 Q680.3 407.9 683.4 385.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:55;--d:1.10s"/>
+<path d="M661.7 421.4 Q683.2 414.3 704.6 421.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:56;--d:1.10s"/>
+<path d="M612.4 449.9 Q643.7 452.8 667.5 473.3" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M667.5 473.3 Q690.9 468.5 713.9 461.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:62;--d:1.10s"/>
+<path d="M667.5 473.3 Q682.9 491.4 691.5 513.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:61;--d:1.10s"/>
+<path d="M534.2 459.1 Q564.2 438.6 594.8 419.0" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:94;--d:0.66s"/>
+<path d="M594.8 419.0 Q615.7 404.2 623.5 379.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:63;--d:0.88s"/>
+<path d="M594.8 419.0 Q616.6 404.0 642.9 407.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:64;--d:0.88s"/>
+<circle cx="380.0" cy="695.0" r="3.5" style="--d:0.37s"/>
+<circle cx="293.6" cy="548.1" r="3.5" style="--d:0.59s"/>
+<circle cx="194.3" cy="472.7" r="3.5" style="--d:0.81s"/>
+<circle cx="109.1" cy="452.4" r="3.5" style="--d:1.03s"/>
+<circle cx="53.7" cy="470.7" r="3.5" style="--d:1.25s"/>
+<circle cx="26.9" cy="504.9" r="3.5" style="--d:1.47s"/>
+<circle cx="26.9" cy="504.9" r="7" style="--d:1.47s"/>
+<circle cx="14.0" cy="465.8" r="3.5" style="--d:1.47s"/>
+<circle cx="14.0" cy="465.8" r="7" style="--d:1.47s"/>
+<circle cx="58.4" cy="406.9" r="3.5" style="--d:1.25s"/>
+<circle cx="8.9" cy="393.5" r="3.5" style="--d:1.47s"/>
+<circle cx="8.9" cy="393.5" r="7" style="--d:1.47s"/>
+<circle cx="44.3" cy="355.8" r="3.5" style="--d:1.47s"/>
+<circle cx="44.3" cy="355.8" r="7" style="--d:1.47s"/>
+<circle cx="157.0" cy="398.0" r="3.5" style="--d:1.03s"/>
+<circle cx="109.1" cy="362.5" r="3.5" style="--d:1.25s"/>
+<circle cx="69.1" cy="353.0" r="3.5" style="--d:1.47s"/>
+<circle cx="69.1" cy="353.0" r="7" style="--d:1.47s"/>
+<circle cx="92.1" cy="326.3" r="3.5" style="--d:1.47s"/>
+<circle cx="92.1" cy="326.3" r="7" style="--d:1.47s"/>
+<circle cx="149.3" cy="339.5" r="3.5" style="--d:1.25s"/>
+<circle cx="128.1" cy="304.4" r="3.5" style="--d:1.47s"/>
+<circle cx="128.1" cy="304.4" r="7" style="--d:1.47s"/>
+<circle cx="161.9" cy="297.8" r="3.5" style="--d:1.47s"/>
+<circle cx="161.9" cy="297.8" r="7" style="--d:1.47s"/>
+<circle cx="134.4" cy="423.9" r="3.5" style="--d:1.03s"/>
+<circle cx="83.2" cy="406.7" r="3.5" style="--d:1.25s"/>
+<circle cx="83.2" cy="406.7" r="7" style="--d:1.25s"/>
+<circle cx="113.4" cy="374.9" r="3.5" style="--d:1.25s"/>
+<circle cx="113.4" cy="374.9" r="7" style="--d:1.25s"/>
+<circle cx="272.2" cy="413.7" r="3.5" style="--d:0.81s"/>
+<circle cx="220.1" cy="333.0" r="3.5" style="--d:1.03s"/>
+<circle cx="167.0" cy="285.4" r="3.5" style="--d:1.25s"/>
+<circle cx="117.8" cy="270.2" r="3.5" style="--d:1.47s"/>
+<circle cx="117.8" cy="270.2" r="7" style="--d:1.47s"/>
+<circle cx="152.3" cy="238.9" r="3.5" style="--d:1.47s"/>
+<circle cx="152.3" cy="238.9" r="7" style="--d:1.47s"/>
+<circle cx="201.5" cy="269.7" r="3.5" style="--d:1.25s"/>
+<circle cx="165.6" cy="231.6" r="3.5" style="--d:1.47s"/>
+<circle cx="165.6" cy="231.6" r="7" style="--d:1.47s"/>
+<circle cx="208.5" cy="226.4" r="3.5" style="--d:1.47s"/>
+<circle cx="208.5" cy="226.4" r="7" style="--d:1.47s"/>
+<circle cx="290.4" cy="309.8" r="3.5" style="--d:1.03s"/>
+<circle cx="278.2" cy="230.4" r="3.5" style="--d:1.25s"/>
+<circle cx="246.9" cy="176.3" r="3.5" style="--d:1.47s"/>
+<circle cx="246.9" cy="176.3" r="7" style="--d:1.47s"/>
+<circle cx="286.9" cy="178.0" r="3.5" style="--d:1.47s"/>
+<circle cx="286.9" cy="178.0" r="7" style="--d:1.47s"/>
+<circle cx="326.3" cy="243.8" r="3.5" style="--d:1.25s"/>
+<circle cx="336.8" cy="185.8" r="3.5" style="--d:1.47s"/>
+<circle cx="336.8" cy="185.8" r="7" style="--d:1.47s"/>
+<circle cx="364.6" cy="210.1" r="3.5" style="--d:1.47s"/>
+<circle cx="364.6" cy="210.1" r="7" style="--d:1.47s"/>
+<circle cx="440.7" cy="529.8" r="3.5" style="--d:0.59s"/>
+<circle cx="426.8" cy="389.6" r="3.5" style="--d:0.81s"/>
+<circle cx="365.3" cy="297.6" r="3.5" style="--d:1.03s"/>
+<circle cx="286.2" cy="260.8" r="3.5" style="--d:1.25s"/>
+<circle cx="218.6" cy="269.6" r="3.5" style="--d:1.47s"/>
+<circle cx="218.6" cy="269.6" r="7" style="--d:1.47s"/>
+<circle cx="247.2" cy="208.6" r="3.5" style="--d:1.47s"/>
+<circle cx="247.2" cy="208.6" r="7" style="--d:1.47s"/>
+<circle cx="349.2" cy="216.2" r="3.5" style="--d:1.25s"/>
+<circle cx="307.6" cy="174.0" r="3.5" style="--d:1.47s"/>
+<circle cx="307.6" cy="174.0" r="7" style="--d:1.47s"/>
+<circle cx="371.4" cy="165.2" r="3.5" style="--d:1.47s"/>
+<circle cx="371.4" cy="165.2" r="7" style="--d:1.47s"/>
+<circle cx="459.4" cy="297.8" r="3.5" style="--d:1.03s"/>
+<circle cx="450.8" cy="221.4" r="3.5" style="--d:1.25s"/>
+<circle cx="428.6" cy="167.8" r="3.5" style="--d:1.47s"/>
+<circle cx="428.6" cy="167.8" r="7" style="--d:1.47s"/>
+<circle cx="462.9" cy="167.2" r="3.5" style="--d:1.47s"/>
+<circle cx="462.9" cy="167.2" r="7" style="--d:1.47s"/>
+<circle cx="505.4" cy="244.8" r="3.5" style="--d:1.25s"/>
+<circle cx="509.8" cy="194.8" r="3.5" style="--d:1.47s"/>
+<circle cx="509.8" cy="194.8" r="7" style="--d:1.47s"/>
+<circle cx="557.2" cy="227.6" r="3.5" style="--d:1.47s"/>
+<circle cx="557.2" cy="227.6" r="7" style="--d:1.47s"/>
+<circle cx="411.3" cy="303.7" r="3.5" style="--d:1.03s"/>
+<circle cx="381.0" cy="248.9" r="3.5" style="--d:1.25s"/>
+<circle cx="381.0" cy="248.9" r="7" style="--d:1.25s"/>
+<circle cx="428.8" cy="236.3" r="3.5" style="--d:1.25s"/>
+<circle cx="428.8" cy="236.3" r="7" style="--d:1.25s"/>
+<circle cx="534.2" cy="459.1" r="3.5" style="--d:0.81s"/>
+<circle cx="578.4" cy="380.3" r="3.5" style="--d:1.03s"/>
+<circle cx="589.0" cy="321.3" r="3.5" style="--d:1.25s"/>
+<circle cx="583.9" cy="281.7" r="3.5" style="--d:1.47s"/>
+<circle cx="583.9" cy="281.7" r="7" style="--d:1.47s"/>
+<circle cx="614.0" cy="282.3" r="3.5" style="--d:1.47s"/>
+<circle cx="614.0" cy="282.3" r="7" style="--d:1.47s"/>
+<circle cx="624.8" cy="339.4" r="3.5" style="--d:1.25s"/>
+<circle cx="640.6" cy="300.0" r="3.5" style="--d:1.47s"/>
+<circle cx="640.6" cy="300.0" r="7" style="--d:1.47s"/>
+<circle cx="669.0" cy="326.0" r="3.5" style="--d:1.47s"/>
+<circle cx="669.0" cy="326.0" r="7" style="--d:1.47s"/>
+<circle cx="612.4" cy="449.9" r="3.5" style="--d:1.03s"/>
+<circle cx="661.7" cy="421.4" r="3.5" style="--d:1.25s"/>
+<circle cx="683.4" cy="385.2" r="3.5" style="--d:1.47s"/>
+<circle cx="683.4" cy="385.2" r="7" style="--d:1.47s"/>
+<circle cx="704.6" cy="421.5" r="3.5" style="--d:1.47s"/>
+<circle cx="704.6" cy="421.5" r="7" style="--d:1.47s"/>
+<circle cx="667.5" cy="473.3" r="3.5" style="--d:1.25s"/>
+<circle cx="713.9" cy="461.8" r="3.5" style="--d:1.47s"/>
+<circle cx="713.9" cy="461.8" r="7" style="--d:1.47s"/>
+<circle cx="691.5" cy="513.5" r="3.5" style="--d:1.47s"/>
+<circle cx="691.5" cy="513.5" r="7" style="--d:1.47s"/>
+<circle cx="594.8" cy="419.0" r="3.5" style="--d:1.03s"/>
+<circle cx="623.5" cy="379.8" r="3.5" style="--d:1.25s"/>
+<circle cx="623.5" cy="379.8" r="7" style="--d:1.25s"/>
+<circle cx="642.9" cy="407.8" r="3.5" style="--d:1.25s"/>
+<circle cx="642.9" cy="407.8" r="7" style="--d:1.25s"/>
+<circle class="seed" cx="380.0" cy="930.0" r="15"/>
+</svg><p class="seed-label">modelo de datos</p></div>
+</section>
+<section class="paper" data-label="El problema">
+<div class="two">
+  <div class="col-text">
+    <p class="eyebrow">El problema</p>
+    <h2>Cuando el modelo cambia, todo lo demás se reescribe <em>a mano</em>.</h2>
+    <p class="lead">En los proyectos del ITC con el Jardín Botánico el modelo de datos no es estable: evoluciona con la investigación.</p>
+  </div>
+  <div class="cascade" role="img" aria-label="Un cambio en el modelo de datos se propaga a mano al backend, a la comunicación y al frontend">
+    <div class="c-model"><b>Modelo de datos</b><span class="tag clay">cambia</span></div>
+    <div class="c-arrow" aria-hidden="true"></div>
+    <div class="c-layer"><div><b>Backend</b><small>modelos · validación · endpoints</small></div><span class="hand">a mano</span></div>
+    <div class="c-layer"><div><b>Comunicación</b><small>contratos · tipos</small></div><span class="hand">a mano</span></div>
+    <div class="c-layer"><div><b>Frontend</b><small>formularios · tablas · vistas</small></div><span class="hand">a mano</span></div>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">02 / 20</span></footer></section>
+<section class="dark statement" data-label="La idea">
+<p class="eyebrow">La propuesta</p>
+<h2 class="xl">El modelo de datos como <em>única fuente de verdad</em>.</h2>
+<div class="chain" role="img" aria-label="Del modelo ORM se derivan el esquema, el contrato y el formulario">
+  <div class="node seed"><i></i><b>Modelo ORM</b><code>SQLAlchemy 2</code><small>lo único que se escribe</small></div>
+  <div class="node"><i></i><b>Esquema enriquecido</b><code>JSON Schema + x-*</code><small>se deriva</small></div>
+  <div class="node"><i></i><b>Contrato uniforme</b><code>content · count · issues</code><small>se deriva</small></div>
+  <div class="node"><i></i><b>Formulario</b><code>&lt;ngt-dynamic-form&gt;</code><small>se genera</small></div>
+</div>
+<div class="chain-legend"><span><b>uniback</b> · backend en Python (FastAPI, PostgreSQL)</span><span><b>ngt-gui</b> · librería de componentes Angular</span></div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">03 / 20</span></footer></section>
+<section class="paper" data-label="Punto de partida">
+<p class="eyebrow">Punto de partida</p>
+<h2>Qué recibí y qué aporta este trabajo.</h2>
+<div class="phases">
+  <article class="phase">
+    <p class="ph-k">Fase 0 · inicio de las prácticas</p>
+    <h3>Una aplicación monolítica</h3>
+    <ul><li>App Angular de NextGenDem</li><li><b>178 métodos</b> de acceso al servidor, escritos a mano</li><li>Nada reutilizable fuera de la aplicación</li></ul>
+  </article>
+  <div class="ph-step"><span>Prácticas<br>de empresa</span></div>
+  <article class="phase">
+    <p class="ph-k">Fase 1 · inicio del TFG</p>
+    <h3>Dos piezas que no encajan</h3>
+    <ul><li><b>ngt-gui</b>: 105 componentes, atados a un dominio</li><li><b>uniback</b>, base del ITC: ≈ 20 entidades con CRUD</li><li>Sin descubrimiento, sin pistas de interfaz, sin plugins</li></ul>
+  </article>
+  <div class="ph-step me"><span>Este<br>TFG</span></div>
+  <article class="phase final">
+    <p class="ph-k">Fase 2 · fin del TFG</p>
+    <h3>El framework UniWorks</h3>
+    <ul><li><b>61 entidades</b> bajo un contrato uniforme</li><li>Descubrimiento y cliente genérico</li><li>Del esquema al formulario</li><li>Dominio desacoplado en plugins</li></ul>
+  </article>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">04 / 20</span></footer></section>
+<section class="paper" data-label="Objetivos">
+<p class="eyebrow">Objetivos</p>
+<h2>Un framework reutilizable, en cinco objetivos.</h2>
+<ol class="goals">
+  <li><span class="n">1</span><b>API modular</b><span>Envoltorio en toda la API, catálogo de errores y fábricas CRUD</span></li>
+  <li><span class="n">2</span><b>Modelo de datos</b><span>Núcleo ORM consolidado, con versionado e histórico</span></li>
+  <li><span class="n">3</span><b>Comunicación estandarizada</b><span>Descubrimiento de entidades y cliente genérico tipado</span></li>
+  <li><span class="n">4</span><b>Formularios automáticos</b><span>Generados con Formly a partir del esquema</span></li>
+  <li><span class="n">5</span><b>Esquemas desde el ORM</b><span>El modelo como única fuente de verdad</span></li>
+</ol>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">05 / 20</span></footer></section>
+<section class="paper" data-label="Estado del arte">
+<p class="eyebrow">Estado del arte</p>
+<h2>Los renderizadores de esquemas ya existen. Faltaba la <em>cadena completa</em>.</h2>
+<table class="cmp">
+  <thead><tr><th scope="col">Enfoque</th><th scope="col">Parte del ORM</th><th scope="col">Pistas de interfaz</th><th scope="col">Contrato</th><th scope="col">Versionado</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">react-jsonschema-form</th><td class="no">No</td><td class="mid">Parcial</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><th scope="row">JSON Forms</th><td class="no">No</td><td>Sí</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><th scope="row">OpenAPI · Swagger UI</th><td class="no">No</td><td class="no">No</td><td class="mid">Solo operaciones</td><td class="no">No</td></tr>
+    <tr><th scope="row">Admin autogenerados</th><td>Sí</td><td class="mid">Limitado</td><td class="mid">Acoplado</td><td class="no">No</td></tr>
+    <tr class="us"><th scope="row">UniWorks</th><td>Sí</td><td>Sí · x-*</td><td>Uniforme</td><td>ETag</td></tr>
+  </tbody>
+</table>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">06 / 20</span></footer></section>
+<section class="paper" data-label="Arquitectura">
+<p class="eyebrow">Diseño · visión general</p>
+<h2>Dos sistemas y un contrato como única superficie de acoplamiento.</h2>
+<div class="arch" role="img" aria-label="uniback deriva el esquema del modelo; el contrato HTTP lo transporta; ngt-gui lo convierte en formulario">
+  <div class="panel">
+    <p class="p-k">uniback · backend</p>
+    <div class="chip strong">Modelo SQLAlchemy</div><span class="dn" aria-hidden="true"></span>
+    <div class="chip">Pydantic + pistas <code>x-*</code></div><span class="dn" aria-hidden="true"></span>
+    <div class="chip">JSON Schema enriquecido</div>
+  </div>
+  <span class="rt" aria-hidden="true"></span>
+  <div class="panel inv">
+    <p class="p-k">Contrato HTTP</p>
+    <div class="chip strong"><code>{ content, count, issues }</code></div>
+    <ul class="eps"><li><code>GET /&lt;entidad&gt;/schema.json</code></li><li><code>GET /api/sys/schemas</code></li><li><code>GET /api/sys/entities</code></li></ul>
+  </div>
+  <span class="rt" aria-hidden="true"></span>
+  <div class="panel">
+    <p class="p-k">ngt-gui · frontend</p>
+    <div class="chip">EntityClient · SchemaService</div><span class="dn" aria-hidden="true"></span>
+    <div class="chip"><code>schemaToFormly()</code></div><span class="dn" aria-hidden="true"></span>
+    <div class="chip strong"><code>&lt;ngt-dynamic-form&gt;</code></div>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">07 / 20</span></footer></section>
+<section class="paper" data-label="Núcleo polimórfico">
+<div class="two wide-r">
+  <div class="col-text">
+    <p class="eyebrow">Diseño · el núcleo</p>
+    <h2>Un núcleo que trata igual lo que es distinto.</h2>
+    <p class="lead">Toda entidad hereda de <code>FunctionalObject</code>. Anotaciones, permisos y colecciones apuntan a «cualquier objeto funcional».</p>
+    <p class="lead"><b class="clay-t">Plant</b> llega desde un plugin y lo hereda todo, sin que el núcleo sepa que existe.</p>
+  </div>
+  <svg class="poly" viewBox="0 0 900 640" width="900" height="640" role="img" aria-label="ObjectType clasifica a FunctionalObject, del que heredan Collection, Screen y Plant; anotaciones y ACL lo referencian">
+    <g class="ln"><path d="M450 96V168"/><path d="M450 264V340"/><path d="M150 340H750"/><path d="M150 340V396"/><path d="M450 340V396"/><path d="M750 340V396"/><path class="dash" d="M450 566V520H150V482"/><path class="dash" d="M450 520H750V482"/><path class="dash" d="M450 520V482"/></g>
+    <g class="bx"><rect x="290" y="20" width="320" height="76" rx="8"/><text x="450" y="68">ObjectType</text></g>
+    <text class="lbl" x="466" y="140">1 : N</text>
+    <g class="bx main"><rect x="230" y="168" width="440" height="96" rx="8"/><text x="450" y="212">FunctionalObject</text><text class="sub" x="450" y="246">uuid · propietario · fechas · atributos</text></g>
+    <text class="lbl" x="466" y="318">herencia</text>
+    <g class="bx"><rect x="30" y="396" width="240" height="86" rx="8"/><text x="150" y="449">Collection</text></g>
+    <g class="bx"><rect x="330" y="396" width="240" height="86" rx="8"/><text x="450" y="449">Screen</text></g>
+    <g class="bx plug"><rect x="630" y="396" width="240" height="86" rx="8"/><text x="750" y="441">Plant</text><text class="sub" x="750" y="470">plugin</text></g>
+    <g class="bx ref"><rect x="210" y="566" width="480" height="64" rx="32"/><text x="450" y="608">Anotaciones · ACL · Colecciones</text></g>
+  </svg>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">08 / 20</span></footer></section>
+<section class="paper" data-label="Plugins y micronúcleo">
+<p class="eyebrow">Diseño · extensibilidad</p>
+<h2>El dominio entra desde fuera: plugins sobre un micronúcleo.</h2>
+<div class="two even">
+<pre class="code"><span class="k">class</span> <b>PlantsPlugin</b>(UnibackPlugin):
+    name = <span class="s">"PlantsApp"</span>
+
+    <span class="k">def</span> get_model_modules(self):
+        <span class="k">return</span> [<span class="s">"plants.models"</span>]
+
+    <span class="k">def</span> get_routers(self):
+        <span class="k">return</span> [make_simple_rest_crud(
+            Plant, <span class="s">"plants"</span>)]
+
+    <span class="k">def</span> get_field_widgets(self):
+        <span class="k">return</span> [MapCoordinatesWidget()]</pre>
+  <div class="nodes" role="img" aria-label="Traefik enruta cada prefijo a un nodo: core, auth, species, files, annotations y assistant; seedbeds se añade en caliente">
+    <div class="gw">Traefik · enruta por prefijo de ruta</div>
+    <div class="fan" aria-hidden="true"></div>
+    <div class="grid6"><span>core</span><span>auth</span><span>species</span><span>files</span><span>annotations</span><span>assistant</span></div>
+    <div class="hot"><span>seedbeds</span><small>se añade en caliente</small></div>
+    <p class="cap">La misma imagen en cada nodo; <code>UNIBACK_NODE_TYPE</code> decide qué plugins sirve.</p>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">09 / 20</span></footer></section>
+<section class="paper" data-label="Metodología">
+<p class="eyebrow">Desarrollo · metodología</p>
+<h2>Iterativo incremental: cuatro incrementos.</h2>
+<div class="meth">
+  <div class="mhead"><span></span><span class="lg"><i class="est"></i>estimado <i class="real"></i>real · horas</span><span class="h">est.</span><span class="h r">real</span></div>
+  <div class="mrow"><div class="mn"><b>Planificación y entorno</b><small>requisitos, arquitectura</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real" style="width:528px"></i></div><span class="h">50</span><span class="h r">48</span></div><div class="mrow"><div class="mn"><b>Incremento 1 · API y modelado</b><small>Docker reproducible, núcleo versionado</small></div><div class="bars"><i class="est" style="width:440px"></i><i class="real over" style="width:616px"></i></div><span class="h">40</span><span class="h r">56</span></div><div class="mrow"><div class="mn"><b>Incremento 2 · Contrato</b><small>envoltorio, descubrimiento, cliente</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real over" style="width:682px"></i></div><span class="h">50</span><span class="h r">62</span></div><div class="mrow"><div class="mn"><b>Incremento 3 · Formularios</b><small>del esquema a Formly</small></div><div class="bars"><i class="est" style="width:495px"></i><i class="real over" style="width:638px"></i></div><span class="h">45</span><span class="h r">58</span></div><div class="mrow"><div class="mn"><b>Incremento 4 · Esquemas</b><small>bundle, polimorfismo, relaciones</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real" style="width:374px"></i></div><span class="h">50</span><span class="h r">34</span></div><div class="mrow"><div class="mn"><b>Documentación y defensa</b><small></small></div><div class="bars"><i class="est" style="width:330px"></i><i class="real over" style="width:352px"></i></div><span class="h">30</span><span class="h r">32</span></div>
+  <div class="mrow total"><div class="mn"><b>Total</b></div><div class="bars"></div><span class="h">265</span><span class="h r">290</span></div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">10 / 20</span></footer></section>
+<section class="paper" data-label="Incremento 2 · Contrato">
+<p class="eyebrow">Desarrollo · incremento 2</p>
+<h2>Una sola forma para cualquier respuesta.</h2>
+<div class="two even">
+  <ul class="points">
+    <li><b>También los errores.</b> Manejadores globales y un catálogo de siete códigos estándar.</li>
+    <li><b>Fábricas CRUD.</b> Seis endpoints por entidad: de ≈ 20 a 61 entidades.</li>
+    <li><b>Descubrimiento.</b> El frontend pregunta qué entidades existen; no las lleva escritas.</li>
+    <li><b>Convive con lo heredado.</b> La capa nueva es aditiva.</li>
+  </ul>
+  <div class="stack">
+<pre class="code ok"><span class="c">// éxito</span>
+{ <span class="s">"content"</span>: [{ <span class="s">"id"</span>: 1, <span class="s">"name"</span>: <span class="s">"admin"</span> }],
+  <span class="s">"count"</span>: 1, <span class="s">"issues"</span>: [] }</pre>
+<pre class="code err"><span class="c">// error de validación</span>
+{ <span class="s">"content"</span>: null, <span class="s">"count"</span>: 0,
+  <span class="s">"issues"</span>: [{ <span class="s">"type"</span>: <span class="s">"ERROR"</span>,
+    <span class="s">"code"</span>: <span class="s">"VALIDATION_ERROR"</span>,
+    <span class="s">"location"</span>: <span class="s">"/body/name"</span> }] }</pre>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">11 / 20</span></footer></section>
+<section class="dark" data-label="Incremento 3 · Formularios">
+<p class="eyebrow">Desarrollo · incremento 3 <span class="tag lime">principal aportación</span></p>
+<h2>Del esquema al formulario, sin escribir HTML.</h2>
+<div class="i3">
+  <div class="hints">
+    <p class="p-k">Columna del modelo → pista en el esquema</p>
+    <dl>
+      <div><dt>Boolean</dt><dd>checkbox</dd></div>
+      <div><dt>DateTime</dt><dd>datepicker</dd></div>
+      <div><dt>Enum</dt><dd>select</dd></div>
+      <div><dt>String &gt; 500</dt><dd>textarea</dd></div>
+      <div><dt>JSON</dt><dd>json</dd></div>
+      <div><dt>ForeignKey</dt><dd>select con carga diferida</dd></div>
+    </dl>
+  </div>
+  <div class="conv"><span class="rt light" aria-hidden="true"></span><code>schemaToFormly()</code></div>
+  <div class="onetag">
+    <p class="p-k">Todo lo que escribe el desarrollador</p>
+<pre class="code big"><span class="k">&lt;ngt-dynamic-form</span>
+  entityPath=<span class="s">"/roles"</span>
+  [(model)]=<span class="s">"model"</span>
+  (submitted)=<span class="s">"save($event)"</span><span class="k">&gt;</span>
+<span class="k">&lt;/ngt-dynamic-form&gt;</span></pre>
+    <p class="cap">La heurística propone; el desarrollador siempre puede sobrescribirla.</p>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">12 / 20</span></footer></section>
+<section class="paper" data-label="Incremento 4 · Esquemas">
+<p class="eyebrow">Desarrollo · incremento 4</p>
+<h2>Todos los esquemas, en un bundle versionado.</h2>
+<div class="two even tall">
+<pre class="code"><span class="c">// GET /api/sys/schemas</span>
+{ <span class="s">"version"</span>: <span class="s">"9f3a1b2c4d5e6f70"</span>,
+  <span class="s">"entities"</span>: {
+    <span class="s">"roles"</span>: { … },
+    <span class="s">"identities"</span>: {
+      <span class="s">"oneOf"</span>: [ … ],
+      <span class="s">"x-discriminator"</span>: { … },
+      <span class="s">"x-relationships"</span>: [ … ]
+    } } }</pre>
+  <ul class="points">
+    <li><b>Versión = ETag.</b> Si nada ha cambiado, el servidor responde 304.</li>
+    <li><b>Polimorfismo.</b> Las subclases viajan como <code>oneOf</code> con su discriminador.</li>
+    <li><b>Relaciones del ORM.</b> Reflejadas en <code>x-relationships</code>.</li>
+    <li><b>Determinista.</b> Mismo modelo, misma versión.</li>
+  </ul>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">13 / 20</span></footer></section>
+<section class="dark demo" data-label="Demo 1 · Uso general">
+<header class="demo-h"><p class="eyebrow">Demo 1 de 3</p><h2>Uso general</h2><p class="demo-cap">Autenticación, navegación por entidades y CRUD generado desde el esquema.</p></header>
+<div class="vwrap"><video src="assets/demo-1-uso-general.mp4" controls preload="metadata" playsinline></video></div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">14 / 20</span></footer></section>
+<section class="dark demo" data-label="Demo 2 · Un plugin en caliente">
+<header class="demo-h"><p class="eyebrow">Demo 2 de 3</p><h2>Un plugin en caliente</h2><p class="demo-cap">Se levanta un nodo nuevo y sus entidades aparecen en la interfaz sin reiniciar.</p></header>
+<div class="vwrap"><video src="assets/demo-2-hotplug.mp4" controls preload="metadata" playsinline></video></div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">15 / 20</span></footer></section>
+<section class="dark demo" data-label="Demo 3 · Pestañas y asistente de IA">
+<header class="demo-h"><p class="eyebrow">Demo 3 de 3</p><h2>Pestañas y asistente de IA</h2><p class="demo-cap">El asistente lee el esquema de la entidad y propone altas; el usuario confirma.</p></header>
+<div class="vwrap"><video src="assets/demo-3-pestanas-ia.mp4" controls preload="metadata" playsinline></video></div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">16 / 20</span></footer></section>
+<section class="paper" data-label="Resultados">
+<p class="eyebrow">Resultados</p>
+<h2>Una entidad nueva: ≈ 35 líneas de backend y <em>ninguna</em> de frontend.</h2>
+<div class="stats">
+  <div><b>61</b><span>entidades expuestas por la cadena ORM–esquema</span></div>
+  <div><b>366</b><span>endpoints CRUD generados, sin escribirlos a mano</span></div>
+  <div><b>39</b><span>extensiones <code>x-*</code> reconocidas en el esquema</span></div>
+  <div><b>41</b><span>tests automatizados de backend, 45 % de cobertura</span></div>
+  <div><b>17</b><span>tests unitarios del conversor esquema–Formly</span></div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">17 / 20</span></footer></section>
+<section class="paper" data-label="Antes y después">
+<p class="eyebrow">Resultados · valoración</p>
+<h2>Exponer y editar una entidad, antes y después.</h2>
+<table class="ba">
+  <thead><tr><th scope="col"></th><th scope="col">Antes</th><th scope="col">Con UniWorks</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Endpoints CRUD</th><td>Router escrito a mano</td><td>Una fábrica CRUD</td></tr>
+    <tr><th scope="row">Validación</th><td>Esquemas Pydantic a mano</td><td>Derivada del ORM</td></tr>
+    <tr><th scope="row">Errores</th><td>Ad hoc por endpoint</td><td>Envoltorio uniforme</td></tr>
+    <tr><th scope="row">Cliente</th><td>Un método por operación</td><td><code>EntityClient.for(path)</code></td></tr>
+    <tr><th scope="row">Formulario</th><td>HTML y lógica por campo</td><td><code>&lt;ngt-dynamic-form&gt;</code></td></tr>
+    <tr class="key"><th scope="row">Cambio en el modelo</th><td>Propagación manual a 3 capas</td><td>Automática desde el ORM</td></tr>
+  </tbody>
+</table>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">18 / 20</span></footer></section>
+<section class="dark" data-label="Conclusiones">
+<p class="eyebrow">Conclusiones y trabajo futuro</p>
+<h2>El coste de un modelo que cambia <em>deja de crecer</em>.</h2>
+<div class="two even concl">
+  <ul class="points">
+    <li>Los cinco objetivos, completados y respaldados por pruebas.</li>
+    <li>Un contrato y una cadena de generación que desacoplan el framework del dominio.</li>
+    <li>Validado sobre necesidades reales del ITC con el Jardín Botánico.</li>
+  </ul>
+  <div class="future">
+    <p class="p-k">Trabajo futuro</p>
+    <ul><li>Generación de código desde el bundle</li><li>Migrar el servicio heredado al cliente genérico</li><li><code>oneOf</code> en el conversor a Formly</li><li>Soporte de criptografía</li></ul>
+  </div>
+</div>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">19 / 20</span></footer></section>
+<section class="cover close" data-label="Cierre">
+<div class="cover-l">
+  <img class="logo" src="assets/ulpgc-eii.png" alt="Universidad de Las Palmas de Gran Canaria · Escuela de Ingeniería Informática">
+  <div class="cover-main">
+    <p class="eyebrow">UniWorks · Defensa del Trabajo de Fin de Grado</p>
+    <h1>Gracias.</h1>
+    <p class="cover-sub">Quedo a disposición del tribunal para sus preguntas.</p>
+    <p class="repo">github.com/NicolasReyAlonso/UniWorks</p>
+  </div>
+  <dl class="credits">
+    <div><dt>Autor</dt><dd>Nicolás Rey Alonso</dd></div>
+    <div><dt>Agradecimientos</dt><dd>Rafael Juan Nebot Medina<br>María Dolores Afonso Suárez</dd></div>
+    <div><dt>En colaboración con</dt><dd>Instituto Tecnológico de Canarias</dd></div>
+  </dl>
+</div>
+<div class="cover-r"><svg class="plant" viewBox="0 0 760 1080" width="760" height="1080" aria-hidden="true">
+<path d="M380.0 930.0 Q373.7 812.5 380.0 695.0" fill="none" stroke="currentColor" stroke-width="5.7" stroke-linecap="round" style="--len:306;--d:0.00s"/>
+<path d="M380.0 695.0 Q337.5 621.2 293.6 548.1" fill="none" stroke="currentColor" stroke-width="5.0" stroke-linecap="round" style="--len:222;--d:0.22s"/>
+<path d="M293.6 548.1 Q249.5 503.2 194.3 472.7" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:162;--d:0.44s"/>
+<path d="M194.3 472.7 Q147.1 482.1 109.1 452.4" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:114;--d:0.66s"/>
+<path d="M109.1 452.4 Q76.5 446.6 53.7 470.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:76;--d:0.88s"/>
+<path d="M53.7 470.7 Q46.9 492.9 26.9 504.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M53.7 470.7 Q33.2 474.0 14.0 465.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M109.1 452.4 Q84.2 429.1 58.4 406.9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:89;--d:0.88s"/>
+<path d="M58.4 406.9 Q33.3 401.4 8.9 393.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:67;--d:1.10s"/>
+<path d="M58.4 406.9 Q57.3 379.7 44.3 355.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:1.10s"/>
+<path d="M194.3 472.7 Q186.8 429.8 157.0 398.0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:109;--d:0.66s"/>
+<path d="M157.0 398.0 Q142.1 367.9 109.1 362.5" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M109.1 362.5 Q91.3 348.5 69.1 353.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:53;--d:1.10s"/>
+<path d="M109.1 362.5 Q103.2 343.1 92.1 326.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M157.0 398.0 Q168.3 366.7 149.3 339.5" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:77;--d:0.88s"/>
+<path d="M149.3 339.5 Q130.8 326.7 128.1 304.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:53;--d:1.10s"/>
+<path d="M149.3 339.5 Q154.4 318.3 161.9 297.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M194.3 472.7 Q153.9 461.2 134.4 423.9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:101;--d:0.66s"/>
+<path d="M134.4 423.9 Q113.3 401.8 83.2 406.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:70;--d:0.88s"/>
+<path d="M134.4 423.9 Q121.0 400.6 113.4 374.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:0.88s"/>
+<path d="M293.6 548.1 Q261.4 484.3 272.2 413.7" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:177;--d:0.44s"/>
+<path d="M272.2 413.7 Q237.0 379.3 220.1 333.0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:125;--d:0.66s"/>
+<path d="M220.1 333.0 Q186.7 316.8 167.0 285.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:93;--d:0.88s"/>
+<path d="M167.0 285.4 Q146.3 265.1 117.8 270.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:67;--d:1.10s"/>
+<path d="M167.0 285.4 Q150.6 265.0 152.3 238.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:64;--d:1.10s"/>
+<path d="M220.1 333.0 Q219.3 298.9 201.5 269.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:86;--d:0.88s"/>
+<path d="M201.5 269.7 Q191.7 243.0 165.6 231.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:68;--d:1.10s"/>
+<path d="M201.5 269.7 Q216.2 249.9 208.5 226.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:57;--d:1.10s"/>
+<path d="M272.2 413.7 Q286.9 362.7 290.4 309.8" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:137;--d:0.66s"/>
+<path d="M290.4 309.8 Q265.2 273.0 278.2 230.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:104;--d:0.88s"/>
+<path d="M278.2 230.4 Q266.0 201.3 246.9 176.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:81;--d:1.10s"/>
+<path d="M278.2 230.4 Q275.8 203.1 286.9 178.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:69;--d:1.10s"/>
+<path d="M290.4 309.8 Q311.0 278.2 326.3 243.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:98;--d:0.88s"/>
+<path d="M326.3 243.8 Q347.2 217.7 336.8 185.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:77;--d:1.10s"/>
+<path d="M326.3 243.8 Q336.7 217.0 364.6 210.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:66;--d:1.10s"/>
+<path d="M380.0 695.0 Q408.7 611.8 440.7 529.8" fill="none" stroke="currentColor" stroke-width="5.0" stroke-linecap="round" style="--len:229;--d:0.22s"/>
+<path d="M440.7 529.8 Q400.4 463.0 426.8 389.6" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:183;--d:0.44s"/>
+<path d="M426.8 389.6 Q408.3 335.5 365.3 297.6" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:144;--d:0.66s"/>
+<path d="M365.3 297.6 Q322.7 285.8 286.2 260.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:113;--d:0.88s"/>
+<path d="M286.2 260.8 Q252.8 268.3 218.6 269.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:89;--d:1.10s"/>
+<path d="M286.2 260.8 Q263.3 237.3 247.2 208.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:85;--d:1.10s"/>
+<path d="M365.3 297.6 Q379.7 252.5 349.2 216.2" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:108;--d:0.88s"/>
+<path d="M349.2 216.2 Q334.0 189.6 307.6 174.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:77;--d:1.10s"/>
+<path d="M349.2 216.2 Q367.5 193.8 371.4 165.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:72;--d:1.10s"/>
+<path d="M426.8 389.6 Q453.3 347.3 459.4 297.8" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:127;--d:0.66s"/>
+<path d="M459.4 297.8 Q444.7 260.8 450.8 221.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:100;--d:0.88s"/>
+<path d="M450.8 221.4 Q430.8 198.3 428.6 167.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:75;--d:1.10s"/>
+<path d="M450.8 221.4 Q468.7 196.9 462.9 167.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:72;--d:1.10s"/>
+<path d="M459.4 297.8 Q491.5 279.2 505.4 244.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:91;--d:0.88s"/>
+<path d="M505.4 244.8 Q509.9 220.0 509.8 194.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:65;--d:1.10s"/>
+<path d="M505.4 244.8 Q534.7 246.3 557.2 227.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:71;--d:1.10s"/>
+<path d="M426.8 389.6 Q416.7 347.1 411.3 303.7" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:113;--d:0.66s"/>
+<path d="M411.3 303.7 Q400.0 274.2 381.0 248.9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:81;--d:0.88s"/>
+<path d="M411.3 303.7 Q418.3 269.6 428.8 236.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:91;--d:0.88s"/>
+<path d="M440.7 529.8 Q495.7 505.3 534.2 459.1" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" style="--len:152;--d:0.44s"/>
+<path d="M534.2 459.1 Q535.1 407.8 578.4 380.3" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:117;--d:0.66s"/>
+<path d="M578.4 380.3 Q594.6 352.8 589.0 321.3" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M589.0 321.3 Q589.3 301.1 583.9 281.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:52;--d:1.10s"/>
+<path d="M589.0 321.3 Q611.5 308.2 614.0 282.3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:60;--d:1.10s"/>
+<path d="M578.4 380.3 Q590.4 347.1 624.8 339.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:80;--d:0.88s"/>
+<path d="M624.8 339.4 Q627.7 317.7 640.6 300.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:55;--d:1.10s"/>
+<path d="M624.8 339.4 Q648.8 339.0 669.0 326.0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:60;--d:1.10s"/>
+<path d="M534.2 459.1 Q575.5 473.4 612.4 449.9" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" style="--len:102;--d:0.66s"/>
+<path d="M612.4 449.9 Q639.1 439.1 661.7 421.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:74;--d:0.88s"/>
+<path d="M661.7 421.4 Q680.3 407.9 683.4 385.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:55;--d:1.10s"/>
+<path d="M661.7 421.4 Q683.2 414.3 704.6 421.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:56;--d:1.10s"/>
+<path d="M612.4 449.9 Q643.7 452.8 667.5 473.3" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:78;--d:0.88s"/>
+<path d="M667.5 473.3 Q690.9 468.5 713.9 461.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:62;--d:1.10s"/>
+<path d="M667.5 473.3 Q682.9 491.4 691.5 513.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:61;--d:1.10s"/>
+<path d="M534.2 459.1 Q564.2 438.6 594.8 419.0" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" style="--len:94;--d:0.66s"/>
+<path d="M594.8 419.0 Q615.7 404.2 623.5 379.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:63;--d:0.88s"/>
+<path d="M594.8 419.0 Q616.6 404.0 642.9 407.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="--len:64;--d:0.88s"/>
+<circle cx="380.0" cy="695.0" r="3.5" style="--d:0.37s"/>
+<circle cx="293.6" cy="548.1" r="3.5" style="--d:0.59s"/>
+<circle cx="194.3" cy="472.7" r="3.5" style="--d:0.81s"/>
+<circle cx="109.1" cy="452.4" r="3.5" style="--d:1.03s"/>
+<circle cx="53.7" cy="470.7" r="3.5" style="--d:1.25s"/>
+<circle cx="26.9" cy="504.9" r="3.5" style="--d:1.47s"/>
+<circle cx="26.9" cy="504.9" r="7" style="--d:1.47s"/>
+<circle cx="14.0" cy="465.8" r="3.5" style="--d:1.47s"/>
+<circle cx="14.0" cy="465.8" r="7" style="--d:1.47s"/>
+<circle cx="58.4" cy="406.9" r="3.5" style="--d:1.25s"/>
+<circle cx="8.9" cy="393.5" r="3.5" style="--d:1.47s"/>
+<circle cx="8.9" cy="393.5" r="7" style="--d:1.47s"/>
+<circle cx="44.3" cy="355.8" r="3.5" style="--d:1.47s"/>
+<circle cx="44.3" cy="355.8" r="7" style="--d:1.47s"/>
+<circle cx="157.0" cy="398.0" r="3.5" style="--d:1.03s"/>
+<circle cx="109.1" cy="362.5" r="3.5" style="--d:1.25s"/>
+<circle cx="69.1" cy="353.0" r="3.5" style="--d:1.47s"/>
+<circle cx="69.1" cy="353.0" r="7" style="--d:1.47s"/>
+<circle cx="92.1" cy="326.3" r="3.5" style="--d:1.47s"/>
+<circle cx="92.1" cy="326.3" r="7" style="--d:1.47s"/>
+<circle cx="149.3" cy="339.5" r="3.5" style="--d:1.25s"/>
+<circle cx="128.1" cy="304.4" r="3.5" style="--d:1.47s"/>
+<circle cx="128.1" cy="304.4" r="7" style="--d:1.47s"/>
+<circle cx="161.9" cy="297.8" r="3.5" style="--d:1.47s"/>
+<circle cx="161.9" cy="297.8" r="7" style="--d:1.47s"/>
+<circle cx="134.4" cy="423.9" r="3.5" style="--d:1.03s"/>
+<circle cx="83.2" cy="406.7" r="3.5" style="--d:1.25s"/>
+<circle cx="83.2" cy="406.7" r="7" style="--d:1.25s"/>
+<circle cx="113.4" cy="374.9" r="3.5" style="--d:1.25s"/>
+<circle cx="113.4" cy="374.9" r="7" style="--d:1.25s"/>
+<circle cx="272.2" cy="413.7" r="3.5" style="--d:0.81s"/>
+<circle cx="220.1" cy="333.0" r="3.5" style="--d:1.03s"/>
+<circle cx="167.0" cy="285.4" r="3.5" style="--d:1.25s"/>
+<circle cx="117.8" cy="270.2" r="3.5" style="--d:1.47s"/>
+<circle cx="117.8" cy="270.2" r="7" style="--d:1.47s"/>
+<circle cx="152.3" cy="238.9" r="3.5" style="--d:1.47s"/>
+<circle cx="152.3" cy="238.9" r="7" style="--d:1.47s"/>
+<circle cx="201.5" cy="269.7" r="3.5" style="--d:1.25s"/>
+<circle cx="165.6" cy="231.6" r="3.5" style="--d:1.47s"/>
+<circle cx="165.6" cy="231.6" r="7" style="--d:1.47s"/>
+<circle cx="208.5" cy="226.4" r="3.5" style="--d:1.47s"/>
+<circle cx="208.5" cy="226.4" r="7" style="--d:1.47s"/>
+<circle cx="290.4" cy="309.8" r="3.5" style="--d:1.03s"/>
+<circle cx="278.2" cy="230.4" r="3.5" style="--d:1.25s"/>
+<circle cx="246.9" cy="176.3" r="3.5" style="--d:1.47s"/>
+<circle cx="246.9" cy="176.3" r="7" style="--d:1.47s"/>
+<circle cx="286.9" cy="178.0" r="3.5" style="--d:1.47s"/>
+<circle cx="286.9" cy="178.0" r="7" style="--d:1.47s"/>
+<circle cx="326.3" cy="243.8" r="3.5" style="--d:1.25s"/>
+<circle cx="336.8" cy="185.8" r="3.5" style="--d:1.47s"/>
+<circle cx="336.8" cy="185.8" r="7" style="--d:1.47s"/>
+<circle cx="364.6" cy="210.1" r="3.5" style="--d:1.47s"/>
+<circle cx="364.6" cy="210.1" r="7" style="--d:1.47s"/>
+<circle cx="440.7" cy="529.8" r="3.5" style="--d:0.59s"/>
+<circle cx="426.8" cy="389.6" r="3.5" style="--d:0.81s"/>
+<circle cx="365.3" cy="297.6" r="3.5" style="--d:1.03s"/>
+<circle cx="286.2" cy="260.8" r="3.5" style="--d:1.25s"/>
+<circle cx="218.6" cy="269.6" r="3.5" style="--d:1.47s"/>
+<circle cx="218.6" cy="269.6" r="7" style="--d:1.47s"/>
+<circle cx="247.2" cy="208.6" r="3.5" style="--d:1.47s"/>
+<circle cx="247.2" cy="208.6" r="7" style="--d:1.47s"/>
+<circle cx="349.2" cy="216.2" r="3.5" style="--d:1.25s"/>
+<circle cx="307.6" cy="174.0" r="3.5" style="--d:1.47s"/>
+<circle cx="307.6" cy="174.0" r="7" style="--d:1.47s"/>
+<circle cx="371.4" cy="165.2" r="3.5" style="--d:1.47s"/>
+<circle cx="371.4" cy="165.2" r="7" style="--d:1.47s"/>
+<circle cx="459.4" cy="297.8" r="3.5" style="--d:1.03s"/>
+<circle cx="450.8" cy="221.4" r="3.5" style="--d:1.25s"/>
+<circle cx="428.6" cy="167.8" r="3.5" style="--d:1.47s"/>
+<circle cx="428.6" cy="167.8" r="7" style="--d:1.47s"/>
+<circle cx="462.9" cy="167.2" r="3.5" style="--d:1.47s"/>
+<circle cx="462.9" cy="167.2" r="7" style="--d:1.47s"/>
+<circle cx="505.4" cy="244.8" r="3.5" style="--d:1.25s"/>
+<circle cx="509.8" cy="194.8" r="3.5" style="--d:1.47s"/>
+<circle cx="509.8" cy="194.8" r="7" style="--d:1.47s"/>
+<circle cx="557.2" cy="227.6" r="3.5" style="--d:1.47s"/>
+<circle cx="557.2" cy="227.6" r="7" style="--d:1.47s"/>
+<circle cx="411.3" cy="303.7" r="3.5" style="--d:1.03s"/>
+<circle cx="381.0" cy="248.9" r="3.5" style="--d:1.25s"/>
+<circle cx="381.0" cy="248.9" r="7" style="--d:1.25s"/>
+<circle cx="428.8" cy="236.3" r="3.5" style="--d:1.25s"/>
+<circle cx="428.8" cy="236.3" r="7" style="--d:1.25s"/>
+<circle cx="534.2" cy="459.1" r="3.5" style="--d:0.81s"/>
+<circle cx="578.4" cy="380.3" r="3.5" style="--d:1.03s"/>
+<circle cx="589.0" cy="321.3" r="3.5" style="--d:1.25s"/>
+<circle cx="583.9" cy="281.7" r="3.5" style="--d:1.47s"/>
+<circle cx="583.9" cy="281.7" r="7" style="--d:1.47s"/>
+<circle cx="614.0" cy="282.3" r="3.5" style="--d:1.47s"/>
+<circle cx="614.0" cy="282.3" r="7" style="--d:1.47s"/>
+<circle cx="624.8" cy="339.4" r="3.5" style="--d:1.25s"/>
+<circle cx="640.6" cy="300.0" r="3.5" style="--d:1.47s"/>
+<circle cx="640.6" cy="300.0" r="7" style="--d:1.47s"/>
+<circle cx="669.0" cy="326.0" r="3.5" style="--d:1.47s"/>
+<circle cx="669.0" cy="326.0" r="7" style="--d:1.47s"/>
+<circle cx="612.4" cy="449.9" r="3.5" style="--d:1.03s"/>
+<circle cx="661.7" cy="421.4" r="3.5" style="--d:1.25s"/>
+<circle cx="683.4" cy="385.2" r="3.5" style="--d:1.47s"/>
+<circle cx="683.4" cy="385.2" r="7" style="--d:1.47s"/>
+<circle cx="704.6" cy="421.5" r="3.5" style="--d:1.47s"/>
+<circle cx="704.6" cy="421.5" r="7" style="--d:1.47s"/>
+<circle cx="667.5" cy="473.3" r="3.5" style="--d:1.25s"/>
+<circle cx="713.9" cy="461.8" r="3.5" style="--d:1.47s"/>
+<circle cx="713.9" cy="461.8" r="7" style="--d:1.47s"/>
+<circle cx="691.5" cy="513.5" r="3.5" style="--d:1.47s"/>
+<circle cx="691.5" cy="513.5" r="7" style="--d:1.47s"/>
+<circle cx="594.8" cy="419.0" r="3.5" style="--d:1.03s"/>
+<circle cx="623.5" cy="379.8" r="3.5" style="--d:1.25s"/>
+<circle cx="623.5" cy="379.8" r="7" style="--d:1.25s"/>
+<circle cx="642.9" cy="407.8" r="3.5" style="--d:1.25s"/>
+<circle cx="642.9" cy="407.8" r="7" style="--d:1.25s"/>
+<circle class="seed" cx="380.0" cy="930.0" r="15"/>
+</svg><p class="seed-label">modelo de datos</p></div>
+</section>
+</deck-stage>
+<script type="application/json" id="speaker-notes">
+[
+ "Buenas tardes. Soy Nicolás Rey Alonso y voy a presentar mi Trabajo de Fin de Grado: un framework backend–frontend para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución, aplicado a los proyectos con el Jardín Botánico Viera y Clavijo. Lo he llamado UniWorks. Lo han tutorizado Rafael Juan Nebot Medina, desde el Instituto Tecnológico de Canarias, y María Dolores Afonso Suárez, desde la Escuela. La imagen resume la idea que voy a defender: una única semilla, el modelo de datos, de la que crece todo lo demás.",
+ "El problema es concreto. El ITC desarrolla, junto al Jardín Botánico Viera y Clavijo, aplicaciones de gestión de datos botánicos. Y su modelo de datos no es estable: crece y se ajusta a medida que avanza la investigación y cambian los estándares. Cada cambio en ese modelo se propaga en cascada: hay que tocar el backend —modelos, validación, endpoints—, la capa de comunicación y el frontend —formularios, tablas, vistas—. Y casi todo ese código se escribe a mano y queda acoplado a un dominio. El resultado es caro de mantener y difícil de reutilizar en el siguiente proyecto.",
+ "La propuesta es convertir el modelo de datos en la única fuente de verdad. El desarrollador escribe solo el modelo ORM, en SQLAlchemy. A partir de él, el framework deriva un JSON Schema enriquecido con pistas de presentación; ese esquema viaja por un contrato de comunicación uniforme; y en el otro extremo se genera el formulario, sin escribir HTML específico de cada entidad. UniWorks son dos piezas que encajan por ese contrato: uniback, el backend en Python con FastAPI y PostgreSQL, y ngt-gui, una librería de componentes Angular. Un cambio en el modelo se propaga solo.",
+ "Es importante delimitar qué recibí y qué aporto. En la fase cero, al empezar mis prácticas, había una aplicación Angular monolítica del proyecto NextGenDem, con un servicio de 178 métodos escritos a mano para hablar con el servidor. En las prácticas extraje sus componentes a una librería, ngt-gui. Así llego a la fase uno, el inicio del TFG: tengo esa librería, todavía acoplada a su dominio, y un backend, uniback, que me entrega el ITC, con un buen núcleo de modelos y un primer envoltorio y una primera fábrica CRUD para unas veinte entidades, pero sin descubrimiento, sin pistas de interfaz y sin plugins. Dos piezas útiles que no encajaban. Mi aportación es todo lo que separa la fase uno de la fase dos.",
+ "El objetivo general es diseñar e implementar un framework backend–frontend reutilizable, extensible y desacoplado del dominio. Se concreta en cinco objetivos específicos. Uno: una API modular, extendiendo el envoltorio de respuesta a toda la API, con un catálogo de errores y fábricas CRUD. Dos: consolidar el modelo de datos con versionado e histórico. Tres: una comunicación estandarizada, con descubrimiento de entidades y un cliente genérico tipado. Cuatro: el generador automático de formularios guiado por el esquema. Y cinco: la generación automática de esos esquemas desde el ORM. Los requisitos se priorizaron con MoSCoW: diez funcionales y siete no funcionales, entre ellos reutilización, portabilidad y compatibilidad con el código heredado.",
+ "Derivar una interfaz de un esquema no es una idea nueva. React-jsonschema-form y JSON Forms renderizan formularios, pero se centran en el cliente y asumen que el esquema ya viene elaborado. OpenAPI describe operaciones, no presentación. Y los paneles de administración autogenerados, tipo Django Admin, sí parten del ORM, pero acoplan la interfaz al servidor y no se reutilizan fuera de su stack. La aportación de este trabajo no es inventar otro renderizador: es completar la cadena. Derivar el esquema desde el ORM, enriquecerlo con pistas de presentación, transportarlo por un contrato uniforme y versionado, y consumirlo con una capa genérica que convive con el código heredado.",
+ "Esta es la arquitectura. A la izquierda, uniback: el modelo SQLAlchemy se convierte en un modelo Pydantic al que se inyectan pistas de presentación, las extensiones x guion, y de ahí sale el JSON Schema enriquecido. En el centro, el contrato HTTP, que es la única superficie de acoplamiento entre los dos lados: toda respuesta, de éxito o de error, viaja en el mismo envoltorio —content, count e issues— y tres endpoints publican el esquema de cada entidad, el bundle con todos los esquemas y el descubrimiento de entidades. A la derecha, ngt-gui: una capa cliente genérica pide el esquema, el conversor schemaToFormly lo traduce y el componente ngt-dynamic-form lo renderiza. El frontend nunca necesita conocer la forma concreta de una entidad.",
+ "El corazón del modelo de datos es la jerarquía de FunctionalObject. Cada entidad de dominio hereda de ella y queda asociada a un ObjectType con un código numérico. Eso permite tratar de forma homogénea entidades heterogéneas: las anotaciones, los permisos por ACL y las colecciones se refieren a cualquier objeto funcional, sin conocer su clase concreta. La autorización sigue el mismo patrón: identidades y roles heredan de Authorizable. La consecuencia práctica es la que se ve a la derecha: Plant, una entidad que llega desde un plugin, hereda automáticamente anotaciones, permisos y colecciones sin que el núcleo sepa que existe. Este modelo es una ampliación del que entregó el ITC, al que añadí el versionado con SQLAlchemy-Continuum.",
+ "El requisito de reutilización exige que el núcleo no conozca ningún dominio. La respuesta es un sistema de plugins. Un plugin es un módulo Python que hereda de UnibackPlugin y sobreescribe solo los hooks que necesita. A la izquierda está el plugin de plantas de la demo: declara sus modelos, expone su CRUD con una fábrica y aporta un widget de mapa para las coordenadas. Nada más; no toca una línea del núcleo. A partir de ahí refactoricé el backend hacia un micronúcleo: cada dominio —autenticación, ficheros, anotaciones, especies— pasa a ser un plugin de serie. Y el despliegue se vuelve multinodo: la misma imagen Docker corre en varios contenedores, una variable de entorno decide qué plugins sirve cada uno y Traefik enruta cada prefijo a su nodo. Un nodo nuevo puede añadirse en caliente, como veremos en la demo.",
+ "Trabajé con una metodología iterativa incremental, acordada con la empresa: cada incremento entrega una versión funcional y, al cerrarlo, se replanifica el siguiente. Encaja con el problema, porque la propia metodología absorbe la incertidumbre de un modelo que evoluciona. Descarté Scrum porque mi línea de trabajo era independiente. Fueron cuatro incrementos. El primero consolidó la base: un entorno reproducible con Docker Compose, probado en Windows, macOS y Linux, y el núcleo de modelos con versionado. Los tres siguientes los veremos uno a uno. En horas, estimé 265 y fueron 290: la desviación está en los tres primeros incrementos, por la curva de aprendizaje del código heredado, y el cuarto se cerró por debajo de lo previsto.",
+ "El segundo incremento es el contrato. La base del ITC ya tenía un primer envoltorio, pero solo en los endpoints generados por la fábrica: los 37 escritos a mano devolvían formas distintas y no había manejo global de errores. Lo que aporto es que el contrato sea universal. Toda respuesta tiene la misma forma: content, count e issues. Y eso incluye los errores: unos manejadores globales capturan cualquier excepción y la traducen al mismo envoltorio, con un catálogo de siete códigos estándar, así que el frontend nunca recibe dos formas distintas de fallo. Generalicé las fábricas CRUD hasta cubrir las 61 entidades, con seis endpoints cada una. Añadí el descubrimiento, que hace el sistema autodescriptivo. Y en Angular, un cliente genérico tipado, EntityClient, diseñado como capa estrictamente aditiva: el servicio heredado sigue funcionando sin tocarlo.",
+ "El tercer incremento es la principal aportación del trabajo, y tiene una mitad en cada lado. En el backend, amplié la conversión de SQLAlchemy a Pydantic para que inyecte, por cada columna, una pista de presentación deducida de su tipo: un booleano será un checkbox, una fecha un selector de fecha, una clave foránea un desplegable con carga diferida que ya sabe a qué endpoint pedir sus opciones. Son valores por defecto: lo que el desarrollador declare a mano siempre gana. Y viajan dentro del propio esquema, así que sobreviven al cacheo. En el frontend, schemaToFormly es un conversor puro que traduce ese esquema a configuración de Formly, con sus validadores y sus condiciones de visibilidad. El resultado es lo que se ve a la derecha: una etiqueta y la ruta de la entidad. El componente descubre, pide el esquema, monta el formulario, valida y envía.",
+ "El cuarto incremento formaliza la generación de esquemas. Cada fábrica CRUD registra su entidad en un registro global, y a partir de él se construye un bundle: un único documento con el esquema enriquecido de todas las entidades. Su versión es un hash del contenido que actúa como ETag: si el modelo no ha cambiado, el servidor responde 304 y el cliente usa su caché. Al cierre añadí dos piezas. El polimorfismo: si una clase es raíz de una jerarquía, su esquema incluye las subclases como oneOf, con un discriminador. Y las relaciones del ORM, reflejadas como x-relationships. Todo es determinista, para no desestabilizar la caché. El valor de esta pieza es que un script externo puede pedir el bundle una vez y generar tipos TypeScript, validadores o documentación.",
+ "Paso a las demostraciones. Esta primera recorre el uso general de la aplicación de demostración: la autenticación, la navegación por las entidades que el frontend ha descubierto y el CRUD generado. La lista, el alta y la edición que se ven salen del esquema de cada entidad; no hay ninguna pantalla escrita a mano por entidad. [Vídeo: 55 segundos. Se reproduce solo al entrar; la tecla P lo pausa o lo reanuda.]",
+ "La segunda demo muestra la extensibilidad. Con el sistema en marcha, levanto con Docker Compose un nodo nuevo, el de semilleros, que es un plugin independiente. Traefik lo detecta, el descubrimiento lo incorpora y sus entidades aparecen en la interfaz sin reiniciar nada ni tocar el frontend. [Vídeo: 34 segundos.]",
+ "La tercera demo enseña dos herramientas añadidas sobre el framework. Por un lado, el sistema de ventanas y pestañas, con varias entidades abiertas a la vez. Por otro, el asistente de IA, que es un plugin más. Funciona con modelos locales servidos por LM Studio o con modelos en la nube. Consulta el esquema de la entidad con una herramienta y propone altas bien formadas en la tabla, de una fila o de varias. Sigue un patrón de proponer y confirmar: nada se escribe hasta que el usuario acepta, y siempre bajo los permisos de su sesión. [Vídeo: 1 minuto 13 segundos.]",
+ "Los resultados. La cifra que mejor resume el trabajo es esta: exponer una entidad nueva, editable desde el frontend, cuesta unas 35 líneas de código en el backend y ninguna en el frontend. En conjunto, la cadena expone 61 entidades repartidas en nueve dominios; eso son 366 endpoints CRUD generados, seis por entidad, frente a los 178 métodos escritos a mano de los que partía el proyecto original para un catálogo mucho menor. El esquema reconoce 39 extensiones de presentación, permisos y relaciones. Y la estabilidad de la cadena está respaldada por 41 tests automatizados de backend, con un 45 % de cobertura, y 17 tests unitarios del conversor de esquema a Formly.",
+ "Pero el resultado más significativo es cualitativo, y es esta comparación. Antes, exponer una entidad exigía un router escrito a mano, esquemas de validación a mano, un manejo de errores distinto en cada endpoint, un método dedicado en el servicio del frontend y un formulario en HTML campo a campo. Ahora es una fábrica CRUD, una validación derivada del ORM, un envoltorio uniforme, un cliente genérico y una etiqueta. Y la última fila es la que responde al problema de partida: un cambio en el modelo ya no se propaga a mano a tres capas, se propaga solo. El esfuerzo deja de crecer con el número de entidades y con la frecuencia de los cambios.",
+ "Para concluir. El trabajo partía del coste de mantener sincronizados backend, comunicación e interfaz ante un modelo de datos que cambia. La solución demuestra que ese coste se reduce drásticamente si el modelo ORM es la única fuente de verdad y el resto se deriva de él. Los cinco objetivos específicos están completados y respaldados por pruebas, y el framework se ha validado sobre necesidades reales del ITC con el Jardín Botánico. En cuanto a los Objetivos de Desarrollo Sostenible, la relación es alta con el ODS 9, de industria e innovación, y media con el 15 y el 8. Como trabajo futuro: aprovechar el bundle para generar código en los proyectos consumidores, migrar el servicio heredado para que delegue en el cliente genérico, dar soporte a oneOf en el conversor y a overrides por ruta, e incorporar criptografía. Sobre la IA: la he usado como apoyo para explorar el código heredado y depurar, siempre bajo mi supervisión; las decisiones de diseño han sido mías.",
+ "Muchas gracias por su atención. Quiero agradecer a Rafael Nebot y al ITC la oportunidad de participar en este proyecto, y a Marilola Afonso su apoyo durante el desarrollo. El código está disponible en el repositorio que aparece en pantalla. Quedo a disposición del tribunal para las preguntas que consideren."
+]
+</script>
+<script src="deck-stage.js"></script>
+<script>
+// Vídeos de las demos: se reproducen al entrar en su diapositiva y se paran al salir.
+// Tecla P: pausar / reanudar el vídeo de la diapositiva activa.
+(function () {
+  var stage = document.querySelector('deck-stage');
+  if (!stage) return;
+  var current = null;
+  var thumb = /[?&]_snthumb=/.test(location.search);
+
+  function videoOf(slide) { return slide ? slide.querySelector('video') : null; }
+
+  stage.addEventListener('slidechange', function (e) {
+    var prev = videoOf(e.detail.previousSlide);
+    if (prev) { try { prev.pause(); } catch (_) {} }
+    document.querySelectorAll('deck-stage > section.is-active').forEach(function (s) { s.classList.remove('is-active'); });
+    if (e.detail.slide) e.detail.slide.classList.add('is-active');
+    current = videoOf(e.detail.slide);
+    if (current && !thumb && e.detail.reason !== 'init') {
+      try { current.currentTime = 0; } catch (_) {}
+      var p = current.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if ((e.key === 'p' || e.key === 'P') && current) {
+      if (current.paused) { var p = current.play(); if (p && p.catch) p.catch(function () {}); }
+      else current.pause();
+      e.preventDefault();
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
