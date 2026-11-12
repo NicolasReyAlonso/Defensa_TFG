@@ -317,6 +317,28 @@ table{border-collapse:collapse;width:100%}
 .bars i{display:block;height:13px}
 .bars .est{border:1.5px solid var(--ink)}
 .bars .real{background:var(--leaf)}.bars .real.over{background:var(--clay)}
+/* barra real: --e horas estimadas, --r reales, --p horas transcurridas (animable). 11px por hora.
+   Si se pasa: verde hasta el 80 % de lo estimado → amarillo al alcanzarlo → rojo al llegar a lo real. */
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
+.bars .real{--p:var(--r);width:calc(var(--p) * 11px)}
+.bars .real.over{
+  --t:clamp(0, (var(--p) - var(--e) * .8) / (var(--e) * .2), 1);
+  --u:clamp(0, (var(--p) - var(--e)) / (var(--r) - var(--e)), 1);
+  background:color-mix(in oklch, color-mix(in oklch, var(--leaf), #e0a91f calc(var(--t) * 100%)), var(--clay) calc(var(--u) * 100%));
+}
+.meth .mrow:nth-child(2){--d:.3s}.meth .mrow:nth-child(3){--d:.4s}.meth .mrow:nth-child(4){--d:.5s}.meth .mrow:nth-child(5){--d:.6s}.meth .mrow:nth-child(6){--d:.7s}.meth .mrow:nth-child(7){--d:.8s}.meth .mrow.total{--d:.3s}
+/* el número de horas reales es un contador que sube a la vez que su barra (--e/--r van en la fila) */
+@property --n{syntax:'<integer>';inherits:false;initial-value:0}
+.mrow .h.r{--n:var(--r);counter-reset:hr var(--n)}
+.mrow .h.r::after{content:counter(hr)}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .bars .real{animation:hours calc(var(--r) * 40ms) cubic-bezier(.3,.2,.4,1) var(--d) both}
+  section[data-deck-active] .mrow .h.r{animation:count calc(var(--r) * 40ms) cubic-bezier(.3,.2,.4,1) var(--d) both}
+  section[data-deck-active] .mrow.total .h.r{animation-duration:2.7s}
+}
+@keyframes hours{from{--p:0}}
+@keyframes count{from{--n:0}}
+@media print{.bars .real,.mrow .h.r{animation:none !important}}
 .h{font-family:var(--mono);font-size:30px;text-align:right;color:var(--muted)}
 .h.r{color:var(--ink);font-weight:700}
 .mhead .h{font-size:21px}
@@ -725,8 +747,8 @@ section.demo{padding:46px 120px 0}
 <h2>Iterativo incremental: cuatro incrementos.</h2>
 <div class="meth">
   <div class="mhead"><span></span><span class="lg"><i class="est"></i>estimado <i class="real"></i>real · horas</span><span class="h">est.</span><span class="h r">real</span></div>
-  <div class="mrow"><div class="mn"><b>Planificación y entorno</b><small>requisitos, arquitectura</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real" style="width:528px"></i></div><span class="h">50</span><span class="h r">48</span></div><div class="mrow"><div class="mn"><b>Incremento 1 · API y modelado</b><small>Docker reproducible, núcleo versionado</small></div><div class="bars"><i class="est" style="width:440px"></i><i class="real over" style="width:616px"></i></div><span class="h">40</span><span class="h r">56</span></div><div class="mrow"><div class="mn"><b>Incremento 2 · Contrato</b><small>envoltorio, descubrimiento, cliente</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real over" style="width:682px"></i></div><span class="h">50</span><span class="h r">62</span></div><div class="mrow"><div class="mn"><b>Incremento 3 · Formularios</b><small>del esquema a Formly</small></div><div class="bars"><i class="est" style="width:495px"></i><i class="real over" style="width:638px"></i></div><span class="h">45</span><span class="h r">58</span></div><div class="mrow"><div class="mn"><b>Incremento 4 · Esquemas</b><small>bundle, polimorfismo, relaciones</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real" style="width:374px"></i></div><span class="h">50</span><span class="h r">34</span></div><div class="mrow"><div class="mn"><b>Documentación y defensa</b><small></small></div><div class="bars"><i class="est" style="width:330px"></i><i class="real over" style="width:352px"></i></div><span class="h">30</span><span class="h r">32</span></div>
-  <div class="mrow total"><div class="mn"><b>Total</b></div><div class="bars"></div><span class="h">265</span><span class="h r">290</span></div>
+  <div class="mrow" style="--e:50;--r:48"><div class="mn"><b>Planificación y entorno</b><small>requisitos, arquitectura</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:40;--r:56"><div class="mn"><b>Incremento 1 · API y modelado</b><small>Docker reproducible, núcleo versionado</small></div><div class="bars"><i class="est" style="width:440px"></i><i class="real over"></i></div><span class="h">40</span><span class="h r"></span></div><div class="mrow" style="--e:50;--r:62"><div class="mn"><b>Incremento 2 · Contrato</b><small>envoltorio, descubrimiento, cliente</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real over"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:45;--r:58"><div class="mn"><b>Incremento 3 · Formularios</b><small>del esquema a Formly</small></div><div class="bars"><i class="est" style="width:495px"></i><i class="real over"></i></div><span class="h">45</span><span class="h r"></span></div><div class="mrow" style="--e:50;--r:34"><div class="mn"><b>Incremento 4 · Esquemas</b><small>bundle, polimorfismo, relaciones</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:30;--r:32"><div class="mn"><b>Documentación y defensa</b><small></small></div><div class="bars"><i class="est" style="width:330px"></i><i class="real over"></i></div><span class="h">30</span><span class="h r"></span></div>
+  <div class="mrow total" style="--r:290"><div class="mn"><b>Total</b></div><div class="bars"></div><span class="h">265</span><span class="h r"></span></div>
 </div>
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">10 / 20</span></footer></section>
 <section class="paper" data-label="Incremento 2 · Contrato">
