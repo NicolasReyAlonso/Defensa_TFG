@@ -405,6 +405,21 @@ section.demo{padding:46px 120px 0}
 .future{border:1.5px solid var(--line-d);border-radius:12px;padding:30px 36px 20px}
 .future li{font-size:32px;padding:21px 0;border-top:1px solid var(--line-d);color:var(--on-dark)}
 .future ul{margin-top:16px !important}
+/* 19 · subrayado de «deja de crecer», conclusiones con ✓ una a una y trabajo futuro entrando desde la derecha */
+.ul{background:linear-gradient(var(--lime),var(--lime)) no-repeat 0 100% / 100% .07em;padding-bottom:.04em}
+.concl .points li{position:relative;padding-left:66px}
+.concl .points li::before{content:"";position:absolute;left:6px;top:calc(32px + .3em);width:30px;height:15px;border-left:4px solid var(--lime);border-bottom:4px solid var(--lime);transform:rotate(-45deg)}
+.concl .points li:nth-child(1){--d:.7s}.concl .points li:nth-child(2){--d:1.15s}.concl .points li:nth-child(3){--d:1.6s}
+.future li:nth-child(1){--d:2.3s}.future li:nth-child(2){--d:2.55s}.future li:nth-child(3){--d:2.8s}.future li:nth-child(4){--d:3.05s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .ul{animation:ul-draw .7s cubic-bezier(.6,0,.3,1) .3s both}
+  section[data-deck-active] .concl .points li{opacity:0;transform:translateY(18px);animation:ph-in .5s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+  section[data-deck-active] .concl .points li::before{clip-path:inset(-20px 100% -20px -20px);animation:wipe .35s ease-out calc(var(--d) + .3s) forwards}
+  section[data-deck-active] .future{opacity:0;animation:pop .5s ease-out 2.05s forwards}
+  section[data-deck-active] .future li{opacity:0;transform:translateX(40px);animation:ph-in .5s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@keyframes ul-draw{from{background-size:0% .07em}}
+@media print{.ul,.concl .points li,.future,.future li{opacity:1 !important;transform:none !important;animation:none !important}.concl .points li::before{clip-path:none !important;animation:none !important}}
 
 .tall .code{font-size:31px;line-height:1.58;padding:40px 44px}
 .tall .points li{font-size:35px;padding:28px 0}
@@ -890,7 +905,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">18 / 20</span></footer></section>
 <section class="dark" data-label="Conclusiones">
 <p class="eyebrow">Conclusiones y trabajo futuro</p>
-<h2>El coste de un modelo que cambia <em>deja de crecer</em>.</h2>
+<h2>El coste de un modelo que cambia <em class="ul">deja de crecer</em>.</h2>
 <div class="two even concl">
   <ul class="points">
     <li>Los cinco objetivos, completados y respaldados por pruebas.</li>
