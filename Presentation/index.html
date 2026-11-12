@@ -233,6 +233,13 @@ table{border-collapse:collapse;width:100%}
 .rt{height:2px;background:var(--ink);position:relative;margin:0 8px}
 .rt::after{content:"";position:absolute;right:-2px;top:-7px;border-left:13px solid var(--ink);border-top:8px solid transparent;border-bottom:8px solid transparent}
 .rt.light{background:var(--lime)}.rt.light::after{border-left-color:var(--lime)}
+/* 7 · uniback y ngt-gui están desde el inicio; se dibuja la flecha, aparece el contrato y se dibuja la segunda flecha */
+.arch>:nth-child(2){--d:.3s}.arch>:nth-child(3){--d:.6s}.arch>:nth-child(4){--d:1.05s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .arch>.rt{transform:scaleX(0);transform-origin:left;animation:ph-in .35s ease-out var(--d) forwards}
+  section[data-deck-active] .arch>.panel.inv{opacity:0;transform:translateX(-70px);animation:ph-in .5s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@media print{.arch>*{opacity:1 !important;transform:none !important;animation:none !important}}
 
 /* 8 · polimorfismo */
 .poly{width:900px;height:640px;justify-self:end}
