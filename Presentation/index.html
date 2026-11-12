@@ -131,6 +131,20 @@ section.statement{justify-content:flex-start}
 .node small{font-size:26px;color:var(--on-dark-2)}
 .chain-legend{display:flex;gap:64px;margin-top:54px;padding-top:24px;border-top:1px solid var(--line-d);font-size:28px;color:var(--on-dark-2)}
 .chain-legend b{color:var(--on-dark)}
+/* el punto del modelo recorre la cadena y va encendiendo cada nodo al llegar */
+.chain .node:nth-child(2){--arrive:1.2s}.chain .node:nth-child(3){--arrive:2.25s}.chain .node:nth-child(4){--arrive:3.3s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .chain::after{content:"";position:absolute;left:0;top:8px;width:28px;height:28px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 9px rgba(201,242,106,.18);animation:seed-travel 2.7s .6s both}
+  section[data-deck-active] .node:not(.seed) i{animation:node-lit .3s ease-out var(--arrive) forwards}
+}
+@keyframes seed-travel{
+  0%{left:0;animation-timing-function:cubic-bezier(.5,0,.3,1)}
+  22.2%,38.9%{left:25%;animation-timing-function:cubic-bezier(.5,0,.3,1)}
+  61.1%,77.8%{left:50%;animation-timing-function:cubic-bezier(.5,0,.3,1)}
+  100%{left:75%}
+}
+@keyframes node-lit{50%{transform:scale(1.25)}to{background:var(--lime)}}
+@media print{.chain::after{display:none !important}.node i{animation:none !important}}
 
 /* 4 · fases */
 .phases{display:grid;grid-template-columns:1fr 150px 1fr 150px 1.08fr;align-items:stretch;margin-top:56px;flex:1;min-height:0;max-height:560px}
@@ -148,6 +162,13 @@ section.statement{justify-content:flex-start}
 .ph-step span::after{content:"";position:absolute;right:-2px;bottom:-9px;border-left:13px solid var(--muted);border-top:8px solid transparent;border-bottom:8px solid transparent}
 .ph-step.me span{color:var(--clay);font-weight:700;border-bottom-color:var(--clay)}
 .ph-step.me span::after{border-left-color:var(--clay)}
+/* las fases (y las flechas entre ellas) entran desde la izquierda, una tras otra */
+.phases>:nth-child(1){--d:.15s}.phases>:nth-child(2){--d:.45s}.phases>:nth-child(3){--d:.75s}.phases>:nth-child(4){--d:1.05s}.phases>:nth-child(5){--d:1.35s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .phases>*{opacity:0;transform:translateX(-70px);animation:ph-in .55s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@keyframes ph-in{to{opacity:1;transform:none}}
+@media print{.phases>*{opacity:1 !important;transform:none !important;animation:none !important}}
 
 /* 5 · objetivos */
 .goals{margin-top:auto !important;margin-bottom:26px !important}
