@@ -98,6 +98,26 @@ section.close h1{font-size:200px}
 .c-layer b{display:block;font-size:36px}
 .c-layer small{font-size:26px;color:var(--muted)}
 .hand{font-family:var(--mono);font-size:24px;color:var(--clay);font-weight:700;white-space:nowrap}
+.c-model{position:relative;z-index:1}
+.c-layer:nth-of-type(3){--d:.35s}.c-layer:nth-of-type(4){--d:.6s}.c-layer:nth-of-type(5){--d:.85s}
+/* titular: tras la cascada, un cursor escribe "a mano", lo borra y escribe "manualmente." */
+.typer{white-space:nowrap}
+.typer .t-old,.typer .caret{display:none}
+.caret{width:5px;height:.86em;margin-left:.1em;vertical-align:-.08em;background:var(--leaf)}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .c-arrow{transform-origin:top;transform:scaleY(0);animation:c-drop .3s ease-out .15s forwards}
+  section[data-deck-active] .c-layer{opacity:0;transform:translateY(-48px);animation:c-fall .45s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+  section[data-deck-active] .typer .t-old{display:inline}
+  section[data-deck-active] .typer .caret{display:inline-block;animation:t-blink 1s steps(1) infinite}
+  section[data-deck-active] .t-old span{font-size:0;animation:t-show .01s calc(1.5s + var(--i) * .1s) forwards,t-hide .01s calc(3.2s - var(--i) * .06s) forwards}
+  section[data-deck-active] .t-new span{font-size:0;animation:t-show .01s calc(3.55s + var(--i) * .085s) forwards}
+}
+@keyframes c-drop{to{transform:scaleY(1)}}
+@keyframes c-fall{to{opacity:1;transform:none}}
+@keyframes t-show{to{font-size:1em}}
+@keyframes t-hide{to{font-size:0}}
+@keyframes t-blink{50%{opacity:0}}
+@media print{.c-arrow,.c-layer{opacity:1 !important;transform:none !important;animation:none !important}.typer .t-old,.typer .caret{display:none !important}.typer span{font-size:1em !important;animation:none !important}}
 
 /* 3 · cadena */
 section.statement{justify-content:flex-start}
@@ -495,8 +515,8 @@ section.demo{padding:46px 120px 0}
 <div class="two">
   <div class="col-text">
     <p class="eyebrow">El problema</p>
-    <h2>Cuando el modelo cambia, todo lo demás se reescribe <em>a mano</em>.</h2>
-    <p class="lead">En los proyectos del ITC con el Jardín Botánico el modelo de datos no es estable: evoluciona con la investigación.</p>
+    <h2>Cuando el modelo cambia, todo lo demás se reescribe<br><span class="typer"><em class="t-old" aria-hidden="true"><span style="--i:0">a</span><span style="--i:1"> </span><span style="--i:2">m</span><span style="--i:3">a</span><span style="--i:4">n</span><span style="--i:5">o</span></em><em class="t-new"><span style="--i:0">m</span><span style="--i:1">a</span><span style="--i:2">n</span><span style="--i:3">u</span><span style="--i:4">a</span><span style="--i:5">l</span><span style="--i:6">m</span><span style="--i:7">e</span><span style="--i:8">n</span><span style="--i:9">t</span><span style="--i:10">e</span></em><span class="t-new"><span style="--i:11">.</span></span><span class="caret" aria-hidden="true"></span></span></h2>
+    <p class="lead">En los proyectos del ITC con el Jardín Botánico el modelo de datos no es estable: evoluciona con el tiempo.</p>
   </div>
   <div class="cascade" role="img" aria-label="Un cambio en el modelo de datos se propaga a mano al backend, a la comunicación y al frontend">
     <div class="c-model"><b>Modelo de datos</b><span class="tag clay">cambia</span></div>
