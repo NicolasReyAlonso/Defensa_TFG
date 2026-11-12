@@ -198,6 +198,13 @@ table{border-collapse:collapse;width:100%}
 .cmp tr.us th,.cmp tr.us td{background:var(--forest);color:var(--lime);border-top:none;font-size:36px;padding:28px}
 .cmp tr.us th{color:var(--on-dark);font-family:var(--display);font-style:italic;font-weight:480;font-size:44px;border-radius:10px 0 0 10px}
 .cmp tr.us td:last-child{border-radius:0 10px 10px 0}
+/* 6 · la fila de UniWorks empieza vacía y se va rellenando celda a celda */
+.cmp tr.us td span{display:inline-block}
+.cmp tr.us td:nth-child(2){--d:.6s}.cmp tr.us td:nth-child(3){--d:1s}.cmp tr.us td:nth-child(4){--d:1.4s}.cmp tr.us td:nth-child(5){--d:1.8s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .cmp tr.us td span{opacity:0;transform:translateY(16px) scale(.85);animation:ph-in .5s cubic-bezier(.3,1.4,.5,1) var(--d) forwards}
+}
+@media print{.cmp tr.us td span{opacity:1 !important;transform:none !important;animation:none !important}}
 
 .ba{margin-top:auto;margin-bottom:22px;font-size:33px}
 .ba th,.ba td{text-align:left;padding:25px 28px;border-top:1.5px solid var(--line)}
@@ -611,7 +618,7 @@ section.demo{padding:46px 120px 0}
     <tr><th scope="row">JSON Forms</th><td class="no">No</td><td>Sí</td><td class="no">No</td><td class="no">No</td></tr>
     <tr><th scope="row">OpenAPI · Swagger UI</th><td class="no">No</td><td class="no">No</td><td class="mid">Solo operaciones</td><td class="no">No</td></tr>
     <tr><th scope="row">Admin autogenerados</th><td>Sí</td><td class="mid">Limitado</td><td class="mid">Acoplado</td><td class="no">No</td></tr>
-    <tr class="us"><th scope="row">UniWorks</th><td>Sí</td><td>Sí · x-*</td><td>Uniforme</td><td>ETag</td></tr>
+    <tr class="us"><th scope="row">UniWorks</th><td><span>Sí</span></td><td><span>Sí · x-*</span></td><td><span>Uniforme</span></td><td><span>ETag</span></td></tr>
   </tbody>
 </table>
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">06 / 20</span></footer></section>
