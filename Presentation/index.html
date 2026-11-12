@@ -389,6 +389,52 @@ section.demo{padding:46px 120px 0}
 .stats>div{border-top:4px solid var(--ink);padding-top:14px}
 .stats b{display:block;font-family:var(--display);font-size:150px;line-height:1;font-weight:420;color:var(--leaf);letter-spacing:-.03em;font-variation-settings:"opsz" 144}
 .stats span{display:block;font-size:28px;line-height:1.3;color:var(--ink-2);margin-top:14px}
+.stats.compact{gap:36px;margin-bottom:26px}
+.stats.compact>div{border-top-width:3px;padding-top:10px}
+.stats.compact b{font-size:60px}
+.stats.compact span{font-size:21px;margin-top:6px}
+
+/* 17 · líneas acumuladas al añadir entidades: cuatro gráficas en escalera (un peldaño por entidad),
+   misma escala (0–16 000 líneas). Todo deriva de --ent (entidades añadidas, 0→61), que se anima una
+   sola vez en .loc y heredan las cuatro: recorte de la línea, punto de cabeza y contadores.
+   Medido en el código heredado: antes ≈135 (back) y ≈250 (front) por entidad; después ≈35 y 0. */
+@property --ent{syntax:'<integer>';inherits:true;initial-value:61}
+@counter-style pad3{system:extends decimal;pad:3 "0"}
+.loc{margin-top:30px}
+.loc-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.ents{display:flex;align-items:baseline;gap:12px}
+.ent-n{font-family:var(--display);font-size:54px;line-height:1;font-weight:420;min-width:1.2em;text-align:right;font-variant-numeric:tabular-nums}
+.ent-n::after{counter-reset:ent var(--ent);content:counter(ent)}
+.loc-blocks{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.lblock.before{--c:var(--clay)}.lblock.after{--c:var(--leaf)}
+.lb-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.delta{font-family:var(--mono);font-size:21px;font-weight:700;color:var(--leaf);border:1.5px solid var(--leaf);border-radius:999px;padding:4px 12px}
+.lb-head .tag + .delta{margin-left:auto}
+.lcharts{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.lchart{margin:0;--L:calc(var(--ent) * var(--per))}
+.lchart figcaption{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.lchart figcaption b{font-size:27px;font-weight:600}
+.lv{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--c)}
+.lv small{font-size:18px;font-weight:400;color:var(--muted)}
+.lv .vp::after{counter-reset:lp var(--L);content:counter(lp)}
+.lv .vg::after{counter-reset:k round(down, calc(var(--L) / 1000), 1) r mod(var(--L), 1000);content:counter(k) "\202F" counter(r, pad3)}
+.lv .vg{font-size:calc(clamp(0, var(--L) - 9999, 1) * 1em)}.lv .vp{font-size:calc((1 - clamp(0, var(--L) - 9999, 1)) * 1em)}
+.plot{position:relative;height:200px;border-left:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);
+  background:repeating-linear-gradient(to top,transparent 0 calc(25% - 1px),var(--line) calc(25% - 1px) 25%)}
+.plot svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;
+  clip-path:inset(-12px calc((1 - var(--ent) / 61) * 100% - 4px) -12px -12px)}
+.plot .area{fill:var(--c);opacity:.14}
+.plot .line{fill:none;stroke:var(--c);stroke-width:3.5;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.tip{position:absolute;left:calc(var(--ent) / 61 * 100%);bottom:calc(var(--ent) * var(--per) / 16000 * 100%);width:14px;height:14px;border-radius:50%;
+  background:var(--c);transform:translate(-50%,50%);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}
+.xax{display:flex;justify-content:space-between;font-family:var(--mono);font-size:18px;color:var(--muted);margin-top:6px}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .loc{animation:ents 4.2s linear .6s both}
+  section[data-deck-active] .delta{opacity:0;transform:translateY(8px);animation:ph-in .45s cubic-bezier(.3,1.4,.5,1) 4.9s forwards}
+  section[data-deck-active] .delta:last-child{animation-delay:5.1s}
+}
+@keyframes ents{from{--ent:0}}
+@media print{.loc,.delta{animation:none !important;opacity:1 !important;transform:none !important}}
 
 /* 19 · costes */
 .costs{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:auto}
@@ -880,7 +926,14 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
 <section class="paper" data-label="Resultados">
 <p class="eyebrow">Resultados</p>
 <h2>Una entidad nueva: ≈ 35 líneas de backend y <em>ninguna</em> de frontend.</h2>
-<div class="stats">
+<div class="loc" role="img" aria-label="Líneas de código escritas a mano al exponer de 0 a 61 entidades, con la misma escala en las cuatro gráficas. Antes: unas 135 líneas de backend y 250 de frontend por entidad (8235 y 15 250 en total). Con UniWorks: unas 35 de backend y ninguna de frontend (2135 y 0).">
+  <div class="loc-top"><span class="p-k">Líneas escritas a mano al añadir entidades · misma escala en las cuatro</span><span class="ents"><span class="p-k">Entidades</span><b class="ent-n"></b><span class="p-k">/ 61</span></span></div>
+  <div class="loc-blocks">
+    <div class="lblock before"><div class="lb-head"><span class="tag clay">Antes</span></div><div class="lcharts"><figure class="lchart" style="--per:135"><figcaption><b>Backend</b><span class="lv"><span class="vp"></span><span class="vg"></span> <small>líneas</small></span></figcaption><div class="plot"><svg viewBox="0 0 61 16000" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 16000H1V15865H2V15730H3V15595H4V15460H5V15325H6V15190H7V15055H8V14920H9V14785H10V14650H11V14515H12V14380H13V14245H14V14110H15V13975H16V13840H17V13705H18V13570H19V13435H20V13300H21V13165H22V13030H23V12895H24V12760H25V12625H26V12490H27V12355H28V12220H29V12085H30V11950H31V11815H32V11680H33V11545H34V11410H35V11275H36V11140H37V11005H38V10870H39V10735H40V10600H41V10465H42V10330H43V10195H44V10060H45V9925H46V9790H47V9655H48V9520H49V9385H50V9250H51V9115H52V8980H53V8845H54V8710H55V8575H56V8440H57V8305H58V8170H59V8035H60V7900H61V7765V16000H0Z"/><path class="line" d="M0 16000H1V15865H2V15730H3V15595H4V15460H5V15325H6V15190H7V15055H8V14920H9V14785H10V14650H11V14515H12V14380H13V14245H14V14110H15V13975H16V13840H17V13705H18V13570H19V13435H20V13300H21V13165H22V13030H23V12895H24V12760H25V12625H26V12490H27V12355H28V12220H29V12085H30V11950H31V11815H32V11680H33V11545H34V11410H35V11275H36V11140H37V11005H38V10870H39V10735H40V10600H41V10465H42V10330H43V10195H44V10060H45V9925H46V9790H47V9655H48V9520H49V9385H50V9250H51V9115H52V8980H53V8845H54V8710H55V8575H56V8440H57V8305H58V8170H59V8035H60V7900H61V7765"/></svg><i class="tip"></i></div><div class="xax"><span>0</span><span>≈ 135 por entidad</span><span>61</span></div></figure><figure class="lchart" style="--per:250"><figcaption><b>Frontend</b><span class="lv"><span class="vp"></span><span class="vg"></span> <small>líneas</small></span></figcaption><div class="plot"><svg viewBox="0 0 61 16000" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 16000H1V15750H2V15500H3V15250H4V15000H5V14750H6V14500H7V14250H8V14000H9V13750H10V13500H11V13250H12V13000H13V12750H14V12500H15V12250H16V12000H17V11750H18V11500H19V11250H20V11000H21V10750H22V10500H23V10250H24V10000H25V9750H26V9500H27V9250H28V9000H29V8750H30V8500H31V8250H32V8000H33V7750H34V7500H35V7250H36V7000H37V6750H38V6500H39V6250H40V6000H41V5750H42V5500H43V5250H44V5000H45V4750H46V4500H47V4250H48V4000H49V3750H50V3500H51V3250H52V3000H53V2750H54V2500H55V2250H56V2000H57V1750H58V1500H59V1250H60V1000H61V750V16000H0Z"/><path class="line" d="M0 16000H1V15750H2V15500H3V15250H4V15000H5V14750H6V14500H7V14250H8V14000H9V13750H10V13500H11V13250H12V13000H13V12750H14V12500H15V12250H16V12000H17V11750H18V11500H19V11250H20V11000H21V10750H22V10500H23V10250H24V10000H25V9750H26V9500H27V9250H28V9000H29V8750H30V8500H31V8250H32V8000H33V7750H34V7500H35V7250H36V7000H37V6750H38V6500H39V6250H40V6000H41V5750H42V5500H43V5250H44V5000H45V4750H46V4500H47V4250H48V4000H49V3750H50V3500H51V3250H52V3000H53V2750H54V2500H55V2250H56V2000H57V1750H58V1500H59V1250H60V1000H61V750"/></svg><i class="tip"></i></div><div class="xax"><span>0</span><span>≈ 250 por entidad</span><span>61</span></div></figure></div></div>
+    <div class="lblock after"><div class="lb-head"><span class="tag lime">Con UniWorks</span><span class="delta">−74 % backend</span><span class="delta">−100 % frontend</span></div><div class="lcharts"><figure class="lchart" style="--per:35"><figcaption><b>Backend</b><span class="lv"><span class="vp"></span><span class="vg"></span> <small>líneas</small></span></figcaption><div class="plot"><svg viewBox="0 0 61 16000" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 16000H1V15965H2V15930H3V15895H4V15860H5V15825H6V15790H7V15755H8V15720H9V15685H10V15650H11V15615H12V15580H13V15545H14V15510H15V15475H16V15440H17V15405H18V15370H19V15335H20V15300H21V15265H22V15230H23V15195H24V15160H25V15125H26V15090H27V15055H28V15020H29V14985H30V14950H31V14915H32V14880H33V14845H34V14810H35V14775H36V14740H37V14705H38V14670H39V14635H40V14600H41V14565H42V14530H43V14495H44V14460H45V14425H46V14390H47V14355H48V14320H49V14285H50V14250H51V14215H52V14180H53V14145H54V14110H55V14075H56V14040H57V14005H58V13970H59V13935H60V13900H61V13865V16000H0Z"/><path class="line" d="M0 16000H1V15965H2V15930H3V15895H4V15860H5V15825H6V15790H7V15755H8V15720H9V15685H10V15650H11V15615H12V15580H13V15545H14V15510H15V15475H16V15440H17V15405H18V15370H19V15335H20V15300H21V15265H22V15230H23V15195H24V15160H25V15125H26V15090H27V15055H28V15020H29V14985H30V14950H31V14915H32V14880H33V14845H34V14810H35V14775H36V14740H37V14705H38V14670H39V14635H40V14600H41V14565H42V14530H43V14495H44V14460H45V14425H46V14390H47V14355H48V14320H49V14285H50V14250H51V14215H52V14180H53V14145H54V14110H55V14075H56V14040H57V14005H58V13970H59V13935H60V13900H61V13865"/></svg><i class="tip"></i></div><div class="xax"><span>0</span><span>≈ 35 por entidad</span><span>61</span></div></figure><figure class="lchart" style="--per:0"><figcaption><b>Frontend</b><span class="lv"><span class="vp"></span><span class="vg"></span> <small>líneas</small></span></figcaption><div class="plot"><svg viewBox="0 0 61 16000" preserveAspectRatio="none" aria-hidden="true"><path class="line" d="M0 16000H61"/></svg><i class="tip"></i></div><div class="xax"><span>0</span><span>0 por entidad</span><span>61</span></div></figure></div></div>
+  </div>
+</div>
+<div class="stats compact">
   <div><b>61</b><span>entidades expuestas por la cadena ORM–esquema</span></div>
   <div><b>366</b><span>endpoints CRUD generados, sin escribirlos a mano</span></div>
   <div><b>39</b><span>extensiones <code>x-*</code> reconocidas en el esquema</span></div>
