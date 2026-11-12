@@ -216,6 +216,13 @@ table{border-collapse:collapse;width:100%}
 .ba tr.key th{border-radius:10px 0 0 10px}
 .ba tr.key td:nth-child(2){color:var(--on-dark-2)}
 .ba tr.key td:nth-child(3){color:var(--lime);border-radius:0 10px 10px 0}
+/* 18 · la columna «Con UniWorks» se va rellenando fila a fila; la última, con algo más de pausa */
+.ba td:nth-child(3) span{display:inline-block}
+.ba tbody tr:nth-child(1){--d:.4s}.ba tbody tr:nth-child(2){--d:.75s}.ba tbody tr:nth-child(3){--d:1.1s}.ba tbody tr:nth-child(4){--d:1.45s}.ba tbody tr:nth-child(5){--d:1.8s}.ba tbody tr:nth-child(6){--d:2.35s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .ba td:nth-child(3) span{opacity:0;transform:translateX(-30px);animation:ph-in .5s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@media print{.ba td:nth-child(3) span{opacity:1 !important;transform:none !important;animation:none !important}}
 
 /* 7 · arquitectura */
 .arch{display:grid;grid-template-columns:1fr 64px 1.08fr 64px 1fr;align-items:center;margin-top:auto;margin-bottom:24px}
@@ -273,6 +280,12 @@ table{border-collapse:collapse;width:100%}
 .stack{display:flex;flex-direction:column;gap:22px}
 .code.ok{border-left:8px solid var(--lime)}
 .code.err{border-left:8px solid #e8855c}
+/* 11 · primero la respuesta de éxito, después la de error: misma forma en ambas */
+.stack>.code.ok{--d:.3s}.stack>.code.err{--d:1.3s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .stack>.code{opacity:0;transform:translateY(30px);animation:ph-in .55s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@media print{.stack>.code{opacity:1 !important;transform:none !important;animation:none !important}}
 
 /* 9 · nodos */
 .nodes{display:flex;flex-direction:column;align-items:stretch}
@@ -355,6 +368,12 @@ table{border-collapse:collapse;width:100%}
 .conv{display:flex;flex-direction:column;gap:18px;align-items:center;padding:0 22px}
 .conv .rt{width:100%;margin:0}
 .conv code{font-size:23px;color:var(--lime)}
+/* 12 · la flecha y schemaToFormly() se revelan con un barrido de izquierda a derecha */
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .conv{clip-path:inset(-20px 100% -20px -20px);animation:wipe .8s cubic-bezier(.6,0,.3,1) .4s forwards}
+}
+@keyframes wipe{to{clip-path:inset(-20px -20px -20px -20px)}}
+@media print{.conv{clip-path:none !important;animation:none !important}}
 .onetag .code{margin:16px 0 22px}
 
 /* demos */
@@ -850,12 +869,12 @@ section.demo{padding:46px 120px 0}
 <table class="ba">
   <thead><tr><th scope="col"></th><th scope="col">Antes</th><th scope="col">Con UniWorks</th></tr></thead>
   <tbody>
-    <tr><th scope="row">Endpoints CRUD</th><td>Router escrito a mano</td><td>Una fábrica CRUD</td></tr>
-    <tr><th scope="row">Validación</th><td>Esquemas Pydantic a mano</td><td>Derivada del ORM</td></tr>
-    <tr><th scope="row">Errores</th><td>Ad hoc por endpoint</td><td>Envoltorio uniforme</td></tr>
-    <tr><th scope="row">Cliente</th><td>Un método por operación</td><td><code>EntityClient.for(path)</code></td></tr>
-    <tr><th scope="row">Formulario</th><td>HTML y lógica por campo</td><td><code>&lt;ngt-dynamic-form&gt;</code></td></tr>
-    <tr class="key"><th scope="row">Cambio en el modelo</th><td>Propagación manual a 3 capas</td><td>Automática desde el ORM</td></tr>
+    <tr><th scope="row">Endpoints CRUD</th><td>Router escrito a mano</td><td><span>Una fábrica CRUD</span></td></tr>
+    <tr><th scope="row">Validación</th><td>Esquemas Pydantic a mano</td><td><span>Derivada del ORM</span></td></tr>
+    <tr><th scope="row">Errores</th><td>Ad hoc por endpoint</td><td><span>Envoltorio uniforme</span></td></tr>
+    <tr><th scope="row">Cliente</th><td>Un método por operación</td><td><span><code>EntityClient.for(path)</code></span></td></tr>
+    <tr><th scope="row">Formulario</th><td>HTML y lógica por campo</td><td><span><code>&lt;ngt-dynamic-form&gt;</code></span></td></tr>
+    <tr class="key"><th scope="row">Cambio en el modelo</th><td>Propagación manual a 3 capas</td><td><span>Automática desde el ORM</span></td></tr>
   </tbody>
 </table>
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">18 / 20</span></footer></section>
