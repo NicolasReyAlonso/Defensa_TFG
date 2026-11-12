@@ -48,7 +48,9 @@ h2.xl{font-size:104px;max-width:1500px;margin-top:40px !important}
 
 /* pie */
 .foot{position:absolute;left:120px;right:120px;bottom:38px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:20px;color:var(--muted);letter-spacing:.04em}
-.foot nav{display:flex;gap:26px;margin-left:auto;margin-right:48px;font-size:18px}
+.foot nav{display:flex;gap:26px;margin-left:auto;margin-right:48px;font-size:18px;position:relative}
+/* barra que se desliza entre secciones al cambiar de diapositiva (la anima el script del final) */
+.foot nav::before{content:"";position:absolute;top:0;left:0;width:0;height:2px;opacity:0;pointer-events:none}
 .foot nav span{padding-top:8px;border-top:2px solid transparent}
 .foot nav .on{color:var(--ink);border-top-color:var(--leaf);font-weight:700}
 .foot .brand{font-family:var(--display);font-size:26px;font-style:italic;letter-spacing:0;color:var(--ink)}
@@ -1229,6 +1231,35 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
       else current.pause();
       e.preventDefault();
     }
+  });
+})();
+
+// Pie: al cambiar de sección, la barra de la sección activa se desliza desde la sección de la diapositiva
+// anterior (en cualquier sentido). Usa la Web Animations API sobre nav::before, sin tocar el DOM, así que
+// no regenera miniaturas; mientras dura, se oculta el borde estático de la sección de destino.
+(function () {
+  var stage = document.querySelector('deck-stage');
+  if (!stage || !Element.prototype.animate) return;
+  var reduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+
+  function activeIndex(slide) {
+    var nav = slide && slide.querySelector('.foot nav');
+    return nav ? [].indexOf.call(nav.children, nav.querySelector('.on')) : -1;
+  }
+
+  stage.addEventListener('slidechange', function (e) {
+    if (reduce && reduce.matches) return;
+    var nav = e.detail.slide && e.detail.slide.querySelector('.foot nav');
+    var from = activeIndex(e.detail.previousSlide), to = activeIndex(e.detail.slide);
+    if (!nav || from < 0 || to < 0 || from === to) return;
+    var a = nav.children[from], b = nav.children[to];
+    var color = getComputedStyle(b).borderTopColor;
+    var opts = { duration: 560, easing: 'cubic-bezier(.65,0,.35,1)' };
+    b.animate([{ borderTopColor: 'transparent' }, { borderTopColor: 'transparent' }], opts);
+    nav.animate([
+      { left: a.offsetLeft + 'px', top: a.offsetTop + 'px', width: a.offsetWidth + 'px', opacity: 1, backgroundColor: color },
+      { left: b.offsetLeft + 'px', top: b.offsetTop + 'px', width: b.offsetWidth + 'px', opacity: 1, backgroundColor: color }
+    ], Object.assign({ pseudoElement: '::before' }, opts));
   });
 })();
 
