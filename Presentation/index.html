@@ -408,6 +408,24 @@ section.demo{padding:46px 120px 0}
 
 .tall .code{font-size:31px;line-height:1.58;padding:40px 44px}
 .tall .points li{font-size:35px;padding:28px 0}
+/* 13 · resaltado paso a paso (data-step lo pone el script al pulsar →/←): cada punto se ilumina junto
+   con sus líneas del bundle (clases k1…k4) y el resto se atenúa; en «Determinista» el hash se reescribe idéntico */
+.bundle .ln{display:block;margin:0 -44px;padding:0 44px;
+  background-color:rgb(201 242 106 / calc(var(--lit,0) * .16));box-shadow:inset calc(var(--lit,0) * 7px) 0 0 var(--lime);
+  transition:opacity .4s ease,background-color .4s ease,box-shadow .4s ease}
+.bpoints li{position:relative;isolation:isolate;transition:opacity .4s ease}
+.bpoints li::before{content:"";position:absolute;inset:0 -24px;z-index:-1;border-radius:4px;background:rgb(29 106 73 / .1);box-shadow:inset 7px 0 0 var(--leaf);opacity:var(--lit,0);transition:opacity .4s ease}
+section[data-deck-active][data-step] :is(.bundle .ln,.bpoints li){opacity:calc(.32 + .68 * var(--lit,0))}
+section[data-deck-active][data-step="1"] .k1,section[data-deck-active][data-step="2"] .k2,
+section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step="4"] .k4{--lit:1}
+.hash i{font-style:normal}
+.hcaret{display:none;width:4px;height:1em;margin-right:-4px;vertical-align:-.12em;background:var(--lime)}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active][data-step="4"] .hash i{animation:t-hide .01s calc(.5s + (15 - var(--i)) * 40ms) forwards,t-show .01s calc(1.4s + var(--i) * 45ms) forwards}
+  section[data-deck-active][data-step="4"] .hcaret{display:inline-block;animation:hc 2.5s steps(1) forwards}
+}
+@keyframes hc{0%,20%{opacity:0}21%,92%{opacity:1}93%,100%{opacity:0}}
+@media print{.bundle .ln,.bpoints li{opacity:1 !important;background:none !important;box-shadow:none !important}.bpoints li::before{opacity:0 !important}.hash i{font-size:1em !important;animation:none !important}.hcaret{display:none !important}}
 .c-model{width:600px}.c-layer{width:640px;padding:28px 34px}
 
 </style>
@@ -823,20 +841,12 @@ section.demo{padding:46px 120px 0}
 <p class="eyebrow">Desarrollo · incremento 4</p>
 <h2>Todos los esquemas, en un bundle versionado.</h2>
 <div class="two even tall">
-<pre class="code"><span class="c">// GET /api/sys/schemas</span>
-{ <span class="s">"version"</span>: <span class="s">"9f3a1b2c4d5e6f70"</span>,
-  <span class="s">"entities"</span>: {
-    <span class="s">"roles"</span>: { … },
-    <span class="s">"identities"</span>: {
-      <span class="s">"oneOf"</span>: [ … ],
-      <span class="s">"x-discriminator"</span>: { … },
-      <span class="s">"x-relationships"</span>: [ … ]
-    } } }</pre>
-  <ul class="points">
-    <li><b>Versión = ETag.</b> Si nada ha cambiado, el servidor responde 304.</li>
-    <li><b>Polimorfismo.</b> Las subclases viajan como <code>oneOf</code> con su discriminador.</li>
-    <li><b>Relaciones del ORM.</b> Reflejadas en <code>x-relationships</code>.</li>
-    <li><b>Determinista.</b> Mismo modelo, misma versión.</li>
+<pre class="code bundle"><span class="ln"><span class="c">// GET /api/sys/schemas</span></span><span class="ln k1 k4">{ <span class="s">"version"</span>: <span class="s">"<span class="hash"><i style="--i:0">9</i><i style="--i:1">f</i><i style="--i:2">3</i><i style="--i:3">a</i><i style="--i:4">1</i><i style="--i:5">b</i><i style="--i:6">2</i><i style="--i:7">c</i><i style="--i:8">4</i><i style="--i:9">d</i><i style="--i:10">5</i><i style="--i:11">e</i><i style="--i:12">6</i><i style="--i:13">f</i><i style="--i:14">7</i><i style="--i:15">0</i><span class="hcaret" aria-hidden="true"></span></span>"</span>,</span><span class="ln k4">  <span class="s">"entities"</span>: {</span><span class="ln k4">    <span class="s">"roles"</span>: { … },</span><span class="ln k4">    <span class="s">"identities"</span>: {</span><span class="ln k2 k4">      <span class="s">"oneOf"</span>: [ … ],</span><span class="ln k2 k4">      <span class="s">"x-discriminator"</span>: { … },</span><span class="ln k3 k4">      <span class="s">"x-relationships"</span>: [ … ]</span><span class="ln k4">    } } }</span></pre>
+  <ul class="points bpoints">
+    <li class="k1"><b>Versión = ETag.</b> Si nada ha cambiado, el servidor responde 304.</li>
+    <li class="k2"><b>Polimorfismo.</b> Las subclases viajan como <code>oneOf</code> con su discriminador.</li>
+    <li class="k3"><b>Relaciones del ORM.</b> Reflejadas en <code>x-relationships</code>.</li>
+    <li class="k4"><b>Determinista.</b> Mismo modelo, misma versión.</li>
   </ul>
 </div>
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">13 / 20</span></footer></section>
@@ -1152,6 +1162,42 @@ section.demo{padding:46px 120px 0}
       e.preventDefault();
     }
   });
+})();
+
+// Diapositiva 13: resaltado paso a paso. Mientras está activa, →/espacio/AvPág resaltan el siguiente
+// punto (y sus líneas del bundle) y ←/RePág retroceden; fuera de los pasos 0…4 la tecla sigue a deck-stage
+// y cambia de diapositiva. Se escucha en captura para adelantarse al manejador de deck-stage.
+(function () {
+  var stage = document.querySelector('deck-stage');
+  var slide = document.querySelector('section[data-label="Incremento 4 · Esquemas"]');
+  if (!stage || !slide) return;
+  var STEPS = 4, step = 0;
+
+  function set(n) {
+    step = n;
+    if (n) slide.setAttribute('data-step', String(n));
+    else slide.removeAttribute('data-step');
+  }
+
+  stage.addEventListener('slidechange', function (e) {
+    if (e.detail.slide === slide) set(e.detail.previousIndex > e.detail.index ? STEPS : 0);
+    else if (e.detail.previousSlide === slide) set(0);
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (!slide.hasAttribute('data-deck-active')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var k = e.key;
+    var fwd = k === 'ArrowRight' || k === 'PageDown' || k === ' ' || k === 'Spacebar';
+    var back = k === 'ArrowLeft' || k === 'PageUp';
+    if (fwd && step < STEPS) set(step + 1);
+    else if (back && step > 0) set(step - 1);
+    else return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
 })();
 
 </script>
