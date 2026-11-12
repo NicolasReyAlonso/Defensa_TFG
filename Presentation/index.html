@@ -255,6 +255,14 @@ table{border-collapse:collapse;width:100%}
 .poly .bx.ref text{font-size:27px;font-weight:500}
 .poly .ln path{fill:none;stroke:var(--ink);stroke-width:2}
 .poly .ln path.dash{stroke:var(--muted);stroke-dasharray:5 8}
+/* el diagrama crece como un árbol: raíz → tronco → ramas desde el centro → hojas; las referencias llegan al final */
+.poly .bx{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .poly .ln path:not(.dash){stroke-dasharray:1;stroke-dashoffset:1;animation:grow .3s ease-out var(--d) forwards}
+  section[data-deck-active] .poly .ln path.dash,section[data-deck-active] .poly .lbl{opacity:0;animation:pop .45s ease-out var(--d) forwards}
+  section[data-deck-active] .poly .bx{opacity:0;transform:scale(.8);animation:ph-in .45s cubic-bezier(.3,1.4,.5,1) var(--d) forwards}
+}
+@media print{.poly .ln path:not(.dash){stroke-dasharray:none !important;stroke-dashoffset:0 !important}.poly *{opacity:1 !important;animation:none !important}.poly .bx{transform:none !important}}
 
 /* código */
 .code{background:var(--forest);color:#e6ecdf;padding:34px 40px;border-radius:12px;font-size:27px;line-height:1.5;white-space:pre;overflow:hidden;tab-size:2}
@@ -273,9 +281,21 @@ table{border-collapse:collapse;width:100%}
 .grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .grid6 span,.hot span{border:1.5px solid var(--ink);border-radius:8px;padding:17px 10px;text-align:center;font-family:var(--mono);font-size:27px;background:#fbf8f0}
 .hot{display:flex;align-items:center;gap:22px;margin-top:14px}
-.hot span{border:3px dashed var(--clay);color:var(--clay);font-weight:700;width:calc((100% - 28px)/3)}
+.hot span{border:3px solid transparent;position:relative;color:var(--clay);font-weight:700;width:calc((100% - 28px)/3)}
 .hot small{font-size:27px;color:var(--clay)}
 .nodes .cap{margin-top:28px !important}
+/* borde punteado de seedbeds en SVG (un border:dashed no se puede animar); el trazo va centrado sobre el borde */
+.ants{position:absolute;left:-1.5px;top:-1.5px;width:calc(100% + 3px);height:calc(100% + 3px);overflow:visible;pointer-events:none}
+.ants rect{fill:none;stroke:var(--clay);stroke-width:3;stroke-dasharray:10 7}
+/* primero están los nodos; Traefik aparece fundiéndose y los enruta; después llega seedbeds en caliente, con el borde en marcha */
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .gw{opacity:0;animation:pop .6s ease-out .3s forwards}
+  section[data-deck-active] .fan{transform:scaleY(0);transform-origin:top;animation:ph-in .25s ease-out .85s forwards}
+  section[data-deck-active] .hot{opacity:0;transform:scale(.9);transform-origin:left center;animation:ph-in .5s cubic-bezier(.3,1.4,.5,1) 1.5s forwards}
+  section[data-deck-active] .ants rect{animation:ants .9s linear infinite}
+}
+@keyframes ants{to{stroke-dashoffset:-17}}
+@media print{.gw,.fan,.hot{opacity:1 !important;transform:none !important;animation:none !important}}
 
 /* listas de puntos */
 .points li{font-size:33px;line-height:1.34;padding:21px 0;border-top:1.5px solid var(--line);color:var(--ink-2)}
@@ -663,15 +683,15 @@ section.demo{padding:46px 120px 0}
     <p class="lead"><b class="clay-t">Plant</b> llega desde un plugin y lo hereda todo, sin que el núcleo sepa que existe.</p>
   </div>
   <svg class="poly" viewBox="0 0 900 640" width="900" height="640" role="img" aria-label="ObjectType clasifica a FunctionalObject, del que heredan Collection, Screen y Plant; anotaciones y ACL lo referencian">
-    <g class="ln"><path d="M450 96V168"/><path d="M450 264V340"/><path d="M150 340H750"/><path d="M150 340V396"/><path d="M450 340V396"/><path d="M750 340V396"/><path class="dash" d="M450 566V520H150V482"/><path class="dash" d="M450 520H750V482"/><path class="dash" d="M450 520V482"/></g>
-    <g class="bx"><rect x="290" y="20" width="320" height="76" rx="8"/><text x="450" y="68">ObjectType</text></g>
-    <text class="lbl" x="466" y="140">1 : N</text>
-    <g class="bx main"><rect x="230" y="168" width="440" height="96" rx="8"/><text x="450" y="212">FunctionalObject</text><text class="sub" x="450" y="246">uuid · propietario · fechas · atributos</text></g>
-    <text class="lbl" x="466" y="318">herencia</text>
-    <g class="bx"><rect x="30" y="396" width="240" height="86" rx="8"/><text x="150" y="449">Collection</text></g>
-    <g class="bx"><rect x="330" y="396" width="240" height="86" rx="8"/><text x="450" y="449">Screen</text></g>
-    <g class="bx plug"><rect x="630" y="396" width="240" height="86" rx="8"/><text x="750" y="441">Plant</text><text class="sub" x="750" y="470">plugin</text></g>
-    <g class="bx ref"><rect x="210" y="566" width="480" height="64" rx="32"/><text x="450" y="608">Anotaciones · ACL · Colecciones</text></g>
+    <g class="ln"><path pathLength="1" style="--d:.4s" d="M450 96V168"/><path pathLength="1" style="--d:.9s" d="M450 264V340"/><path pathLength="1" style="--d:1.15s" d="M450 340H150"/><path pathLength="1" style="--d:1.15s" d="M450 340H750"/><path pathLength="1" style="--d:1.45s" d="M150 340V396"/><path pathLength="1" style="--d:1.15s" d="M450 340V396"/><path pathLength="1" style="--d:1.45s" d="M750 340V396"/><path class="dash" style="--d:2.25s" d="M450 566V520H150V482"/><path class="dash" style="--d:2.25s" d="M450 520H750V482"/><path class="dash" style="--d:2.25s" d="M450 520V482"/></g>
+    <g class="bx" style="--d:.1s"><rect x="290" y="20" width="320" height="76" rx="8"/><text x="450" y="68">ObjectType</text></g>
+    <text class="lbl" style="--d:.5s" x="466" y="140">1 : N</text>
+    <g class="bx main" style="--d:.6s"><rect x="230" y="168" width="440" height="96" rx="8"/><text x="450" y="212">FunctionalObject</text><text class="sub" x="450" y="246">uuid · propietario · fechas · atributos</text></g>
+    <text class="lbl" style="--d:1s" x="466" y="318">herencia</text>
+    <g class="bx" style="--d:1.7s"><rect x="30" y="396" width="240" height="86" rx="8"/><text x="150" y="449">Collection</text></g>
+    <g class="bx" style="--d:1.4s"><rect x="330" y="396" width="240" height="86" rx="8"/><text x="450" y="449">Screen</text></g>
+    <g class="bx plug" style="--d:1.7s"><rect x="630" y="396" width="240" height="86" rx="8"/><text x="750" y="441">Plant</text><text class="sub" x="750" y="470">plugin</text></g>
+    <g class="bx ref" style="--d:2.1s"><rect x="210" y="566" width="480" height="64" rx="32"/><text x="450" y="608">Anotaciones · ACL · Colecciones</text></g>
   </svg>
 </div>
 <footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">08 / 20</span></footer></section>
@@ -695,7 +715,7 @@ section.demo{padding:46px 120px 0}
     <div class="gw">Traefik · enruta por prefijo de ruta</div>
     <div class="fan" aria-hidden="true"></div>
     <div class="grid6"><span>core</span><span>auth</span><span>species</span><span>files</span><span>annotations</span><span>assistant</span></div>
-    <div class="hot"><span>seedbeds</span><small>se añade en caliente</small></div>
+    <div class="hot"><span>seedbeds<svg class="ants" aria-hidden="true"><rect width="100%" height="100%" rx="6.5"/></svg></span><small>se añade en caliente</small></div>
     <p class="cap">La misma imagen en cada nodo; <code>UNIBACK_NODE_TYPE</code> decide qué plugins sirve.</p>
   </div>
 </div>
