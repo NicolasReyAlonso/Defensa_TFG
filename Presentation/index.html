@@ -1365,6 +1365,33 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   }, true);
 })();
 
+// Puntero láser: mientras se mantiene la tecla L, el cursor se sustituye por un punto rojo.
+// Lo usa el mando de Wii (botón B, ver ../puntero), pero funciona igual con el teclado.
+(function () {
+  var style = document.createElement('style');
+  style.textContent =
+    '#laser{position:fixed;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;' +
+    'background:radial-gradient(circle,#fff 0,#ff5a4d 28%,#ff1a1a 60%,rgba(255,0,0,0) 72%);' +
+    'box-shadow:0 0 14px 5px rgba(255,30,30,.75),0 0 44px 16px rgba(255,0,0,.35);' +
+    'pointer-events:none;z-index:2147483647;display:none;will-change:transform}' +
+    'html.laser #laser{display:block}' +
+    'html.laser,html.laser *{cursor:none!important}';
+  document.head.appendChild(style);
+  var dot = document.createElement('div');
+  dot.id = 'laser';
+  document.body.appendChild(dot);
+  var root = document.documentElement;
+  window.addEventListener('mousemove', function (e) {
+    dot.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+  }, { passive: true });
+  function isL(e) { return e.key === 'l' || e.key === 'L'; }
+  window.addEventListener('keydown', function (e) {
+    if (isL(e) && !e.metaKey && !e.ctrlKey && !e.altKey) { root.classList.add('laser'); e.preventDefault(); }
+  });
+  window.addEventListener('keyup', function (e) { if (isL(e)) root.classList.remove('laser'); });
+  window.addEventListener('blur', function () { root.classList.remove('laser'); });
+})();
+
 </script>
 </body>
 </html>

@@ -1,0 +1,3 @@
+# Linux no necesita nada: presenter.py solo usa la biblioteca estandar.
+# pynput solo hace falta para el backend X11/macOS.
+pynput; sys_platform == "darwin"
