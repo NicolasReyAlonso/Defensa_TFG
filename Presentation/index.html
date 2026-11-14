@@ -90,7 +90,7 @@ section.close h1{font-size:200px}
 .two.wide-r{grid-template-columns:720px 1fr;gap:60px}
 .col-text h2{font-size:68px}
 
-/* 2 · cascada */
+/* 3 · cascada */
 .cascade{display:flex;flex-direction:column;gap:18px;padding-right:20px}
 .c-model{background:var(--forest);color:var(--on-dark);padding:30px 36px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;font-size:38px;width:560px}
 .c-arrow{width:2px;height:44px;background:var(--clay);margin-left:60px;position:relative}
@@ -121,7 +121,7 @@ section.close h1{font-size:200px}
 @keyframes t-blink{50%{opacity:0}}
 @media print{.c-arrow,.c-layer{opacity:1 !important;transform:none !important;animation:none !important}.typer .t-old,.typer .caret{display:none !important}.typer span{font-size:1em !important;animation:none !important}}
 
-/* 3 · cadena */
+/* 4 · cadena */
 section.statement{justify-content:flex-start}
 .chain{display:grid;grid-template-columns:repeat(4,1fr);margin-top:auto;position:relative;padding-top:8px}
 .chain::before{content:"";position:absolute;left:14px;right:12%;top:21px;height:2px;background:var(--lime);opacity:.7}
@@ -148,7 +148,7 @@ section.statement{justify-content:flex-start}
 @keyframes node-lit{50%{transform:scale(1.25)}to{background:var(--lime)}}
 @media print{.chain::after{display:none !important}.node i{animation:none !important}}
 
-/* 4 · fases */
+/* 5 · fases */
 .phases{display:grid;grid-template-columns:1fr 150px 1fr 150px 1.08fr;align-items:stretch;margin-top:56px;flex:1;min-height:0;max-height:560px}
 .phase{border-top:4px solid var(--ink);padding:26px 36px 30px;border-radius:0 0 12px 12px;display:flex;flex-direction:column;gap:18px}
 .phase{box-shadow:12px 14px 28px -12px rgba(19,35,28,.38)}
@@ -173,7 +173,7 @@ section.statement{justify-content:flex-start}
 @keyframes ph-in{to{opacity:1;transform:none}}
 @media print{.phases>*{opacity:1 !important;transform:none !important;animation:none !important}}
 
-/* 5 · objetivos */
+/* 6 · objetivos */
 .goals{margin-top:auto !important;margin-bottom:26px !important}
 .goals li{display:grid;grid-template-columns:100px 600px 1fr;align-items:baseline;padding:30px 0;border-top:1.5px solid var(--line)}
 .goals li:last-child{border-bottom:1.5px solid var(--line)}
@@ -188,7 +188,7 @@ section.statement{justify-content:flex-start}
 }
 @media print{.goals li>*{opacity:1 !important;transform:none !important;animation:none !important}}
 
-/* 6 y 18 · tablas */
+/* 7 y 19 · tablas */
 table{border-collapse:collapse;width:100%}
 .cmp{margin-top:auto;margin-bottom:22px;font-size:32px}
 .cmp th,.cmp td{text-align:left;padding:21px 28px;border-top:1.5px solid var(--line)}
@@ -200,7 +200,7 @@ table{border-collapse:collapse;width:100%}
 .cmp tr.us th,.cmp tr.us td{background:var(--forest);color:var(--lime);border-top:none;font-size:36px;padding:28px}
 .cmp tr.us th{color:var(--on-dark);font-family:var(--display);font-style:italic;font-weight:480;font-size:44px;border-radius:10px 0 0 10px}
 .cmp tr.us td:last-child{border-radius:0 10px 10px 0}
-/* 6 · la fila de UniWorks empieza vacía y se va rellenando celda a celda */
+/* 7 · la fila de UniWorks empieza vacía y se va rellenando celda a celda */
 .cmp tr.us td span{display:inline-block}
 .cmp tr.us td:nth-child(2){--d:.6s}.cmp tr.us td:nth-child(3){--d:1s}.cmp tr.us td:nth-child(4){--d:1.4s}.cmp tr.us td:nth-child(5){--d:1.8s}
 @media (prefers-reduced-motion:no-preference){
@@ -218,7 +218,7 @@ table{border-collapse:collapse;width:100%}
 .ba tr.key th{border-radius:10px 0 0 10px}
 .ba tr.key td:nth-child(2){color:var(--on-dark-2)}
 .ba tr.key td:nth-child(3){color:var(--lime);border-radius:0 10px 10px 0}
-/* 18 · la columna «Con UniWorks» se va rellenando fila a fila; la última, con algo más de pausa */
+/* 19 · la columna «Con UniWorks» se va rellenando fila a fila; la última, con algo más de pausa */
 .ba td:nth-child(3) span{display:inline-block}
 .ba tbody tr:nth-child(1){--d:.4s}.ba tbody tr:nth-child(2){--d:.75s}.ba tbody tr:nth-child(3){--d:1.1s}.ba tbody tr:nth-child(4){--d:1.45s}.ba tbody tr:nth-child(5){--d:1.8s}.ba tbody tr:nth-child(6){--d:2.35s}
 @media (prefers-reduced-motion:no-preference){
@@ -226,7 +226,7 @@ table{border-collapse:collapse;width:100%}
 }
 @media print{.ba td:nth-child(3) span{opacity:1 !important;transform:none !important;animation:none !important}}
 
-/* 7 · arquitectura */
+/* 8 · arquitectura */
 .arch{display:grid;grid-template-columns:1fr 64px 1.08fr 64px 1fr;align-items:center;margin-top:auto;margin-bottom:24px}
 .panel{border:1.5px solid var(--ink);border-radius:12px;padding:30px 30px 34px;display:flex;flex-direction:column;align-items:stretch;gap:0;height:440px;justify-content:space-between;background:#fbf8f0}
 .panel .p-k{margin-bottom:12px}
@@ -242,7 +242,7 @@ table{border-collapse:collapse;width:100%}
 .rt{height:2px;background:var(--ink);position:relative;margin:0 8px}
 .rt::after{content:"";position:absolute;right:-2px;top:-7px;border-left:13px solid var(--ink);border-top:8px solid transparent;border-bottom:8px solid transparent}
 .rt.light{background:var(--lime)}.rt.light::after{border-left-color:var(--lime)}
-/* 7 · uniback y ngt-gui están desde el inicio; se dibuja la flecha, aparece el contrato y se dibuja la segunda flecha */
+/* 8 · uniback y ngt-gui están desde el inicio; se dibuja la flecha, aparece el contrato y se dibuja la segunda flecha */
 .arch>:nth-child(2){--d:.3s}.arch>:nth-child(3){--d:.6s}.arch>:nth-child(4){--d:1.05s}
 @media (prefers-reduced-motion:no-preference){
   section[data-deck-active] .arch>.rt{transform:scaleX(0);transform-origin:left;animation:ph-in .35s ease-out var(--d) forwards}
@@ -250,7 +250,7 @@ table{border-collapse:collapse;width:100%}
 }
 @media print{.arch>*{opacity:1 !important;transform:none !important;animation:none !important}}
 
-/* 8 · polimorfismo */
+/* 9 · polimorfismo */
 .poly{width:900px;height:640px;justify-self:end}
 .poly text{font-family:var(--body);font-size:31px;font-weight:600;text-anchor:middle;fill:var(--ink)}
 .poly text.sub{font-size:22px;font-weight:400;fill:var(--muted)}
@@ -282,14 +282,14 @@ table{border-collapse:collapse;width:100%}
 .stack{display:flex;flex-direction:column;gap:22px}
 .code.ok{border-left:8px solid var(--lime)}
 .code.err{border-left:8px solid #e8855c}
-/* 11 · primero la respuesta de éxito, después la de error: misma forma en ambas */
+/* 12 · primero la respuesta de éxito, después la de error: misma forma en ambas */
 .stack>.code.ok{--d:.3s}.stack>.code.err{--d:1.3s}
 @media (prefers-reduced-motion:no-preference){
   section[data-deck-active] .stack>.code{opacity:0;transform:translateY(30px);animation:ph-in .55s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
 }
 @media print{.stack>.code{opacity:1 !important;transform:none !important;animation:none !important}}
 
-/* 9 · nodos */
+/* 10 · nodos */
 .nodes{display:flex;flex-direction:column;align-items:stretch}
 .gw{background:var(--forest);color:var(--on-dark);border-radius:10px;padding:22px;text-align:center;font-size:30px;font-weight:500}
 .fan{width:2px;height:30px;background:var(--ink);margin:0 auto}
@@ -318,7 +318,7 @@ table{border-collapse:collapse;width:100%}
 .points li b{color:var(--ink)}
 .dark .points li{border-color:var(--line-d);color:var(--on-dark);font-size:38px;padding:32px 0}
 
-/* 10 · metodología */
+/* 11 · metodología */
 .meth{margin-top:auto;margin-bottom:18px}
 .mhead,.mrow{display:grid;grid-template-columns:640px 1fr 110px 110px;align-items:center;column-gap:28px}
 .mhead{font-family:var(--mono);font-size:21px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;padding-bottom:12px}
@@ -361,7 +361,7 @@ table{border-collapse:collapse;width:100%}
 .mrow.total .mn b{font-family:var(--display);font-size:38px;font-style:italic;font-weight:480}
 .mrow.total .h{font-size:38px;color:var(--ink)}
 
-/* 12 · incremento 3 */
+/* 13 · incremento 3 */
 .i3{display:grid;grid-template-columns:640px 250px 1fr;align-items:center;margin-top:auto;margin-bottom:auto}
 .hints dl{margin-top:16px !important}
 .hints dl div{display:grid;grid-template-columns:250px 1fr;padding:15px 0;border-top:1px solid var(--line-d);align-items:baseline}
@@ -370,7 +370,7 @@ table{border-collapse:collapse;width:100%}
 .conv{display:flex;flex-direction:column;gap:18px;align-items:center;padding:0 22px}
 .conv .rt{width:100%;margin:0}
 .conv code{font-size:23px;color:var(--lime)}
-/* 12 · la flecha y schemaToFormly() se revelan con un barrido de izquierda a derecha */
+/* 13 · la flecha y schemaToFormly() se revelan con un barrido de izquierda a derecha */
 @media (prefers-reduced-motion:no-preference){
   section[data-deck-active] .conv{clip-path:inset(-20px 100% -20px -20px);animation:wipe .8s cubic-bezier(.6,0,.3,1) .4s forwards}
 }
@@ -386,7 +386,7 @@ section.demo{padding:46px 120px 0}
 .vwrap{margin-top:24px;display:flex;justify-content:center}
 .vwrap video{height:820px;aspect-ratio:16/9;background:#000;border-radius:10px;box-shadow:0 0 0 1px var(--line-d),0 30px 80px rgba(0,0,0,.45);display:block}
 
-/* 17 · cifras */
+/* 18 · cifras */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:44px;margin-top:auto;margin-bottom:34px}
 .stats>div{border-top:4px solid var(--ink);padding-top:14px}
 .stats b{display:block;font-family:var(--display);font-size:150px;line-height:1;font-weight:420;color:var(--leaf);letter-spacing:-.03em;font-variation-settings:"opsz" 144}
@@ -396,7 +396,7 @@ section.demo{padding:46px 120px 0}
 .stats.compact b{font-size:60px}
 .stats.compact span{font-size:21px;margin-top:6px}
 
-/* 17 · líneas acumuladas al añadir entidades: cuatro gráficas en escalera (un peldaño por entidad),
+/* 18 · líneas acumuladas al añadir entidades: cuatro gráficas en escalera (un peldaño por entidad),
    misma escala (0–8 000 líneas). Todo deriva de --ent (entidades añadidas, 0→30), que se anima una
    sola vez en .loc y heredan las cuatro: recorte de la línea, punto de cabeza y contadores.
    Medido en el código heredado: antes ≈135 (back) y ≈250 (front) por entidad; después ≈35 y 0. */
@@ -438,7 +438,7 @@ section.demo{padding:46px 120px 0}
 @keyframes ents{from{--ent:0}}
 @media print{.loc,.delta{animation:none !important;opacity:1 !important;transform:none !important}}
 
-/* 19 · costes */
+/* 20 · costes */
 .costs{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:auto}
 .costs + .note{margin-bottom:auto !important}
 .costs>div{border-top:4px solid var(--ink);padding-top:22px}
@@ -453,7 +453,7 @@ section.demo{padding:46px 120px 0}
 .future{border:1.5px solid var(--line-d);border-radius:12px;padding:30px 36px 20px}
 .future li{font-size:32px;padding:21px 0;border-top:1px solid var(--line-d);color:var(--on-dark)}
 .future ul{margin-top:16px !important}
-/* 19 · subrayado de «deja de crecer», conclusiones con ✓ una a una y trabajo futuro entrando desde la derecha */
+/* 20 · subrayado de «deja de crecer», conclusiones con ✓ una a una y trabajo futuro entrando desde la derecha */
 .ul{background:linear-gradient(var(--lime),var(--lime)) no-repeat 0 100% / 100% .07em;padding-bottom:.04em}
 .concl .points li{position:relative;padding-left:66px}
 .concl .points li::before{content:"";position:absolute;left:6px;top:calc(32px + .3em);width:30px;height:15px;border-left:4px solid var(--lime);border-bottom:4px solid var(--lime);transform:rotate(-45deg)}
@@ -471,7 +471,7 @@ section.demo{padding:46px 120px 0}
 
 .tall .code{font-size:31px;line-height:1.58;padding:40px 44px}
 .tall .points li{font-size:35px;padding:28px 0}
-/* 13 · resaltado paso a paso (data-step lo pone el script al pulsar →/←): cada punto se ilumina junto
+/* 14 · resaltado paso a paso (data-step lo pone el script al pulsar →/←): cada punto se ilumina junto
    con sus líneas del bundle (clases k1…k4) y el resto se atenúa; en «Determinista» el hash se reescribe idéntico */
 .bundle .ln{display:block;margin:0 -44px;padding:0 44px;
   background-color:rgb(201 242 106 / calc(var(--lit,0) * .16));box-shadow:inset calc(var(--lit,0) * 7px) 0 0 var(--lime);
@@ -490,6 +490,28 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
 @keyframes hc{0%,20%{opacity:0}21%,92%{opacity:1}93%,100%{opacity:0}}
 @media print{.bundle .ln,.bpoints li{opacity:1 !important;background:none !important;box-shadow:none !important}.bpoints li::before{opacity:0 !important}.hash i{font-size:1em !important;animation:none !important}.hcaret{display:none !important}}
 .c-model{width:600px}.c-layer{width:640px;padding:28px 34px}
+
+/* 2 · índice: los seis bloques del pie, cada uno con sus diapositivas; cada entrada salta a la suya */
+.toc{display:grid;grid-template-columns:repeat(3,1fr);column-gap:64px;row-gap:46px;margin-top:auto;margin-bottom:auto;padding-top:20px}
+.tsec{border-top:4px solid var(--ink);padding-top:16px}
+.tsec>header{display:flex;align-items:baseline;gap:16px}
+.tsec .tn{font-family:var(--display);font-size:46px;font-style:italic;color:var(--leaf);line-height:1}
+.tsec>header b{font-family:var(--display);font-size:46px;font-weight:480;line-height:1.1}
+.tsec .tr{margin-left:auto;font-family:var(--mono);font-size:21px;letter-spacing:.06em;color:var(--muted)}
+.tsec ul{margin-top:12px !important}
+.tsec li a{display:grid;grid-template-columns:62px 1fr;align-items:baseline;padding:11px 10px 11px 0;border-top:1px solid var(--line);font-size:29px;line-height:1.3;color:var(--ink-2);text-decoration:none;cursor:pointer;transition:background-color .2s,color .2s}
+.tsec li a span{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--leaf)}
+.tsec li a:hover{background:rgba(29,106,73,.08);color:var(--ink)}
+.tsec li a.key{color:var(--ink);font-weight:600}
+.tsec li a{position:relative}
+.tsec li a.key::after{content:"";position:absolute;right:12px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--clay)}
+.toc-note{position:absolute;right:120px;top:178px;font-size:24px;color:var(--muted);display:flex;align-items:center;gap:12px}
+.toc-note i{width:12px;height:12px;border-radius:50%;background:var(--clay);display:inline-block}
+.toc>:nth-child(1){--d:.15s}.toc>:nth-child(2){--d:.3s}.toc>:nth-child(3){--d:.45s}.toc>:nth-child(4){--d:.6s}.toc>:nth-child(5){--d:.75s}.toc>:nth-child(6){--d:.9s}
+@media (prefers-reduced-motion:no-preference){
+  section[data-deck-active] .tsec{opacity:0;transform:translateY(26px);animation:ph-in .5s cubic-bezier(.2,.7,.2,1) var(--d) forwards}
+}
+@media print{.tsec{opacity:1 !important;transform:none !important;animation:none !important}}
 
 </style>
 </head>
@@ -696,6 +718,25 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
 <circle class="seed" cx="380.0" cy="930.0" r="15"/>
 </svg><p class="seed-label">modelo de datos</p></div>
 </section>
+<section class="paper" data-label="Índice">
+<p class="eyebrow">Índice</p>
+<h2>El recorrido, en seis bloques.</h2>
+<nav class="toc" aria-label="Índice de la presentación">
+  <section class="tsec"><header><span class="tn">1</span><b>Problema</b><span class="tr">03–04</span></header>
+    <ul><li><a href="#3" data-go="3"><span>03</span>El problema</a></li><li><a href="#4" data-go="4"><span>04</span>La propuesta</a></li></ul></section>
+  <section class="tsec"><header><span class="tn">2</span><b>Partida</b><span class="tr">05–07</span></header>
+    <ul><li><a href="#5" data-go="5"><span>05</span>Punto de partida</a></li><li><a href="#6" data-go="6"><span>06</span>Objetivos</a></li><li><a href="#7" data-go="7"><span>07</span>Estado del arte</a></li></ul></section>
+  <section class="tsec"><header><span class="tn">3</span><b>Diseño</b><span class="tr">08–10</span></header>
+    <ul><li><a href="#8" data-go="8"><span>08</span>Arquitectura</a></li><li><a href="#9" data-go="9"><span>09</span>Núcleo polimórfico</a></li><li><a href="#10" data-go="10"><span>10</span>Plugins y micronúcleo</a></li></ul></section>
+  <section class="tsec"><header><span class="tn">4</span><b>Desarrollo</b><span class="tr">11–14</span></header>
+    <ul><li><a href="#11" data-go="11"><span>11</span>Metodología</a></li><li><a href="#12" data-go="12"><span>12</span>Incremento 2 · Contrato</a></li><li><a class="key" href="#13" data-go="13"><span>13</span>Incremento 3 · Formularios</a></li><li><a href="#14" data-go="14"><span>14</span>Incremento 4 · Esquemas</a></li></ul></section>
+  <section class="tsec"><header><span class="tn">5</span><b>Demo</b><span class="tr">15–17</span></header>
+    <ul><li><a href="#15" data-go="15"><span>15</span>Uso general</a></li><li><a href="#16" data-go="16"><span>16</span>Un plugin en caliente</a></li><li><a href="#17" data-go="17"><span>17</span>Pestañas y asistente de IA</a></li></ul></section>
+  <section class="tsec"><header><span class="tn">6</span><b>Resultados</b><span class="tr">18–20</span></header>
+    <ul><li><a href="#18" data-go="18"><span>18</span>Cifras</a></li><li><a href="#19" data-go="19"><span>19</span>Antes y después</a></li><li><a href="#20" data-go="20"><span>20</span>Conclusiones y trabajo futuro</a></li></ul></section>
+</nav>
+<p class="toc-note"><i></i>Principal aportación del trabajo</p>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">02 / 21</span></footer></section>
 <section class="paper" data-label="El problema">
 <div class="two">
   <div class="col-text">
@@ -711,7 +752,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <div class="c-layer"><div><b>Frontend</b><small>formularios · tablas · vistas</small></div><span class="hand">a mano</span></div>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">02 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">03 / 21</span></footer></section>
 <section class="dark statement" data-label="La idea">
 <p class="eyebrow">La propuesta</p>
 <h2 class="xl">El modelo de datos como <em>única fuente de verdad</em>.</h2>
@@ -722,7 +763,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   <div class="node"><i></i><b>Formulario</b><code>&lt;ngt-dynamic-form&gt;</code><small>se genera</small></div>
 </div>
 <div class="chain-legend"><span><b>uniback</b> · backend en Python (FastAPI, PostgreSQL)</span><span><b>ngt-gui</b> · librería de componentes Angular</span></div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">03 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="on">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">04 / 21</span></footer></section>
 <section class="paper" data-label="Punto de partida">
 <p class="eyebrow">Punto de partida</p>
 <h2>Qué recibí y qué aporta este trabajo.</h2>
@@ -745,7 +786,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <ul><li><b>30 entidades</b> bajo un contrato uniforme</li><li>Descubrimiento y cliente genérico</li><li>Del esquema al formulario</li><li>Dominio desacoplado en plugins</li></ul>
   </article>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">04 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">05 / 21</span></footer></section>
 <section class="paper" data-label="Objetivos">
 <p class="eyebrow">Objetivos</p>
 <h2>Un framework reutilizable, en cinco objetivos.</h2>
@@ -756,7 +797,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   <li><span class="n">4</span><b>Formularios automáticos</b><span>Generados con Formly a partir del esquema</span></li>
   <li><span class="n">5</span><b>Esquemas desde el ORM</b><span>El modelo como única fuente de verdad</span></li>
 </ol>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">05 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">06 / 21</span></footer></section>
 <section class="paper" data-label="Estado del arte">
 <p class="eyebrow">Estado del arte</p>
 <h2>Los renderizadores de esquemas ya existen. Faltaba la <em>cadena completa</em>.</h2>
@@ -770,7 +811,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <tr class="us"><th scope="row">UniWorks</th><td><span>Sí</span></td><td><span>Sí · x-*</span></td><td><span>Uniforme</span></td><td><span>ETag</span></td></tr>
   </tbody>
 </table>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">06 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="on">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">07 / 21</span></footer></section>
 <section class="paper" data-label="Arquitectura">
 <p class="eyebrow">Diseño · visión general</p>
 <h2>Dos sistemas y un contrato como única superficie de acoplamiento.</h2>
@@ -795,7 +836,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <div class="chip strong"><code>&lt;ngt-dynamic-form&gt;</code></div>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">07 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">08 / 21</span></footer></section>
 <section class="paper" data-label="Núcleo polimórfico">
 <div class="two wide-r">
   <div class="col-text">
@@ -816,7 +857,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <g class="bx ref" style="--d:2.1s"><rect x="210" y="566" width="480" height="64" rx="32"/><text x="450" y="608">Anotaciones · ACL · Colecciones</text></g>
   </svg>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">08 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">09 / 21</span></footer></section>
 <section class="paper" data-label="Plugins y micronúcleo">
 <p class="eyebrow">Diseño · extensibilidad</p>
 <h2>El dominio entra desde fuera: plugins sobre un micronúcleo.</h2>
@@ -841,7 +882,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <p class="cap">La misma imagen en cada nodo; <code>UNIBACK_NODE_TYPE</code> decide qué plugins sirve.</p>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">09 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="on">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">10 / 21</span></footer></section>
 <section class="paper" data-label="Metodología">
 <p class="eyebrow">Desarrollo · metodología</p>
 <h2>Iterativo incremental: cuatro incrementos.</h2>
@@ -850,7 +891,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   <div class="mrow" style="--e:50;--r:48"><div class="mn"><b>Planificación y entorno</b><small>requisitos, arquitectura</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:40;--r:56"><div class="mn"><b>Incremento 1 · API y modelado</b><small>Docker reproducible, núcleo versionado</small></div><div class="bars"><i class="est" style="width:440px"></i><i class="real over"></i></div><span class="h">40</span><span class="h r"></span></div><div class="mrow" style="--e:50;--r:62"><div class="mn"><b>Incremento 2 · Contrato</b><small>envoltorio, descubrimiento, cliente</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real over"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:45;--r:58"><div class="mn"><b>Incremento 3 · Formularios</b><small>del esquema a Formly</small></div><div class="bars"><i class="est" style="width:495px"></i><i class="real over"></i></div><span class="h">45</span><span class="h r"></span></div><div class="mrow" style="--e:50;--r:34"><div class="mn"><b>Incremento 4 · Esquemas</b><small>bundle, polimorfismo, relaciones</small></div><div class="bars"><i class="est" style="width:550px"></i><i class="real"></i></div><span class="h">50</span><span class="h r"></span></div><div class="mrow" style="--e:30;--r:32"><div class="mn"><b>Documentación y defensa</b><small></small></div><div class="bars"><i class="est" style="width:330px"></i><i class="real over"></i></div><span class="h">30</span><span class="h r"></span></div>
   <div class="mrow total" style="--r:290"><div class="mn"><b>Total</b></div><div class="bars"></div><span class="h">265</span><span class="h r"></span></div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">10 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">11 / 21</span></footer></section>
 <section class="paper" data-label="Incremento 2 · Contrato">
 <p class="eyebrow">Desarrollo · incremento 2</p>
 <h2>Una sola forma para cualquier respuesta.</h2>
@@ -872,7 +913,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <span class="s">"location"</span>: <span class="s">"/body/name"</span> }] }</pre>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">11 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">12 / 21</span></footer></section>
 <section class="dark" data-label="Incremento 3 · Formularios">
 <p class="eyebrow">Desarrollo · incremento 3 <span class="tag lime">principal aportación</span></p>
 <h2>Del esquema al formulario, sin escribir HTML.</h2>
@@ -899,7 +940,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <p class="cap">La heurística propone; el desarrollador siempre puede sobrescribirla.</p>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">12 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">13 / 21</span></footer></section>
 <section class="paper" data-label="Incremento 4 · Esquemas">
 <p class="eyebrow">Desarrollo · incremento 4</p>
 <h2>Todos los esquemas, en un bundle versionado.</h2>
@@ -912,19 +953,19 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <li class="k4"><b>Determinista.</b> Mismo modelo, misma versión.</li>
   </ul>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">13 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="on">Desarrollo</span><span class="">Demo</span><span class="">Resultados</span></nav><span class="num">14 / 21</span></footer></section>
 <section class="dark demo" data-label="Demo 1 · Uso general">
 <header class="demo-h"><p class="eyebrow">Demo 1 de 3</p><h2>Uso general</h2><p class="demo-cap">Autenticación, navegación por entidades y CRUD generado desde el esquema.</p></header>
 <div class="vwrap"><video src="assets/demo-1-uso-general.mp4" controls preload="metadata" playsinline></video></div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">14 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">15 / 21</span></footer></section>
 <section class="dark demo" data-label="Demo 2 · Un plugin en caliente">
 <header class="demo-h"><p class="eyebrow">Demo 2 de 3</p><h2>Un plugin en caliente</h2><p class="demo-cap">Se levanta un nodo nuevo y sus entidades aparecen en la interfaz sin reiniciar.</p></header>
 <div class="vwrap"><video src="assets/demo-2-hotplug.mp4" controls preload="metadata" playsinline></video></div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">15 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">16 / 21</span></footer></section>
 <section class="dark demo" data-label="Demo 3 · Pestañas y asistente de IA">
 <header class="demo-h"><p class="eyebrow">Demo 3 de 3</p><h2>Pestañas y asistente de IA</h2><p class="demo-cap">El asistente lee el esquema de la entidad y propone altas; el usuario confirma.</p></header>
 <div class="vwrap"><video src="assets/demo-3-pestanas-ia.mp4" controls preload="metadata" playsinline></video></div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">16 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="on">Demo</span><span class="">Resultados</span></nav><span class="num">17 / 21</span></footer></section>
 <section class="paper" data-label="Resultados">
 <p class="eyebrow">Resultados</p>
 <h2>Una entidad nueva: ≈ 35 líneas de backend y <em>ninguna</em> de frontend.</h2>
@@ -942,7 +983,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   <div><b>161</b><span>tests automatizados de backend, 54 % de cobertura</span></div>
   <div><b>17</b><span>tests unitarios del conversor esquema–Formly</span></div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">17 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">18 / 21</span></footer></section>
 <section class="paper" data-label="Antes y después">
 <p class="eyebrow">Resultados · valoración</p>
 <h2>Exponer y editar una entidad, antes y después.</h2>
@@ -957,7 +998,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <tr class="key"><th scope="row">Cambio en el modelo</th><td>Propagación manual a 3 capas</td><td><span>Automática desde el ORM</span></td></tr>
   </tbody>
 </table>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">18 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">19 / 21</span></footer></section>
 <section class="dark" data-label="Conclusiones">
 <p class="eyebrow">Conclusiones y trabajo futuro</p>
 <h2>El coste de un modelo que cambia <em class="ul">deja de crecer</em>.</h2>
@@ -972,7 +1013,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
     <ul><li>Generación de código desde el bundle</li><li>Migrar el servicio heredado al cliente genérico</li><li><code>oneOf</code> en el conversor a Formly</li><li>Soporte de criptografía</li></ul>
   </div>
 </div>
-<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">19 / 20</span></footer></section>
+<footer class="foot"><span class="brand">UniWorks</span><nav aria-label="Sección"><span class="">Problema</span><span class="">Partida</span><span class="">Diseño</span><span class="">Desarrollo</span><span class="">Demo</span><span class="on">Resultados</span></nav><span class="num">20 / 21</span></footer></section>
 <section class="cover" data-label="Cierre">
 <div class="cover-l">
   <img class="logo" src="assets/ulpgc-eii.png" alt="Universidad de Las Palmas de Gran Canaria · Escuela de Ingeniería Informática">
@@ -1178,6 +1219,7 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
 <script type="application/json" id="speaker-notes">
 [
  "Buenas tardes. Soy Nicolás Rey Alonso y voy a presentar mi Trabajo de Fin de Grado: un framework backend–frontend para el desarrollo rápido de proyectos apoyado en un modelo de datos en evolución, aplicado a los proyectos del ITC con el Jardín Botánico Viera y Clavijo. Lo he llamado UniWorks. Lo han tutorizado Rafael Juan Nebot Medina, desde el Instituto Tecnológico de Canarias, y María Dolores Afonso Suárez, desde la Escuela. La imagen resume la idea que voy a defender: una única semilla, el modelo de datos, de la que crece todo lo demás.",
+ "Este es el recorrido de la presentación, en seis bloques: el problema y la propuesta; el punto de partida, los objetivos y el estado del arte; el diseño; el desarrollo, incremento a incremento; tres demostraciones; y los resultados y las conclusiones. Junto a cada apartado está el número de su diapositiva, y los mismos seis bloques aparecen en el pie de cada una, así que en todo momento se ve en qué parte estamos. El punto rojo marca la principal aportación: el incremento 3, los formularios generados desde el esquema. [Durante las preguntas, la tecla I vuelve a este índice y cada entrada lleva a su diapositiva con un clic.]",
  "El problema es concreto. El ITC desarrolla, junto al Jardín Botánico Viera y Clavijo, aplicaciones de gestión de datos botánicos, y su modelo de datos no es estable: crece y se ajusta a medida que avanza la investigación y cambian los estándares. Cada cambio en ese modelo se propaga en cascada: hay que tocar el backend —modelos, validación, endpoints—, la capa de comunicación —contratos y tipos— y el frontend —formularios, tablas, vistas—. Y todo eso se reescribe manualmente, capa a capa, y queda acoplado a un dominio. El resultado es caro de mantener y difícil de reutilizar en el siguiente proyecto.",
  "La propuesta es convertir el modelo de datos en la única fuente de verdad. El desarrollador escribe solo el modelo ORM, en SQLAlchemy. A partir de él, el framework deriva un JSON Schema enriquecido con pistas de presentación; ese esquema viaja por un contrato de comunicación uniforme; y en el otro extremo se genera el formulario, sin escribir HTML específico de cada entidad. Es el recorrido que se ve en pantalla: lo único que se escribe es el modelo, y todo lo demás se deriva de él. UniWorks son dos piezas que encajan por ese contrato: uniback, el backend en Python con FastAPI y PostgreSQL, y ngt-gui, una librería de componentes Angular. Un cambio en el modelo se propaga solo.",
  "Es importante delimitar qué recibí y qué aporto. En la fase cero, al empezar mis prácticas, había una aplicación Angular monolítica del proyecto NextGenDem, con un servicio de 178 métodos escritos a mano para hablar con el servidor. En las prácticas extraje sus componentes a una librería, ngt-gui. Así llego a la fase uno, el inicio del TFG: tengo esa librería, todavía acoplada a su dominio, y un backend, uniback, que me entrega el ITC, con un buen núcleo de modelos y un primer envoltorio y una primera fábrica CRUD para unas veinte entidades, pero sin descubrimiento, sin pistas de interfaz y sin plugins. Dos piezas útiles que no encajaban. Mi aportación es todo lo que separa la fase uno de la fase dos.",
@@ -1263,7 +1305,31 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   });
 })();
 
-// Diapositiva 13: resaltado paso a paso. Mientras está activa, →/espacio/AvPág resaltan el siguiente
+// Diapositiva 2 (índice): cada entrada salta a su diapositiva con un clic, y la tecla I vuelve al índice
+// desde cualquier diapositiva (útil en el turno de preguntas).
+(function () {
+  var stage = document.querySelector('deck-stage');
+  var toc = document.querySelector('section[data-label="Índice"]');
+  if (!stage || !toc) return;
+  var tocIndex = [].indexOf.call(stage.children, toc);
+
+  toc.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-go]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    stage.goTo(parseInt(a.getAttribute('data-go'), 10) - 1);
+  });
+
+  window.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if (e.key === 'i' || e.key === 'I') { stage.goTo(tocIndex); e.preventDefault(); }
+  });
+})();
+
+// Diapositiva 14: resaltado paso a paso. Mientras está activa, →/espacio/AvPág resaltan el siguiente
 // punto (y sus líneas del bundle) y ←/RePág retroceden; fuera de los pasos 0…4 la tecla sigue a deck-stage
 // y cambia de diapositiva. Se escucha en captura para adelantarse al manejador de deck-stage.
 (function () {
