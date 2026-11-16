@@ -1,3 +1,8 @@
 # Linux no necesita nada: presenter.py solo usa la biblioteca estandar.
-# pynput solo hace falta para el backend X11/macOS.
-pynput; sys_platform == "darwin"
+# macOS: leer el mando (hidapi), emparejarlo (IOBluetooth, CoreBluetooth) y
+# mover raton/teclado (Quartz).
+hidapi; sys_platform == "darwin"
+pyobjc-framework-IOBluetooth; sys_platform == "darwin"
+pyobjc-framework-CoreBluetooth; sys_platform == "darwin"
+pyobjc-framework-Quartz; sys_platform == "darwin"
+# Opcional, solo para el backend pynput en X11: pip install pynput

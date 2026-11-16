@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Mando de Wii como puntero de presentaciones.
 
+    python3 presenter.py --pair         # solo macOS: una vez por mando (botón SYNC)
     python3 presenter.py --calibrate    # una vez por sala/posición
     python3 presenter.py                # presentar (Home para salir)
 
-Solo usa la biblioteca estándar en Linux: habla con el mando por sockets
-L2CAP de Bluetooth e inyecta ratón/teclado por /dev/uinput (o pynput en
-X11/macOS). No instala nada ni deja nada en marcha al salir.
+Linux: solo biblioteca estándar. Habla con el mando por sockets L2CAP de
+Bluetooth e inyecta ratón/teclado por /dev/uinput (o pynput en X11).
+macOS: lee el mando como dispositivo HID (hidapi) e inyecta eventos con
+Quartz (pyobjc); el emparejamiento replica WiimotePair, de Dolphin.
+No instala nada ni deja nada en marcha al salir.
 """
 import argparse
 import collections
@@ -63,6 +66,14 @@ KEY_CODES = {"left": 105, "right": 106, "up": 103, "down": 108, "pageup": 104,
              "pagedown": 109, "esc": 1, "enter": 28, "space": 57, "f5": 63,
              "b": 48, "l": 38, "home": 102, "end": 107}
 BTN_CODES = {"left": 0x110, "right": 0x111}
+# Los mismos nombres -> código de tecla virtual de macOS (HIToolbox/Events.h)
+MAC_KEY_CODES = {"left": 123, "right": 124, "up": 126, "down": 125, "pageup": 116,
+                 "pagedown": 121, "esc": 53, "enter": 36, "space": 49, "f5": 96,
+                 "b": 11, "l": 37, "home": 115, "end": 119}
+
+MAC_DEPS = ("Faltan las dependencias de macOS. Desde la carpeta del script:\n"
+            "  python3 -m venv .venv && .venv/bin/pip install -r requirements.txt\n"
+            "y lánzalo con .venv/bin/python presenter.py")
 
 # ───────────────────────────── Mando de Wii ───────────────────────────────
 
@@ -93,27 +104,31 @@ def find_wiimote(scan_time):
 
 
 class Wiimote:
-    """Conexión HID sobre L2CAP (PSM 0x11 control, 0x13 datos), como hace libcwiid."""
+    """Protocolo del mando, común a los dos transportes (L2CAP en Linux, HID en macOS).
 
-    def __init__(self, mac):
+    Los informes de entrada se entregan siempre con la cabecera Bluetooth 0xA1
+    delante, que es lo que espera parse_report.
+    """
+
+    def __init__(self):
         self.rumble = 0
-        self.ctl = self._connect(mac, 0x11)
-        self.data = self._connect(mac, 0x13)
-        self.data.settimeout(0.5)
+        self._leds = 0
 
-    @staticmethod
-    def _connect(mac, psm):
-        s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,
-                          socket.BTPROTO_L2CAP)
-        s.settimeout(10)
-        s.connect((mac, psm))
-        return s
+    def _tx(self, report):
+        """Envía id de informe + datos, sin cabecera Bluetooth."""
+        raise NotImplementedError
+
+    def _rx(self):
+        """Devuelve un informe con cabecera 0xA1, o None si no llegó nada a tiempo."""
+        raise NotImplementedError
+
+    def _close_transport(self):
+        raise NotImplementedError
 
     def send(self, report, *payload):
-        # 0xA2 por el canal de datos funciona también en los RVL-CNT-01-TR.
         p = bytearray(payload)
         p[0] |= self.rumble          # el bit 0 de todo informe de salida es la vibración
-        self.data.send(bytes([0xA2, report]) + p)
+        self._tx(bytes([report]) + p)
 
     def leds(self, n):
         """Enciende los n primeros LEDs (0-4)."""
@@ -150,13 +165,8 @@ class Wiimote:
 
     def read(self):
         """Devuelve (botones, puntos_ir | None, bateria | None), o None si no llegó nada."""
-        try:
-            d = self.data.recv(32)
-        except socket.timeout:
-            return None
-        if not d:
-            raise ConnectionError("el mando cerró la conexión")
-        return parse_report(d, self)
+        d = self._rx()
+        return None if d is None else parse_report(d, self)
 
     def close(self):
         try:
@@ -166,11 +176,219 @@ class Wiimote:
             self.leds(0)
         except OSError:
             pass
+        self._close_transport()
+
+
+class L2capWiimote(Wiimote):
+    """Linux: HID sobre L2CAP (PSM 0x11 control, 0x13 datos), como hace libcwiid."""
+
+    def __init__(self, mac):
+        super().__init__()
+        self.ctl = self._connect(mac, 0x11)
+        self.data = self._connect(mac, 0x13)
+        self.data.settimeout(0.5)
+
+    @staticmethod
+    def _connect(mac, psm):
+        s = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,
+                          socket.BTPROTO_L2CAP)
+        s.settimeout(10)
+        s.connect((mac, psm))
+        return s
+
+    def _tx(self, report):
+        # 0xA2 por el canal de datos funciona también en los RVL-CNT-01-TR.
+        self.data.send(b"\xA2" + report)
+
+    def _rx(self):
+        try:
+            d = self.data.recv(32)
+        except socket.timeout:
+            return None
+        if not d:
+            raise ConnectionError("el mando cerró la conexión")
+        return d
+
+    def _close_transport(self):
         for s in (self.data, self.ctl):
             try:
                 s.close()
             except OSError:
                 pass
+
+
+class HidWiimote(Wiimote):
+    """macOS: el sistema gestiona los canales Bluetooth y expone el mando como HID.
+
+    Abrir L2CAP directamente (lo que hace Linux) dejó de funcionar en macOS 12;
+    Dolphin también usa hidapi en Mac. Sin la cabecera 0xA1/0xA2: el primer
+    byte es el id de informe, como espera hidapi.
+    """
+
+    def __init__(self, path):
+        super().__init__()
+        import hid
+        self.dev = hid.device()
+        self.dev.open_path(path)
+
+    def _tx(self, report):
+        try:
+            ok = self.dev.write(report) >= 0
+        except (OSError, ValueError):
+            ok = False
+        if not ok:
+            raise ConnectionError(f"no se pudo escribir en el mando ({self.dev.error()})")
+
+    def _rx(self):
+        try:
+            d = self.dev.read(32, 500)
+        except (OSError, ValueError) as e:
+            raise ConnectionError(f"error leyendo del mando ({e})") from e
+        return b"\xA1" + bytes(d) if d else None
+
+    def _close_transport(self):
+        self.dev.close()
+
+
+WIIMOTE_HID_IDS = {(0x057E, 0x0306), (0x057E, 0x0330)}   # RVL-CNT-01 y -TR
+
+
+def find_hid_wiimote(wait):
+    """macOS: espera a que un mando ya emparejado aparezca como HID. Devuelve su ruta."""
+    try:
+        import hid
+    except ImportError:
+        sys.exit(MAC_DEPS)
+    deadline, told = time.monotonic() + wait, False
+    while time.monotonic() < deadline:
+        # macOS a veces publica los HID Bluetooth con VID/PID 0: también por nombre.
+        for d in hid.enumerate():
+            if ((d["vendor_id"], d["product_id"]) in WIIMOTE_HID_IDS
+                    or (d["product_string"] or "").startswith("Nintendo RVL-CNT")):
+                print(f"Encontrado {d['product_string'] or 'mando de Wii'}")
+                return d["path"]
+        if not told:
+            print(f"Esperando al mando {wait}s: pulsa cualquier botón para que se conecte.")
+            told = True
+        time.sleep(0.5)
+    return None
+
+
+def mac_pair(timeout=90):
+    """macOS: empareja el mando con el PIN del botón SYNC, como WiimotePair (Dolphin).
+
+    El PIN de SYNC es la dirección Bluetooth del Mac al revés y en binario. La
+    API pública solo acepta PIN de texto, así que se entrega con las mismas dos
+    llamadas privadas de IOBluetooth que usa WiimotePair.
+    """
+    try:
+        import objc
+        from CoreBluetooth import CBCentralManager
+        from Foundation import NSDate, NSNumber, NSObject, NSRunLoop
+        from IOBluetooth import (IOBluetoothDeviceInquiry, IOBluetoothDevicePair,
+                                 IOBluetoothHostController)
+    except ImportError:
+        sys.exit(MAC_DEPS)
+
+    st = {"bt": None, "pair": None, "done": False, "ok": False, "error": None}
+
+    def run(until, seconds):
+        end = time.monotonic() + seconds
+        while not until() and time.monotonic() < end:
+            NSRunLoop.currentRunLoop().runUntilDate_(NSDate.dateWithTimeIntervalSinceNow_(0.1))
+
+    def ioreturn(err):
+        return f"IOReturn 0x{err & 0xFFFFFFFF:08X}"
+
+    def found(inquiry, dev):
+        name = dev.name() or ""
+        if st["pair"] or st["done"] or "Nintendo RVL-CNT-01" not in name:
+            return
+        if dev.isPaired():
+            print(f"{name} [{dev.addressString()}] ya está emparejado con este Mac.\n"
+                  "Pulsa un botón del mando para conectarlo. Si no conecta, olvídalo en\n"
+                  "Ajustes > Bluetooth y repite --pair.")
+            st["done"] = st["ok"] = True
+            return
+        print(f"Encontrado {name} [{dev.addressString()}]. Emparejando...")
+        inquiry.stop()
+        pair = IOBluetoothDevicePair.pairWithDevice_(dev)
+        pair.setDelegate_(delegate)
+        pair.setUserDefinedPincode_(True)       # privada: que nos pida siempre el PIN
+        st["pair"] = pair
+        err = pair.start()
+        if err:
+            st["error"], st["done"] = f"no se pudo iniciar ({ioreturn(err)})", True
+
+    class WiiPairDelegate(NSObject):
+        @objc.typedSelector(b"v@:@")
+        def centralManagerDidUpdateState_(self, manager):
+            st["bt"] = manager.state()
+
+        @objc.typedSelector(b"v@:@@")
+        def deviceInquiryDeviceFound_device_(self, inquiry, dev):
+            found(inquiry, dev)
+
+        @objc.typedSelector(b"v@:@@I")
+        def deviceInquiryDeviceNameUpdated_device_devicesRemaining_(self, inquiry, dev, n):
+            found(inquiry, dev)
+
+        @objc.typedSelector(b"v@:@iZ")
+        def deviceInquiryComplete_error_aborted_(self, inquiry, error, aborted):
+            if not aborted and not st["pair"]:  # la búsqueda caduca sola: otra vuelta
+                inquiry.clearFoundDevices()
+                inquiry.start()
+
+        @objc.typedSelector(b"v@:@")
+        def devicePairingPINCodeRequest_(self, pair):
+            host = IOBluetoothHostController.defaultController().addressAsString()
+            pin = bytes.fromhex(re.sub("[^0-9A-Fa-f]", "", host))[::-1]
+            try:
+                coordinator = objc.lookUpClass("IOBluetoothCoreBluetoothCoordinator")
+                coordinator.sharedInstance().pairPeer_forType_withKey_(
+                    pair.device().classicPeer(), pair.currentPairingType(),
+                    NSNumber.numberWithUnsignedLongLong_(int.from_bytes(pin, "little")))
+            except Exception as e:      # ninguna excepción debe escapar hacia Objective-C
+                st["error"], st["done"] = f"macOS rechazó el PIN ({e})", True
+
+        @objc.typedSelector(b"v@:@i")
+        def devicePairingFinished_error_(self, pair, error):
+            if error:
+                st["error"] = ioreturn(error)
+            st["ok"], st["done"] = not error, True
+
+    delegate = WiiPairDelegate.alloc().init()
+    # CoreBluetooth solo se usa para saber si hay Bluetooth y permiso (y para que
+    # macOS lo pida la primera vez); el emparejamiento es Bluetooth clásico.
+    manager = CBCentralManager.alloc().initWithDelegate_queue_(delegate, None)
+    run(lambda: st["bt"] not in (None, 0, 1), 60)          # 0 desconocido, 1 reiniciando
+    if st["bt"] == 3:
+        sys.exit("Sin permiso de Bluetooth. Concédelo a la app desde la que lanzas el script\n"
+                 "(Terminal, VS Code...) en Ajustes > Privacidad y seguridad > Bluetooth.")
+    if st["bt"] != 5:
+        sys.exit("El Bluetooth está apagado." if st["bt"] == 4
+                 else f"Bluetooth no disponible (estado {st['bt']}).")
+
+    inquiry = IOBluetoothDeviceInquiry.inquiryWithDelegate_(delegate)
+    inquiry.setSearchType_(1)                               # kIOBluetoothDeviceSearchClassic
+    print("Abre la tapa de las pilas y pulsa una vez el botón rojo SYNC (no 1+2).\n"
+          f"Buscando el mando durante {timeout}s... Ctrl+C cancela.")
+    inquiry.start()
+    try:
+        run(lambda: st["done"], timeout)
+    finally:
+        inquiry.stop()
+        if st["pair"]:
+            st["pair"].stop()
+        del manager
+    if not st["done"]:
+        sys.exit("No apareció ningún mando. Pulsa SYNC justo antes de lanzar --pair.")
+    if not st["ok"]:
+        sys.exit(f"Emparejamiento fallido: {st['error']}.\nVuelve a intentarlo; si se repite, "
+                 "reinicia el Bluetooth (sudo pkill bluetoothd) o el Mac.")
+    if st["pair"]:
+        print("Emparejado. Pulsa cualquier botón del mando para conectarlo (o 'Conectar'\n"
+              "en Ajustes > Bluetooth) y lanza: python3 presenter.py --calibrate")
 
 
 def parse_report(d, wm=None):
@@ -376,8 +594,96 @@ class UInput:
             os.close(fd)
 
 
+def pick_display(Q, number):
+    """macOS: (x, y, ancho, alto) en puntos de la pantalla `number` (1..n).
+
+    Por defecto, la principal (la de la barra de menús). Con varias pantallas
+    las lista, para poder elegir la del proyector con --display.
+    """
+    _, ids, _ = Q.CGGetActiveDisplayList(16, None, None)
+    main = Q.CGMainDisplayID()
+    if number is None:
+        number = ids.index(main) + 1 if main in ids else 1
+    if not 1 <= number <= len(ids):
+        sys.exit(f"--display {number}: solo hay {len(ids)} pantalla(s).")
+    if len(ids) > 1:
+        for i, d in enumerate(ids, 1):
+            b = Q.CGDisplayBounds(d)
+            tags = [t for t, on in (("integrada", Q.CGDisplayIsBuiltin(d)),
+                                    ("principal", d == main),
+                                    ("en espejo", Q.CGDisplayMirrorsDisplay(d))) if on]
+            print(f" {'>' if i == number else ' '} pantalla {i}: "
+                  f"{b.size.width:.0f}x{b.size.height:.0f} en ({b.origin.x:.0f}, "
+                  f"{b.origin.y:.0f}) {', '.join(tags)}")
+        print("   (elige otra con --display N)")
+    b = Q.CGDisplayBounds(ids[number - 1])
+    return b.origin.x, b.origin.y, b.size.width, b.size.height
+
+
+class Quartz:
+    """macOS: ratón y teclado con CGEvent (pyobjc). Requiere permiso de Accesibilidad."""
+
+    def __init__(self, display):
+        try:
+            import Quartz as Q
+        except ImportError:
+            sys.exit(MAC_DEPS)
+        self.Q = Q
+        if not Q.CGPreflightPostEventAccess():
+            Q.CGRequestPostEventAccess()        # muestra el aviso del sistema
+            sys.exit("Sin permiso para controlar ratón y teclado: macOS descartaría los "
+                     "eventos.\nActiva la app desde la que lanzas el script (Terminal, "
+                     "VS Code...) en\nAjustes > Privacidad y seguridad > Accesibilidad "
+                     "y vuelve a lanzarlo.")
+        self.x0, self.y0, self.w, self.h = pick_display(Q, display)
+        self.mouse = {   # botón -> (pulsar, soltar, arrastrar, número)
+            "left": (Q.kCGEventLeftMouseDown, Q.kCGEventLeftMouseUp,
+                     Q.kCGEventLeftMouseDragged, Q.kCGMouseButtonLeft),
+            "right": (Q.kCGEventRightMouseDown, Q.kCGEventRightMouseUp,
+                      Q.kCGEventRightMouseDragged, Q.kCGMouseButtonRight)}
+        self.dragging = None
+        self.held = set()
+
+    def _post(self, event):
+        self.Q.CGEventPost(self.Q.kCGHIDEventTap, event)
+
+    def move(self, u, v):
+        Q = self.Q
+        p = (self.x0 + u * (self.w - 1), self.y0 + v * (self.h - 1))
+        if self.dragging:       # con un botón pulsado macOS espera "dragged", no "moved"
+            kind, btn = self.mouse[self.dragging][2:]
+        else:
+            kind, btn = Q.kCGEventMouseMoved, Q.kCGMouseButtonLeft
+        self._post(Q.CGEventCreateMouseEvent(None, kind, p, btn))
+
+    def _key(self, name, down):
+        self._post(self.Q.CGEventCreateKeyboardEvent(None, MAC_KEY_CODES[name], down))
+
+    def key(self, name):
+        self._key(name, True)
+        self._key(name, False)
+
+    def hold(self, name, down):
+        (self.held.add if down else self.held.discard)(("hold", name))
+        self._key(name, down)
+
+    def button(self, name, down):
+        Q = self.Q
+        press, release, _, btn = self.mouse[name]
+        (self.held.add if down else self.held.discard)(("button", name))
+        self.dragging = name if down else None
+        here = Q.CGEventGetLocation(Q.CGEventCreate(None))
+        event = Q.CGEventCreateMouseEvent(None, press if down else release, here, btn)
+        Q.CGEventSetIntegerValueField(event, Q.kCGMouseEventClickState, 1)
+        self._post(event)
+
+    def close(self):
+        for kind, name in list(self.held):
+            getattr(self, kind)(name, False)
+
+
 class Pynput:
-    """Para X11 y macOS (requiere `pip install pynput`)."""
+    """Para X11 (requiere `pip install pynput`). En macOS es mejor el backend quartz."""
 
     def __init__(self, screen):
         from pynput import keyboard, mouse
@@ -477,7 +783,9 @@ def make_backend(args):
         return Udp(args.send)
     if kind == "auto":
         x11 = os.environ.get("XDG_SESSION_TYPE") == "x11"
-        kind = "pynput" if sys.platform == "darwin" or x11 else "uinput"
+        kind = "quartz" if sys.platform == "darwin" else "pynput" if x11 else "uinput"
+    if kind == "quartz":
+        return Quartz(args.display)
     if kind == "pynput":
         return Pynput(args.screen)
     return Dry() if kind == "dry" else UInput()
@@ -486,15 +794,31 @@ def make_backend(args):
 
 
 def connect(args):
-    mac = args.mac or find_wiimote(args.scan_time)
-    if not mac:
-        sys.exit("No se encontró ningún mando. Pulsa 1+2 y reintenta, o usa --mac.")
+    if sys.platform == "darwin":
+        path = find_hid_wiimote(args.scan_time or 20)
+        if not path:
+            sys.exit("No hay ningún mando conectado al Mac.\n"
+                     "  - Si no lo has emparejado nunca: python3 presenter.py --pair\n"
+                     "  - Si ya lo está: pulsa un botón del mando o 'Conectar' en "
+                     "Ajustes > Bluetooth.")
+        try:
+            wm = HidWiimote(path)
+        except OSError as e:
+            sys.exit(f"No se pudo abrir el mando: {e}")
+    else:
+        mac = args.mac or find_wiimote(args.scan_time or 6)
+        if not mac:
+            sys.exit("No se encontró ningún mando. Pulsa 1+2 y reintenta, o usa --mac.")
+        try:
+            wm = L2capWiimote(mac)
+        except OSError as e:
+            sys.exit(f"No se pudo conectar con {mac}: {e}\n"
+                     "Vuelve a pulsar 1+2 justo antes de lanzar el programa.")
     try:
-        wm = Wiimote(mac)
-    except OSError as e:
-        sys.exit(f"No se pudo conectar con {mac}: {e}\n"
-                 "Vuelve a pulsar 1+2 justo antes de lanzar el programa.")
-    wm.start(CONFIG["ir_sensitivity"])
+        wm.start(CONFIG["ir_sensitivity"])
+    except OSError:
+        wm.close()
+        raise
     return wm
 
 
@@ -611,10 +935,17 @@ def listen(args):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--pair", action="store_true",
+                    help="macOS: emparejar el mando con el botón SYNC (una vez por mando)")
     ap.add_argument("--calibrate", action="store_true", help="calibrar las 4 esquinas")
-    ap.add_argument("--mac", help="MAC del mando (omite la búsqueda)")
-    ap.add_argument("--scan-time", type=int, default=6, help="segundos de búsqueda")
-    ap.add_argument("--backend", choices=["auto", "uinput", "pynput", "dry"], default="auto")
+    ap.add_argument("--mac", help="Linux: MAC del mando (omite la búsqueda)")
+    ap.add_argument("--scan-time", type=int,
+                    help="segundos buscando el mando (Linux: 6) o esperando a que "
+                         "se conecte (macOS: 20)")
+    ap.add_argument("--backend", choices=["auto", "uinput", "quartz", "pynput", "dry"],
+                    default="auto")
+    ap.add_argument("--display", type=int, metavar="N",
+                    help="macOS: pantalla donde mover el cursor (se listan al arrancar)")
     ap.add_argument("--screen", type=lambda s: tuple(map(int, s.lower().split("x"))),
                     help="resolución ANCHOxALTO (solo pynput, si no se detecta)")
     ap.add_argument("--smoothing", choices=["ema", "mean"])
@@ -631,6 +962,11 @@ def main():
 
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
     try:
+        if args.pair:
+            if sys.platform != "darwin":
+                sys.exit("--pair solo hace falta en macOS; en Linux basta con pulsar 1+2 "
+                         "al lanzar el script.")
+            return mac_pair()
         if args.listen:
             return listen(args)
         if not args.calibrate:
