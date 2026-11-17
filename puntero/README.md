@@ -59,7 +59,7 @@ guarda en `calibration.json`; repetir `--calibrate` lo sobrescribe. Home cancela
 | Cruceta izquierda | Flecha izquierda (anterior) |
 | A | Clic izquierdo (se mantiene mientras se pulsa) |
 | Home | Salir: suelta teclas y botones, apaga IR y LEDs, cierra Bluetooth |
-| B (mantener) | Puntero láser: mantiene pulsada la tecla L, y la presentación (`../Presentation`) cambia el cursor por un punto rojo |
+| B (mantener) | Puntero láser: mantiene pulsada la tecla L, y la presentación (`../Presentation`) cambia el cursor por un punto rojo que deja estela al moverse |
 | Arriba, Abajo, +, −, 1, 2 | Libres |
 
 El mapeo es la tabla `BUTTON_MAP` al principio de `presenter.py`.

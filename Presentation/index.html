@@ -1365,31 +1365,105 @@ section[data-deck-active][data-step="3"] .k3,section[data-deck-active][data-step
   }, true);
 })();
 
-// Puntero láser: mientras se mantiene la tecla L, el cursor se sustituye por un punto rojo.
+// Puntero láser: mientras se mantiene la tecla L, el cursor se sustituye por un punto rojo
+// que deja una estela al moverse; al parar, la estela se recoge hacia el punto.
 // Lo usa el mando de Wii (botón B, ver ../puntero), pero funciona igual con el teclado.
 (function () {
+  var TRAIL_MS = 450; // vida de cada tramo de estela (ms): más alto, estela más larga
+  var TRAIL_W = 10;   // grosor de la estela junto al punto (px); se afina hasta 0 en la cola
   var style = document.createElement('style');
   style.textContent =
     '#laser{position:fixed;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;' +
     'background:radial-gradient(circle,#fff 0,#ff5a4d 28%,#ff1a1a 60%,rgba(255,0,0,0) 72%);' +
     'box-shadow:0 0 14px 5px rgba(255,30,30,.75),0 0 44px 16px rgba(255,0,0,.35);' +
     'pointer-events:none;z-index:2147483647;display:none;will-change:transform}' +
-    'html.laser #laser{display:block}' +
+    '#laser-trail{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2147483646;display:none}' +
+    'html.laser #laser,html.laser #laser-trail{display:block}' +
     'html.laser,html.laser *{cursor:none!important}';
   document.head.appendChild(style);
+  var trail = document.createElement('canvas');
+  trail.id = 'laser-trail';
+  document.body.appendChild(trail);
   var dot = document.createElement('div');
   dot.id = 'laser';
   document.body.appendChild(dot);
   var root = document.documentElement;
+
+  // La estela se pinta opaca en un lienzo aparte y se copia de una vez con brillo y
+  // transparencia; así los tramos que se solapan no forman cuentas más oscuras.
+  var ctx = trail.getContext('2d');
+  var buf = document.createElement('canvas');
+  var bctx = buf.getContext('2d');
+  var dpr = 1;
+  function fit() {
+    dpr = window.devicePixelRatio || 1;
+    buf.width = trail.width = Math.round(window.innerWidth * dpr);
+    buf.height = trail.height = Math.round(window.innerHeight * dpr);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+
+  var pts = []; // {x, y, t}: posiciones recientes del puntero, de la más antigua a la última
+  var frame = 0;
+  function draw() {
+    frame = 0;
+    var now = performance.now();
+    while (pts.length && now - pts[0].t > TRAIL_MS) pts.shift();
+    ctx.clearRect(0, 0, trail.width, trail.height);
+    if (pts.length < 2) return;
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, i, p;
+    for (i = 0; i < pts.length; i++) {
+      p = pts[i];
+      if (p.x < x0) x0 = p.x; if (p.x > x1) x1 = p.x;
+      if (p.y < y0) y0 = p.y; if (p.y > y1) y1 = p.y;
+    }
+    var pad = TRAIL_W + 4;
+    x0 = Math.max(0, Math.floor((x0 - pad) * dpr)); y0 = Math.max(0, Math.floor((y0 - pad) * dpr));
+    x1 = Math.min(trail.width, Math.ceil((x1 + pad) * dpr)); y1 = Math.min(trail.height, Math.ceil((y1 + pad) * dpr));
+    var w = x1 - x0, h = y1 - y0;
+    if (w > 0 && h > 0) {
+      bctx.setTransform(1, 0, 0, 1, 0, 0);
+      bctx.clearRect(x0, y0, w, h);
+      bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      bctx.strokeStyle = '#ff2a1f';
+      bctx.lineCap = 'round';
+      for (i = 1; i < pts.length; i++) {
+        var a = pts[i - 1], b = pts[i];
+        var k = 1 - (now - (a.t + b.t) / 2) / TRAIL_MS; // 1 recién pintado, 0 a punto de desaparecer
+        bctx.lineWidth = Math.max(TRAIL_W * k, 0.1);
+        bctx.beginPath();
+        bctx.moveTo(a.x, a.y);
+        bctx.lineTo(b.x, b.y);
+        bctx.stroke();
+      }
+      ctx.globalAlpha = 0.85;
+      ctx.shadowColor = 'rgba(255,0,0,.8)';
+      ctx.shadowBlur = 14 * dpr;
+      ctx.drawImage(buf, x0, y0, w, h, x0, y0, w, h);
+    }
+    frame = requestAnimationFrame(draw);
+  }
+
   window.addEventListener('mousemove', function (e) {
-    dot.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+    var x = e.clientX, y = e.clientY;
+    dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    if (!root.classList.contains('laser')) return;
+    var last = pts[pts.length - 1];
+    if (last && Math.abs(last.x - x) + Math.abs(last.y - y) < 1) return;
+    pts.push({ x: x, y: y, t: performance.now() });
+    if (!frame) frame = requestAnimationFrame(draw);
   }, { passive: true });
+  function off() {
+    root.classList.remove('laser');
+    pts = [];
+    ctx.clearRect(0, 0, trail.width, trail.height);
+  }
   function isL(e) { return e.key === 'l' || e.key === 'L'; }
   window.addEventListener('keydown', function (e) {
     if (isL(e) && !e.metaKey && !e.ctrlKey && !e.altKey) { root.classList.add('laser'); e.preventDefault(); }
   });
-  window.addEventListener('keyup', function (e) { if (isL(e)) root.classList.remove('laser'); });
-  window.addEventListener('blur', function () { root.classList.remove('laser'); });
+  window.addEventListener('keyup', function (e) { if (isL(e)) off(); });
+  window.addEventListener('blur', off);
 })();
 
 </script>
